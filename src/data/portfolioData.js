@@ -12,7 +12,7 @@ export const PORTFOLIO_DATA = {
     github: "https://github.com/Fabverse0",
     linkedin: "https://www.linkedin.com/in/fabianrizky",
     twitter: "https://github.com/Fabverse0",
-    resumeUrl: "#",
+    resumeUrl: "/Fabian_CV.pdf",
     stats: [
       { label: "Uptime SLA", value: "99.99%" },
       { label: "Avg Latency", value: "<15ms" },
@@ -365,7 +365,7 @@ Click "View Architecture & Scalar API Specs" in project cards below!`,
     cv: `[HTTP GET 200 OK] Initiating download for Fabian_CV.pdf...
 Content-Type: application/pdf (1.2 MB)
 Transfer progress: [====================================>] 100%
-Resume ready! Place your real CV file at public/Fabian_CV.pdf to enable direct download.`,
+Download complete! Opening /Fabian_CV.pdf...`,
 
     contact: `DIRECT CONTACT:
 Developer : Muhammad Fabian Rizky (Fab.Dev)
