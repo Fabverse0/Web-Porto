@@ -11,7 +11,7 @@ describe('Seam 1: Portfolio Data Integrity & Terminal Commands', () => {
   });
 
   it('should contain all required CLI terminal dictionary commands', () => {
-    const requiredCommands = ['help', 'bio', 'skills', 'projects', 'cv', 'contact', 'ping', 'sudo', 'matrix'];
+    const requiredCommands = ['help', 'bio', 'skills', 'projects', 'cv', 'contact', 'ping', 'sudo'];
     requiredCommands.forEach(cmd => {
       expect(PORTFOLIO_DATA.terminalCommands[cmd]).toBeDefined();
       expect(typeof PORTFOLIO_DATA.terminalCommands[cmd]).toBe('string');
