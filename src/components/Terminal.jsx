@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles } from 'lucide-react';
+import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles, FileText } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 export default function Terminal() {
   const [history, setHistory] = useState([
-    { type: 'system', text: 'Welcome to Alex.Dev Interactive Backend Terminal v2.4.0' },
-    { type: 'system', text: 'Type "help" to see available commands or "bio" to view developer details.' },
+    { type: 'system', text: 'Welcome to Fab.Dev Interactive Backend Terminal v2.4.0' },
+    { type: 'system', text: 'Type "help" to see available commands or "cv" to download resume.' },
     { type: 'input', text: 'cat bio.json' },
     { type: 'output', text: PORTFOLIO_DATA.terminalCommands.bio }
   ]);
@@ -37,6 +37,12 @@ export default function Terminal() {
       setMatrixActive(true);
       newHistory.push({ type: 'output', text: '=== MATRIX RAIN ACTIVE === [Initializing Cyber Protocol...]' });
       setTimeout(() => setMatrixActive(false), 5000);
+    } else if (cmd === 'cv') {
+      newHistory.push({ type: 'output', text: PORTFOLIO_DATA.terminalCommands.cv });
+      // If a real resume URL exists, trigger download/open
+      if (PORTFOLIO_DATA.developer.resumeUrl && PORTFOLIO_DATA.developer.resumeUrl !== '#') {
+        window.open(PORTFOLIO_DATA.developer.resumeUrl, '_blank');
+      }
     } else if (PORTFOLIO_DATA.terminalCommands[cmd]) {
       newHistory.push({ type: 'output', text: PORTFOLIO_DATA.terminalCommands[cmd] });
     } else {
@@ -68,7 +74,7 @@ export default function Terminal() {
           <span className="terminal-dot bg-[#F59E0B]"></span>
           <span className="terminal-dot bg-[#10B981]"></span>
           <span className="text-[#A1A1AA] text-xs font-mono ml-2 hidden sm:inline">
-            alex@backend-srv: ~ (zsh)
+            fabian@backend-srv: ~ (zsh)
           </span>
         </div>
 
@@ -102,7 +108,7 @@ export default function Terminal() {
           <div key={idx} className="leading-relaxed">
             {item.type === 'input' && (
               <div className="flex items-center gap-2 text-[#FAFAFA]">
-                <span className="text-[#10B981]">alex@dev:~$</span>
+                <span className="text-[#10B981]">fabian@dev:~$</span>
                 <span>{item.text}</span>
               </div>
             )}
@@ -129,13 +135,13 @@ export default function Terminal() {
 
         {/* Input prompt line */}
         <form onSubmit={handleCommandSubmit} className="flex items-center gap-2 mt-2">
-          <span className="text-[#10B981] font-bold">alex@dev:~$</span>
+          <span className="text-[#10B981] font-bold">fabian@dev:~$</span>
           <input
             ref={inputRef}
             type="text"
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
-            placeholder="type 'help', 'skills', or 'projects'..."
+            placeholder="type 'help', 'cv', 'skills', or 'projects'..."
             className="flex-1 bg-transparent text-[#FFFFFF] focus:outline-none font-mono text-xs sm:text-sm placeholder-[#52525B]"
           />
           <button type="submit" className="text-[#71717A] hover:text-[#FFFFFF]">
@@ -153,7 +159,7 @@ export default function Terminal() {
           <span>Interactive CLI Active</span>
         </div>
         <div>
-          Press <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">Enter</kbd> to run
+          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">cv</kbd> to download resume
         </div>
       </div>
     </div>
