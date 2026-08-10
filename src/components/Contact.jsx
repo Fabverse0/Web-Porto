@@ -9,7 +9,7 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   const dev = PORTFOLIO_DATA.developer;
-  const curlContactCmd = `curl -X POST https://api.alexdev.io/v1/contact \\\n  -H "Content-Type: application/json" \\\n  -d '{"name": "${formData.name || 'Your Name'}", "email": "${formData.email || 'your.email@company.com'}", "message": "${formData.message || 'Hello Alex!'}"}'`;
+  const curlContactCmd = `curl -X POST https://api.fabdev.io/v1/contact \\\n  -H "Content-Type: application/json" \\\n  -d '{"name": "${formData.name || 'Your Name'}", "email": "${formData.email || 'your.email@company.com'}", "message": "${formData.message || 'Hello Fabian!'}"}'`;
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(dev.email);
@@ -157,7 +157,7 @@ export default function Contact() {
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Hi Alex, I'd like to discuss a backend engineering opportunity..."
+                      placeholder="Hi Fabian, I'd like to discuss a backend engineering opportunity..."
                       className="w-full px-4 py-3 rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:border-[#09090B] transition-colors resize-none"
                     ></textarea>
                   </div>
