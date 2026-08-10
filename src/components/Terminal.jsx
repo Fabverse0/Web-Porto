@@ -68,11 +68,13 @@ export default function Terminal() {
   const [inputVal, setInputVal] = useState('');
   const [copied, setCopied] = useState(false);
   const [matrixActive, setMatrixActive] = useState(false);
-  const terminalEndRef = useRef(null);
+  const terminalBodyRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
+    }
   }, [history, matrixActive]);
 
   const handleCommandSubmit = (e) => {
@@ -146,8 +148,9 @@ export default function Terminal() {
         </div>
       </div>
 
-      {/* Terminal Body */}
+      {/* Terminal Body Container - Scroll Internal Only */}
       <div
+        ref={terminalBodyRef}
         className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA] relative"
         onClick={() => inputRef.current?.focus()}
       >
@@ -200,8 +203,6 @@ export default function Terminal() {
             <CornerDownLeft className="w-3.5 h-3.5" />
           </button>
         </form>
-
-        <div ref={terminalEndRef} />
       </div>
 
       {/* Terminal Footer Bar */}
