@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alex.Dev - GitHub Profile Banner Minimalist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1500px;
+      height: 500px;
+      background-color: #FAFAFA;
+      color: #09090B;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Background subtle grid pattern */
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(#E4E4E7 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: #FFFFFF;
+      border: 1px solid #E4E4E7;
+      border-radius: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #09090B;
+    }
+
+    h1 span {
+      color: #10B981;
+    }
+
+    p.subtitle {
+      font-size: 20px;
+      color: #71717A;
+      margin-top: 14px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 14px;
+      background-color: #09090B;
+      color: #FFFFFF;
+      border-radius: 6px;
+    }
+
+    .tag.accent {
+      background-color: #2563EB;
+    }
+
+    /* Terminal Preview Box */
+    .terminal-box {
+      position: relative;
+      z-index: 10;
+      width: 480px;
+      background: #09090B;
+      border: 1px solid #27272A;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      font-family: 'JetBrains Mono', monospace;
+      color: #FAFAFA;
+    }
+
+    .terminal-header {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #27272A;
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #EF4444; }
+    .dot-yellow { background: #F59E0B; }
+    .dot-green { background: #10B981; }
+
+    .code-line { margin-bottom: 10px; font-size: 13px; }
+    .prompt { color: #10B981; }
+    .key { color: #06B6D4; }
+    .val { color: #F59E0B; }
+    .comment { color: #71717A; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <div class="content">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      <span>ALL SYSTEMS OPERATIONAL (12ms)</span>
+    </div>
+    <h1>Alex<span>.Dev</span></h1>
+    <p class="subtitle">Backend Software Engineer & Systems Architect<br>High-Concurrency APIs • Scalar OpenAPI Specifications</p>
+    
+    <div class="tags">
+      <span class="tag">Go (Golang)</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Redis</span>
+      <span class="tag">Kafka</span>
+      <span class="tag">Docker</span>
+      <span class="tag accent">Scalar OpenAPI 3.0</span>
+    </div>
+  </div>
+
+  <div class="terminal-box">
+    <div class="terminal-header">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+    </div>
+    <div class="code-line"><span class="prompt">alex@dev:~$</span> cat metrics.json</div>
+    <div class="code-line">{</div>
+    <div class="code-line">&nbsp;&nbsp;<span class="key">"throughput"</span>: <span class="val">"12,500 TPS"</span>,</div>
+    <div class="code-line">&nbsp;&nbsp;<span class="key">"p99_latency"</span>: <span class="val">"7.8ms"</span>,</div>
+    <div class="code-line">&nbsp;&nbsp;<span class="key">"uptime_sla"</span>: <span class="val">"99.999%"</span>,</div>
+    <div class="code-line">&nbsp;&nbsp;<span class="key">"scalar_spec"</span>: <span class="val">"VALIDATED 200 OK"</span></div>
+    <div class="code-line">}</div>
+    <div class="code-line comment"># Ready to build high-scale backend systems</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-main: #FAFAFA;
+  --bg-card: #FFFFFF;
+  --bg-muted: #F4F4F5;
+  --border-light: #E4E4E7;
+  --border-dark: #27272A;
+  --text-main: #09090B;
+  --text-muted: #71717A;
+  --accent-black: #09090B;
+  --accent-emerald: #10B981;
+  --accent-blue: #2563EB;
+  --accent-cyan: #06B6D4;
+  
+  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Custom Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-heading {
+  font-family: var(--font-heading);
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Glassmorphism & Cards */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(228, 228, 231, 0.8);
+}
+
+.card-light {
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-light:hover {
+  border-color: #09090B;
+  box-shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.card-black {
+  background: #09090B;
+  color: #FAFAFA;
+  border: 1px solid #27272A;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Terminal Styling */
+.terminal-window {
+  background: #09090B;
+  border: 1px solid #27272A;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: #18181B;
+  border-bottom: 1px solid #27272A;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Cursor Glow & Blinking */
+.cursor-blink {
+  display: inline-block;
+  width: 8px;
+  height: 16px;
+  background-color: #10B981;
+  margin-left: 4px;
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Pulse Glow */
+.status-pulse {
+  position: relative;
+}
+
+.status-pulse::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: #10B981;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAFAFA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4D4D8;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #09090B;
+}
+
+/* Buttons */
+.btn-black {
+  background-color: #09090B;
+  color: #FFFFFF;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid #09090B;
+}
+
+.btn-black:hover {
+  background-color: #27272A;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #09090B;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid #E4E4E7;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  border-color: #09090B;
+  background-color: #F4F4F5;
+}
+
+/* Modal Overlay Backdrop */
+.modal-backdrop {
+  background: rgba(9, 9, 11, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}

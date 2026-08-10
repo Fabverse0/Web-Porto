@@ -1,0 +1,41 @@
+/* ==========================================================================
+   ALEX.DEV DESIGN SYSTEM TOKENS (Primitive → Semantic → Component)
+   ========================================================================== */
+
+:root {
+  /* 1. PRIMITIVE LAYER (Raw Design Values) */
+  --primitive-color-snow: #FAFAFA;
+  --primitive-color-white: #FFFFFF;
+  --primitive-color-zinc-900: #09090B;
+  --primitive-color-zinc-800: #18181B;
+  --primitive-color-zinc-700: #27272A;
+  --primitive-color-zinc-400: #A1A1AA;
+  --primitive-color-emerald-500: #10B981;
+  --primitive-color-blue-600: #2563EB;
+  --primitive-color-cyan-500: #06B6D4;
+
+  --primitive-font-heading: 'Space Grotesk', -apple-system, sans-serif;
+  --primitive-font-mono: 'JetBrains Mono', monospace;
+  --primitive-font-body: 'Inter', -apple-system, sans-serif;
+
+  /* 2. SEMANTIC LAYER (Purpose Aliases) */
+  --color-bg-page: var(--primitive-color-snow);
+  --color-bg-card: var(--primitive-color-white);
+  --color-bg-contrast: var(--primitive-color-zinc-900);
+  --color-text-main: var(--primitive-color-zinc-900);
+  --color-text-muted: #71717A;
+  --color-status-operational: var(--primitive-color-emerald-500);
+  --color-brand-accent: var(--primitive-color-blue-600);
+
+  /* 3. COMPONENT LAYER (Component Specs) */
+  --terminal-bg: var(--color-bg-contrast);
+  --terminal-border: var(--primitive-color-zinc-700);
+  --terminal-text: var(--primitive-color-snow);
+
+  --navbar-bg: rgba(255, 255, 255, 0.85);
+  --navbar-border: #E4E4E7;
+
+  --btn-primary-bg: var(--primitive-color-zinc-900);
+  --btn-primary-text: var(--primitive-color-white);
+  --btn-primary-hover: var(--primitive-color-zinc-800);
+}

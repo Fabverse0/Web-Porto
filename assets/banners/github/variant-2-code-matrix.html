@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alex.Dev - GitHub Banner Code Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 1500px;
+      height: 500px;
+      background-color: #09090B;
+      color: #FAFAFA;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 80px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #27272A;
+    }
+
+    .glow-bg {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(0,0,0,0) 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 1;
+    }
+
+    .left-section {
+      z-index: 10;
+      max-width: 800px;
+    }
+
+    .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 64px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #FFFFFF;
+    }
+
+    .brand span { color: #10B981; }
+
+    .role-title {
+      font-size: 22px;
+      color: #06B6D4;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .metrics-grid {
+      display: flex;
+      gap: 20px;
+      margin-top: 36px;
+    }
+
+    .metric-card {
+      background: #18181B;
+      border: 1px solid #27272A;
+      padding: 16px 24px;
+      border-radius: 10px;
+    }
+
+    .metric-val {
+      font-size: 26px;
+      font-weight: 700;
+      color: #10B981;
+    }
+
+    .metric-lbl {
+      font-size: 11px;
+      color: #A1A1AA;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .right-section {
+      z-index: 10;
+      background: #18181B;
+      border: 1px solid #27272A;
+      padding: 30px;
+      border-radius: 14px;
+      width: 440px;
+    }
+
+    .endpoint-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #10B981;
+      color: #09090B;
+      font-weight: 700;
+      font-size: 12px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    pre {
+      font-size: 13px;
+      color: #A1A1AA;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-bg"></div>
+
+  <div class="left-section">
+    <div class="brand">Alex<span>.Dev</span></div>
+    <div class="role-title">Backend Software Engineer & Systems Architect</div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-val">12,500 TPS</div>
+        <div class="metric-lbl">High Throughput</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">&lt;8ms p99</div>
+        <div class="metric-lbl">Low Latency</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">Scalar 3.0</div>
+        <div class="metric-lbl">OpenAPI Standard</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <span class="endpoint-badge">POST /api/v1/payments/settle</span>
+    <pre>
+curl -X POST https://api.dev/v1/settle \
+  -H "Authorization: Bearer sk_live" \
+  -d '{"amount": 4950}'
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "status": "COMPLETED",
+  "latency_ms": 7.8
+}</pre>
+  </div>
+</body>
+</html>
