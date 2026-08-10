@@ -1,11 +1,67 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles, FileText } from 'lucide-react';
+import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
+
+function MatrixRainCanvas({ duration = 8000, onClose }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const updateSize = () => {
+      canvas.width = canvas.parentElement.clientWidth;
+      canvas.height = canvas.parentElement.clientHeight;
+    };
+    updateSize();
+
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアカサタナハマヤラワガザダバパイキシチニヒミリギジビピ';
+    const fontSize = 13;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(9, 9, 11, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#10B981';
+      ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    };
+
+    const interval = setInterval(draw, 35);
+    const timer = setTimeout(() => {
+      onClose();
+    }, duration);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, [duration, onClose]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 z-20 pointer-events-none rounded-b-xl opacity-90"
+    />
+  );
+}
 
 export default function Terminal() {
   const [history, setHistory] = useState([
     { type: 'system', text: 'Welcome to Fab.Dev Interactive Backend Terminal v2.4.0' },
-    { type: 'system', text: 'Type "help" to see available commands or "cv" to download resume.' },
+    { type: 'system', text: 'Type "help" to see available commands or "matrix" for digital rain.' },
     { type: 'input', text: 'cat bio.json' },
     { type: 'output', text: PORTFOLIO_DATA.terminalCommands.bio }
   ]);
@@ -35,11 +91,9 @@ export default function Terminal() {
 
     if (cmd === 'matrix') {
       setMatrixActive(true);
-      newHistory.push({ type: 'output', text: '=== MATRIX RAIN ACTIVE === [Initializing Cyber Protocol...]' });
-      setTimeout(() => setMatrixActive(false), 5000);
+      newHistory.push({ type: 'output', text: '=== MATRIX DIGITAL RAIN INITIALIZED === [Streaming Cyber Protocol...]' });
     } else if (cmd === 'cv') {
       newHistory.push({ type: 'output', text: PORTFOLIO_DATA.terminalCommands.cv });
-      // If a real resume URL exists, trigger download/open
       if (PORTFOLIO_DATA.developer.resumeUrl && PORTFOLIO_DATA.developer.resumeUrl !== '#') {
         window.open(PORTFOLIO_DATA.developer.resumeUrl, '_blank');
       }
@@ -66,7 +120,7 @@ export default function Terminal() {
   };
 
   return (
-    <div className="terminal-window w-full font-mono text-xs sm:text-sm">
+    <div className="terminal-window w-full font-mono text-xs sm:text-sm relative">
       {/* Terminal Top Window Header */}
       <div className="terminal-header">
         <div className="flex items-center gap-2">
@@ -94,18 +148,16 @@ export default function Terminal() {
 
       {/* Terminal Body */}
       <div
-        className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA]"
+        className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA] relative"
         onClick={() => inputRef.current?.focus()}
       >
+        {/* Matrix Digital Rain Canvas Effect */}
         {matrixActive && (
-          <div className="text-[#10B981] font-mono text-xs animate-pulse p-2 bg-[#10B981]/10 border border-[#10B981]/30 rounded">
-            01000001 01001100 01000101 01011000 00101110 01000100 01000101 01010110<br />
-            01110011 01111001 01110011 01110100 01100101 01101101 01110011 00100000 01101111 01101011
-          </div>
+          <MatrixRainCanvas duration={10000} onClose={() => setMatrixActive(false)} />
         )}
 
         {history.map((item, idx) => (
-          <div key={idx} className="leading-relaxed">
+          <div key={idx} className="leading-relaxed relative z-10">
             {item.type === 'input' && (
               <div className="flex items-center gap-2 text-[#FAFAFA]">
                 <span className="text-[#10B981]">fabian@dev:~$</span>
@@ -134,14 +186,14 @@ export default function Terminal() {
         ))}
 
         {/* Input prompt line */}
-        <form onSubmit={handleCommandSubmit} className="flex items-center gap-2 mt-2">
+        <form onSubmit={handleCommandSubmit} className="flex items-center gap-2 mt-2 relative z-10">
           <span className="text-[#10B981] font-bold">fabian@dev:~$</span>
           <input
             ref={inputRef}
             type="text"
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
-            placeholder="type 'help', 'cv', 'skills', or 'projects'..."
+            placeholder="type 'help', 'matrix', 'cv', 'skills'..."
             className="flex-1 bg-transparent text-[#FFFFFF] focus:outline-none font-mono text-xs sm:text-sm placeholder-[#52525B]"
           />
           <button type="submit" className="text-[#71717A] hover:text-[#FFFFFF]">
@@ -159,7 +211,7 @@ export default function Terminal() {
           <span>Interactive CLI Active</span>
         </div>
         <div>
-          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">cv</kbd> to download resume
+          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">matrix</kbd> for digital rain
         </div>
       </div>
     </div>

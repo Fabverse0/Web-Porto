@@ -10,12 +10,12 @@ describe('Seam 2: Interactive Terminal Component', () => {
   it('should render initial welcome header and input prompt', () => {
     render(<Terminal />);
     expect(screen.getByText(/Welcome to Fab.Dev Interactive Backend Terminal/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/type 'help', 'cv'/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/type 'help', 'matrix'/i)).toBeInTheDocument();
   });
 
   it('should execute "help" command and output command list', () => {
     render(<Terminal />);
-    const input = screen.getByPlaceholderText(/type 'help', 'cv'/i);
+    const input = screen.getByPlaceholderText(/type 'help', 'matrix'/i);
     
     fireEvent.change(input, { target: { value: 'help' } });
     fireEvent.submit(input);
@@ -25,7 +25,7 @@ describe('Seam 2: Interactive Terminal Component', () => {
 
   it('should execute "cv" command and show resume download output', () => {
     render(<Terminal />);
-    const input = screen.getByPlaceholderText(/type 'help', 'cv'/i);
+    const input = screen.getByPlaceholderText(/type 'help', 'matrix'/i);
     
     fireEvent.change(input, { target: { value: 'cv' } });
     fireEvent.submit(input);
@@ -35,7 +35,7 @@ describe('Seam 2: Interactive Terminal Component', () => {
 
   it('should display error message for invalid command', () => {
     render(<Terminal />);
-    const input = screen.getByPlaceholderText(/type 'help', 'cv'/i);
+    const input = screen.getByPlaceholderText(/type 'help', 'matrix'/i);
     
     fireEvent.change(input, { target: { value: 'unknown_cmd' } });
     fireEvent.submit(input);
