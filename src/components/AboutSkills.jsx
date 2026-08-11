@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Code, FileCode, Server, Terminal, Database, Zap, HardDrive, Globe, Layers, MessageSquare, Cpu, Box, Cloud, CloudRain, GitBranch, Filter, CheckCircle2 } from 'lucide-react';
+import { Code, FileCode, Server, Terminal, Database, Zap, HardDrive, Globe, Layers, MessageSquare, Cpu, Box, Cloud, CloudRain, GitBranch, Filter, CheckCircle2, Sparkles } from 'lucide-react';
+import { IconCloudDemo } from './ui/IconCloudDemo';
 
 const iconMap = {
   Code: Code,
@@ -44,9 +45,9 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
     <section id="skills" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-y border-[#E4E4E7] dark:border-[#27272A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
+        {/* Section Header with Interactive 3D Icon Cloud */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#2563EB] dark:text-[#60A5FA] tracking-wider uppercase">
               <Filter className="w-3.5 h-3.5" />
               Technical Competencies & Stack Matrix
@@ -55,23 +56,28 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
               Built with High-Performance Backend Infrastructure.
             </h2>
             <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
-              Click any skill badge below to dynamically filter projects that utilize that technology in production.
+              Explore my backend ecosystem interactively. Drag and hover over the 3D tech sphere to inspect language tools, databases, and microservices engines, or click any skill card below to filter projects.
             </p>
+
+            {/* Active Filter Indicator */}
+            {selectedSkill && (
+              <div className="inline-flex items-center gap-3 bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] border border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs mt-2">
+                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
+                <button
+                  onClick={() => onSelectSkill(null)}
+                  className="ml-2 underline text-[#A1A1AA] hover:text-[#FFFFFF]"
+                >
+                  Clear
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Active Filter Indicator */}
-          {selectedSkill && (
-            <div className="flex items-center gap-3 bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] border border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs">
-              <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
-              <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
-              <button
-                onClick={() => onSelectSkill(null)}
-                className="ml-2 underline text-[#A1A1AA] hover:text-[#FFFFFF]"
-              >
-                Clear
-              </button>
-            </div>
-          )}
+          {/* Interactive 3D Icon Cloud Widget */}
+          <div className="lg:col-span-5 flex justify-center w-full">
+            <IconCloudDemo />
+          </div>
         </div>
 
         {/* Category Pills */}

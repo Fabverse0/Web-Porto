@@ -37,6 +37,18 @@
       "skillPath": "skills/productivity/grilling/SKILL.md",
       "computedHash": "4eb5bf61b1e602f9cedbd3a5e4469dfba1db0247d5d40956d03299c455b91197"
     },
+    "loop-me": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/in-progress/loop-me/SKILL.md",
+      "computedHash": "dd2c27c0d103e4611815a5f85b6b819ddcc8ba3b4b7ef96883523925b9fa411d"
+    },
+    "prototype": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/prototype/SKILL.md",
+      "computedHash": "08c1a6d45a79180f795368e0bbf9820df9017d9ad2f5e4f858315d57ad357606"
+    },
     "tdd": {
       "source": "mattpocock/skills",
       "sourceType": "github",
