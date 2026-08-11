@@ -1,25 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Code, FileCode, Server, Terminal, Database, Zap, HardDrive, Globe, Layers, MessageSquare, Cpu, Box, Cloud, CloudRain, GitBranch, Filter, CheckCircle2, Sparkles } from 'lucide-react';
+import { Filter, CheckCircle2, Server } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { fetchSimpleIcons } from 'react-icon-cloud';
 import { IconCloudDemo } from './ui/IconCloudDemo';
 
-const iconMap = {
-  Code: Code,
-  FileCode: FileCode,
-  Server: Server,
-  Terminal: Terminal,
-  Database: Database,
-  Zap: Zap,
-  HardDrive: HardDrive,
-  Globe: Globe,
-  Layers: Layers,
-  MessageSquare: MessageSquare,
-  Cpu: Cpu,
-  Box: Box,
-  Cloud: Cloud,
-  CloudRain: CloudRain,
-  GitBranch: GitBranch
-};
+function BrandLogo({ slug, color, fallbackName }) {
+  const [svgPath, setSvgPath] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (slug) {
+      fetchSimpleIcons({ slugs: [slug] }).then((res) => {
+        if (isMounted && res && res.simpleIcons && res.simpleIcons[slug]) {
+          setSvgPath(res.simpleIcons[slug].path);
+        }
+      }).catch(() => {});
+    }
+    return () => { isMounted = false; };
+  }, [slug]);
+
+  if (svgPath) {
+    return (
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        className="w-6 h-6 fill-current transition-transform duration-300 group-hover:scale-110"
+        style={{ color: color || '#10B981' }}
+      >
+        <path d={svgPath} />
+      </svg>
+    );
+  }
+
+  return (
+    <div
+      style={{ color: color || '#10B981', backgroundColor: `${color || '#10B981'}15` }}
+      className="w-6 h-6 rounded flex items-center justify-center font-mono font-bold text-[10px]"
+    >
+      {fallbackName ? fallbackName.substring(0, 2).toUpperCase() : 'TC'}
+    </div>
+  );
+}
 
 export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -97,44 +119,89 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           ))}
         </div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredSkills.map((skill) => {
-            const IconComp = iconMap[skill.icon] || Server;
+        {/* Skills Grid - Brand Colored & Animated Progress Meter */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {filteredSkills.map((skill, idx) => {
             const isSelected = selectedSkill === skill.name;
+            const brandColor = skill.brandColor || '#10B981';
 
             return (
-              <div
+              <motion.div
                 key={skill.name}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.35, delay: idx * 0.04 }}
+                whileHover={{
+                  y: -5,
+                  scale: 1.02,
+                  borderColor: brandColor,
+                  boxShadow: `0 12px 30px -8px ${brandColor}40`
+                }}
                 onClick={() => handleSkillClick(skill.name)}
-                className={`p-5 rounded-xl cursor-pointer transition-all border ${
+                className={`p-5 rounded-2xl cursor-pointer transition-all border flex flex-col justify-between space-y-4 group relative overflow-hidden ${
                   isSelected
-                    ? 'border-[#10B981] bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] shadow-lg ring-2 ring-[#10B981]'
-                    : 'bg-[#FFFFFF] dark:bg-[#09090B] border-[#E4E4E7] dark:border-[#27272A] text-[#09090B] dark:text-[#FAFAFA] hover:border-[#09090B] dark:hover:border-[#10B981]'
+                    ? 'border-[#10B981] bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] shadow-xl ring-2 ring-[#10B981]'
+                    : 'bg-[#FFFFFF] dark:bg-[#09090B] border-[#E4E4E7] dark:border-[#27272A] text-[#09090B] dark:text-[#FAFAFA]'
                 }`}
               >
-                <div className="flex items-start justify-between">
-                  <div className={`p-3 rounded-lg ${isSelected ? 'bg-[#18181B] text-[#10B981]' : 'bg-[#F4F4F5] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA]'}`}>
-                    <IconComp className="w-5 h-5" />
+                {/* Subtle Ambient Brand Glow Accent */}
+                <div
+                  className="absolute -top-12 -right-12 w-24 h-24 rounded-full opacity-10 blur-xl pointer-events-none transition-opacity group-hover:opacity-30"
+                  style={{ backgroundColor: brandColor }}
+                />
+
+                <div className="space-y-3 relative z-10">
+                  {/* Top Row: Official SVG Logo & Level Badge */}
+                  <div className="flex items-start justify-between">
+                    <div
+                      style={{ backgroundColor: `${brandColor}15`, borderColor: `${brandColor}30` }}
+                      className="p-3 rounded-xl border transition-all"
+                    >
+                      <BrandLogo slug={skill.slug} color={brandColor} fallbackName={skill.name} />
+                    </div>
+
+                    <span
+                      style={{ color: isSelected ? '#10B981' : brandColor, backgroundColor: `${brandColor}15` }}
+                      className="font-mono text-[10px] uppercase font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-current/20"
+                    >
+                      {skill.level}
+                    </span>
                   </div>
-                  <span className={`font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
-                    isSelected
-                      ? 'bg-[#10B981]/20 text-[#10B981]'
-                      : 'bg-[#F4F4F5] dark:bg-[#27272A] text-[#71717A] dark:text-[#A1A1AA]'
-                  }`}>
-                    {skill.level}
-                  </span>
+
+                  {/* Title & Category */}
+                  <div>
+                    <h3 className={`font-heading font-bold text-base transition-colors ${isSelected ? 'text-[#FFFFFF]' : 'text-[#09090B] dark:text-[#FAFAFA] group-hover:text-current'}`}>
+                      {skill.name}
+                    </h3>
+                    <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}`}>
+                      {skill.category}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-4 space-y-1">
-                  <h3 className={`font-heading font-bold text-base ${isSelected ? 'text-[#FFFFFF]' : 'text-[#09090B] dark:text-[#FAFAFA]'}`}>
-                    {skill.name}
-                  </h3>
-                  <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}`}>
-                    {skill.category}
-                  </p>
+                {/* Bottom Row: Animated Proficiency Progress Meter */}
+                <div className="space-y-1.5 pt-2 border-t border-[#E4E4E7]/60 dark:border-[#27272A] relative z-10">
+                  <div className="flex justify-between items-center font-mono text-[11px]">
+                    <span className={isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}>Proficiency</span>
+                    <span className="font-bold font-mono" style={{ color: isSelected ? '#10B981' : brandColor }}>
+                      {skill.percentage || 85}%
+                    </span>
+                  </div>
+
+                  <div className="h-1.5 w-full bg-[#F4F4F5] dark:bg-[#27272A] rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.percentage || 85}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, ease: "easeOut" }}
+                      style={{ backgroundColor: isSelected ? '#10B981' : brandColor }}
+                      className="h-full rounded-full shadow-sm"
+                    />
+                  </div>
                 </div>
-              </div>
+
+              </motion.div>
             );
           })}
         </div>
