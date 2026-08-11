@@ -23,6 +23,47 @@ describe('Seam 2: Interactive Terminal Component', () => {
     expect(screen.getByText(/Available Commands:/i)).toBeInTheDocument();
   });
 
+  it('should execute "benchmark" command and show latency metrics output', () => {
+    render(<Terminal />);
+    const input = screen.getByPlaceholderText(/type 'help'/i);
+    
+    fireEvent.change(input, { target: { value: 'benchmark' } });
+    fireEvent.submit(input);
+
+    expect(screen.getByText(/SIMULATING HIGH-CONCURRENCY HTTP\/2 WORKLOAD/i)).toBeInTheDocument();
+    expect(screen.getByText(/Avg Latency/i)).toBeInTheDocument();
+  });
+
+  it('should execute "theme cyber" command and update theme state output', () => {
+    render(<Terminal />);
+    const input = screen.getByPlaceholderText(/type 'help'/i);
+    
+    fireEvent.change(input, { target: { value: 'theme cyber' } });
+    fireEvent.submit(input);
+
+    expect(screen.getByText(/switched to CYBER CYAN/i)).toBeInTheDocument();
+  });
+
+  it('should execute "matrix" command and trigger matrix rain output message', () => {
+    render(<Terminal />);
+    const input = screen.getByPlaceholderText(/type 'help'/i);
+    
+    fireEvent.change(input, { target: { value: 'matrix' } });
+    fireEvent.submit(input);
+
+    expect(screen.getByText(/MATRIX DIGITAL RAIN INITIALIZED/i)).toBeInTheDocument();
+  });
+
+  it('should execute "clear" command and clear terminal history', () => {
+    render(<Terminal />);
+    const input = screen.getByPlaceholderText(/type 'help'/i);
+    
+    fireEvent.change(input, { target: { value: 'clear' } });
+    fireEvent.submit(input);
+
+    expect(screen.queryByText(/Welcome to Fab.Dev Interactive Backend Terminal/i)).not.toBeInTheDocument();
+  });
+
   it('should execute "cv" command and show resume download output', () => {
     render(<Terminal />);
     const input = screen.getByPlaceholderText(/type 'help'/i);
