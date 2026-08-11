@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { Layers, Activity, ArrowUpRight, Github, ExternalLink, Terminal } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Projects({ selectedSkill, onOpenModal }) {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -61,10 +62,15 @@ export default function Projects({ selectedSkill, onOpenModal }) {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projectsList.map((project) => (
-              <div
+            {projectsList.map((project, idx) => (
+              <motion.div
                 key={project.id}
-                className="bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] hover:border-[#09090B] dark:hover:border-[#10B981] transition-all rounded-2xl p-6 flex flex-col justify-between space-y-6 group shadow-sm hover:shadow-md"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                whileHover={{ y: -6, scale: 1.015, transition: { duration: 0.2 } }}
+                className="bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] hover:border-[#09090B] dark:hover:border-[#10B981] transition-colors rounded-2xl p-6 flex flex-col justify-between space-y-6 group shadow-sm hover:shadow-xl"
               >
                 <div className="space-y-4">
                   {/* Category & Status */}
@@ -126,7 +132,7 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

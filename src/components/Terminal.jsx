@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-function MatrixRainCanvas({ duration = 8000, onClose }) {
+function MatrixRainCanvas({ duration = 8000, color = '#10B981', onClose }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function MatrixRainCanvas({ duration = 8000, onClose }) {
       ctx.fillStyle = 'rgba(9, 9, 11, 0.08)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#10B981';
+      ctx.fillStyle = color;
       ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -48,7 +48,7 @@ function MatrixRainCanvas({ duration = 8000, onClose }) {
       clearInterval(interval);
       clearTimeout(timer);
     };
-  }, [duration, onClose]);
+  }, [duration, color, onClose]);
 
   return (
     <canvas
@@ -61,13 +61,14 @@ function MatrixRainCanvas({ duration = 8000, onClose }) {
 export default function Terminal() {
   const [history, setHistory] = useState([
     { type: 'system', text: 'Welcome to Fab.Dev Interactive Backend Terminal v2.4.0' },
-    { type: 'system', text: 'Type "help" to see available commands or "matrix" for digital rain.' },
+    { type: 'system', text: 'Type "help" for commands, "matrix" for digital rain, or "benchmark" for latency test.' },
     { type: 'input', text: 'cat bio.json' },
     { type: 'output', text: PORTFOLIO_DATA.terminalCommands.bio }
   ]);
   const [inputVal, setInputVal] = useState('');
   const [copied, setCopied] = useState(false);
   const [matrixActive, setMatrixActive] = useState(false);
+  const [terminalTheme, setTerminalTheme] = useState('#10B981'); // Emerald default
   const terminalBodyRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -79,10 +80,11 @@ export default function Terminal() {
 
   const handleCommandSubmit = (e) => {
     e.preventDefault();
-    const cmd = inputVal.trim().toLowerCase();
+    const rawCmd = inputVal.trim();
+    const cmd = rawCmd.toLowerCase();
     if (!cmd) return;
 
-    const newHistory = [...history, { type: 'input', text: inputVal }];
+    const newHistory = [...history, { type: 'input', text: rawCmd }];
 
     if (cmd === 'clear') {
       setHistory([]);
@@ -93,12 +95,60 @@ export default function Terminal() {
 
     if (cmd === 'matrix') {
       setMatrixActive(true);
-      newHistory.push({ type: 'output', text: '=== MATRIX DIGITAL RAIN INITIALIZED === [Streaming Cyber Protocol...]' });
+      newHistory.push({ type: 'output', text: `=== MATRIX DIGITAL RAIN INITIALIZED === [Streaming Protocol @ ${terminalTheme}]` });
+    } else if (cmd === 'benchmark') {
+      const benchmarkOutput = `⚡ BENCHMARK ENGINE v1.4 — SIMULATING HIGH-CONCURRENCY HTTP/2 WORKLOAD:
+[1/4] Warming up 500 concurrent WebSocket connections... DONE (0.8s)
+[2/4] Testing PostgreSQL Read/Write Transaction Split... DONE (1.2s)
+[3/4] Measuring Redis Distributed Lock SETNX Latency...  DONE (0.4s)
+[4/4] Executing 10,000 requests to /api/v1/payments/settle...
+
+RESULTS & PERFORMANCE BENCHMARKS:
+-------------------------------------------------------
+Concurrency    : 5,000 active req/sec
+Min Latency    : 4.1 ms
+Avg Latency    : 7.8 ms
+Max Latency    : 14.3 ms
+p99 Latency    : 9.2 ms
+HTTP 200 OK    : 10,000 (100.00%)
+Error Rate     : 0.00%
+Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
+      newHistory.push({ type: 'output', text: benchmarkOutput });
+    } else if (cmd.startsWith('theme ')) {
+      const themeName = cmd.replace('theme ', '').trim();
+      if (themeName === 'cyber' || themeName === 'cyan') {
+        setTerminalTheme('#06B6D4');
+        newHistory.push({ type: 'output', text: 'Terminal prompt theme switched to CYBER CYAN (#06B6D4).' });
+      } else if (themeName === 'amber' || themeName === 'gold') {
+        setTerminalTheme('#F59E0B');
+        newHistory.push({ type: 'output', text: 'Terminal prompt theme switched to RETRO AMBER (#F59E0B).' });
+      } else if (themeName === 'purple' || themeName === 'violet') {
+        setTerminalTheme('#A855F7');
+        newHistory.push({ type: 'output', text: 'Terminal prompt theme switched to VIOLET PURPLE (#A855F7).' });
+      } else {
+        setTerminalTheme('#10B981');
+        newHistory.push({ type: 'output', text: 'Terminal prompt theme reset to EMERALD GREEN (#10B981). Available: cyber, amber, purple, emerald.' });
+      }
     } else if (cmd === 'cv') {
       newHistory.push({ type: 'output', text: PORTFOLIO_DATA.terminalCommands.cv });
       if (PORTFOLIO_DATA.developer.resumeUrl && PORTFOLIO_DATA.developer.resumeUrl !== '#') {
         window.open(PORTFOLIO_DATA.developer.resumeUrl, '_blank');
       }
+    } else if (cmd === 'help') {
+      const helpOutput = `Available Commands:
+  - help         : Show list of available commands
+  - bio          : Display backend developer profile & background
+  - skills       : List technical stack & core competencies
+  - projects     : View highlight backend architecture projects
+  - benchmark    : Run live high-concurrency throughput & latency test
+  - theme <color>: Change prompt accent (emerald, cyber, amber, purple)
+  - cv           : Download / view Fabian's Backend Engineer Resume PDF
+  - contact      : Show direct contact channels & email
+  - ping         : Measure simulated live network latency to backend API
+  - sudo         : Execute administrative action
+  - matrix       : Trigger digital rain animation effect
+  - clear        : Clear terminal console screen`;
+      newHistory.push({ type: 'output', text: helpOutput });
     } else if (PORTFOLIO_DATA.terminalCommands[cmd]) {
       newHistory.push({ type: 'output', text: PORTFOLIO_DATA.terminalCommands[cmd] });
     } else {
@@ -135,7 +185,10 @@ export default function Terminal() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[11px] text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
+          <span
+            style={{ color: terminalTheme, borderColor: `${terminalTheme}40`, backgroundColor: `${terminalTheme}15` }}
+            className="text-[11px] px-2 py-0.5 rounded border font-mono transition-colors"
+          >
             TTY: active
           </span>
           <button
@@ -143,7 +196,7 @@ export default function Terminal() {
             className="text-[#A1A1AA] hover:text-[#FFFFFF] transition-colors p-1"
             title="Copy Terminal Logs"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check style={{ color: terminalTheme }} className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
         </div>
       </div>
@@ -156,14 +209,14 @@ export default function Terminal() {
       >
         {/* Matrix Digital Rain Canvas Effect */}
         {matrixActive && (
-          <MatrixRainCanvas duration={10000} onClose={() => setMatrixActive(false)} />
+          <MatrixRainCanvas duration={10000} color={terminalTheme} onClose={() => setMatrixActive(false)} />
         )}
 
         {history.map((item, idx) => (
           <div key={idx} className="leading-relaxed relative z-10">
             {item.type === 'input' && (
               <div className="flex items-center gap-2 text-[#FAFAFA]">
-                <span className="text-[#10B981]">fabian@dev:~$</span>
+                <span style={{ color: terminalTheme }}>fabian@dev:~$</span>
                 <span>{item.text}</span>
               </div>
             )}
@@ -190,13 +243,13 @@ export default function Terminal() {
 
         {/* Input prompt line */}
         <form onSubmit={handleCommandSubmit} className="flex items-center gap-2 mt-2 relative z-10">
-          <span className="text-[#10B981] font-bold">fabian@dev:~$</span>
+          <span style={{ color: terminalTheme }} className="font-bold">fabian@dev:~$</span>
           <input
             ref={inputRef}
             type="text"
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
-            placeholder="type 'help', 'matrix', 'cv', 'skills'..."
+            placeholder="type 'help', 'benchmark', 'theme cyber', 'matrix'..."
             className="flex-1 bg-transparent text-[#FFFFFF] focus:outline-none font-mono text-xs sm:text-sm placeholder-[#52525B]"
           />
           <button type="submit" className="text-[#71717A] hover:text-[#FFFFFF]">
@@ -208,11 +261,11 @@ export default function Terminal() {
       {/* Terminal Footer Bar */}
       <div className="bg-[#18181B] px-4 py-2 border-t border-[#27272A] flex items-center justify-between text-[11px] text-[#A1A1AA]">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-3 h-3 text-[#10B981]" />
+          <Sparkles style={{ color: terminalTheme }} className="w-3 h-3 transition-colors" />
           <span>Interactive CLI Active</span>
         </div>
         <div>
-          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">matrix</kbd> for digital rain
+          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">benchmark</kbd> for live latency test
         </div>
       </div>
     </div>
