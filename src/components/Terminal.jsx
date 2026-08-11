@@ -2,60 +2,113 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-function MatrixRainCanvas({ duration = 10000, color = '#10B981', onClose }) {
+function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    const parent = canvas.parentElement;
+    if (!parent) return;
 
-    const updateSize = () => {
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
-    };
-    updateSize();
+    let animationFrameId;
+    let columns = 0;
+    let drops = [];
 
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアカサタナハマヤラワガザダバパイキシチニヒミリギジビピ';
-    const fontSize = 13;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
+    const fontSize = 14;
 
-    const draw = () => {
-      ctx.fillStyle = 'rgba(9, 9, 11, 0.08)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const setupCanvas = () => {
+      const width = parent.clientWidth;
+      const height = parent.clientHeight;
+      canvas.width = width;
+      canvas.height = height;
 
-      ctx.fillStyle = color;
-      ctx.shadowColor = color;
-      ctx.shadowBlur = 6;
-      ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = chars.charAt(Math.floor(Math.random() * chars.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+      columns = Math.max(1, Math.floor(width / fontSize));
+      drops = [];
+      for (let i = 0; i < columns; i++) {
+        drops.push({
+          y: Math.floor(Math.random() * -30), // Start randomly off-screen above
+          speed: 0.8 + Math.random() * 1.4    // Randomized falling speed
+        });
       }
     };
 
-    const interval = setInterval(draw, 35);
+    setupCanvas();
+
+    // ResizeObserver ensures canvas updates dynamically on window/container resize
+    const resizeObserver = new ResizeObserver(() => {
+      setupCanvas();
+    });
+    resizeObserver.observe(parent);
+
+    let lastTime = performance.now();
+
+    const renderFrame = (currentTime) => {
+      const delta = currentTime - lastTime;
+
+      // Limit to ~60fps frame rate
+      if (delta > 30) {
+        lastTime = currentTime;
+
+        // Semi-transparent dark overlay for smooth cascading trail fade
+        ctx.fillStyle = 'rgba(9, 9, 11, 0.15)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.font = `600 ${fontSize}px 'JetBrains Mono', monospace`;
+
+        for (let i = 0; i < columns; i++) {
+          const char = chars.charAt(Math.floor(Math.random() * chars.length));
+          const x = i * fontSize;
+          const y = drops[i].y * fontSize;
+
+          // Draw bright white leading head character for authentic Matrix effect
+          ctx.fillStyle = '#FFFFFF';
+          ctx.shadowColor = '#FFFFFF';
+          ctx.shadowBlur = 8;
+          ctx.fillText(char, x, y);
+
+          // Draw glowing trailing character just behind the head
+          if (drops[i].y > 1) {
+            const prevY = (drops[i].y - 1) * fontSize;
+            const trailChar = chars.charAt(Math.floor(Math.random() * chars.length));
+            ctx.fillStyle = color;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 10;
+            ctx.fillText(trailChar, x, prevY);
+          }
+
+          // Reset drop when it reaches bottom with randomized probability
+          if (y > canvas.height && Math.random() > 0.975) {
+            drops[i].y = 0;
+            drops[i].speed = 0.8 + Math.random() * 1.4;
+          }
+
+          drops[i].y += drops[i].speed;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(renderFrame);
+    };
+
+    animationFrameId = requestAnimationFrame(renderFrame);
+
     const timer = setTimeout(() => {
       onClose();
     }, duration);
 
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(animationFrameId);
       clearTimeout(timer);
+      resizeObserver.disconnect();
     };
   }, [duration, color, onClose]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-20 pointer-events-none rounded-b-xl opacity-90 transition-opacity"
+      className="absolute inset-0 z-20 pointer-events-none rounded-b-xl transition-all"
     />
   );
 }
@@ -63,7 +116,7 @@ function MatrixRainCanvas({ duration = 10000, color = '#10B981', onClose }) {
 export default function Terminal() {
   const [history, setHistory] = useState([
     { type: 'system', text: 'Welcome to Fab.Dev Interactive Backend Terminal v2.4.0' },
-    { type: 'system', text: 'Type "help" for commands, "matrix" for digital rain, or "theme <cyber|amber|purple|emerald>" for color preset.' },
+    { type: 'system', text: 'Type "help" for commands, "matrix" for digital rain, or "theme <cyber|amber|purple|emerald>".' },
     { type: 'input', text: 'cat bio.json' },
     { type: 'output', text: PORTFOLIO_DATA.terminalCommands.bio }
   ]);
@@ -96,8 +149,9 @@ export default function Terminal() {
     }
 
     if (cmd === 'matrix') {
-      setMatrixActive(true);
-      newHistory.push({ type: 'output', text: `=== MATRIX DIGITAL RAIN INITIALIZED === [Streaming Protocol @ ${terminalTheme}]` });
+      setMatrixActive(false);
+      setTimeout(() => setMatrixActive(true), 50);
+      newHistory.push({ type: 'output', text: `=== MATRIX DIGITAL RAIN INITIALIZED === [Streaming 60fps Protocol @ ${terminalTheme}]` });
     } else if (cmd === 'benchmark') {
       const benchmarkOutput = `⚡ BENCHMARK ENGINE v1.4 — SIMULATING HIGH-CONCURRENCY HTTP/2 WORKLOAD:
 [1/4] Warming up 500 concurrent WebSocket connections... DONE (0.8s)
@@ -138,7 +192,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain reset to EMERALD GREEN (#10B981). Available themes: cyber, amber, purple, emerald.' });
       }
       
-      // Auto trigger matrix digital rain in chosen theme color!
+      // Auto trigger 60fps matrix rain in chosen theme color!
       setMatrixActive(false);
       setTimeout(() => setMatrixActive(true), 50);
     } else if (cmd === 'cv') {
@@ -219,7 +273,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA] relative"
         onClick={() => inputRef.current?.focus()}
       >
-        {/* Matrix Digital Rain Canvas Effect - Color Synchronized */}
+        {/* Matrix Digital Rain Canvas Effect - Ultra Smooth 60fps */}
         {matrixActive && (
           <MatrixRainCanvas duration={12000} color={terminalTheme} onClose={() => setMatrixActive(false)} />
         )}
@@ -277,7 +331,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
           <span>Interactive CLI Active</span>
         </div>
         <div>
-          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">theme cyber</kbd> to test new color rain
+          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">theme cyber</kbd> for 60fps matrix rain
         </div>
       </div>
     </div>
