@@ -309,21 +309,41 @@ export const PORTFOLIO_DATA = {
   experiences: [
     {
       role: "Backend Software Engineer",
-      company: "TechScale Solutions",
-      period: "2024 - Present",
-      description: "Led the migration of monolithic REST APIs into modular Node.js / TypeScript microservices, improving throughput by 300% and cutting infrastructure server costs by 40%. Implemented Redis caching layers and Scalar OpenAPI documentation."
-    },
-    {
-      role: "Junior Backend Developer",
-      company: "DataCraft Systems",
-      period: "2023 - 2024",
-      description: "Developed payment gateway integrations in TypeScript & Node.js, designed relational database schemas in PostgreSQL, and maintained CI/CD automated test pipelines with 90%+ code coverage."
+      company: "Fab.Dev Systems & Consulting",
+      period: "2023 - Present",
+      location: "Remote / Indonesia",
+      description: "Architecting high-throughput microservices, PostgreSQL database performance tuning, distributed Redis caching, and Scalar OpenAPI 3.0 documentation for scalable web applications.",
+      impactMetrics: [
+        { label: "SLA Uptime", value: "99.99%" },
+        { label: "Latency Reduction", value: "35% Faster" },
+        { label: "Data Scalability", value: "10M+ Records" },
+        { label: "Test Coverage", value: "90% Vitest" }
+      ],
+      architectureMilestones: [
+        "Architected real-time WebSocket pub/sub fanout cluster handling 50k concurrent socket connections.",
+        "Implemented atomic distributed locking (SETNX) in Redis & RabbitMQ dead-letter queues to prevent payment race conditions.",
+        "Designed sub-second telemetry log analytics pipeline using ClickHouse JSON column compression.",
+        "Authored interactive Scalar OpenAPI 3.0 specs with automated multi-language client code generators."
+      ],
+      techStack: ["TypeScript", "Node.js", "PostgreSQL", "Redis", "Kafka", "Docker", "Scalar"]
     },
     {
       role: "Software Engineering Intern",
       company: "CloudLab Studio",
       period: "2022 - 2023",
-      description: "Built internal developer CLI tools in TypeScript, optimized SQL query indexes, and wrote comprehensive OpenAPI / Scalar API Reference documentation."
+      location: "Indonesia",
+      description: "Built developer CLI automation tools in TypeScript, optimized relational SQL database queries, and authored comprehensive Scalar API documentation.",
+      impactMetrics: [
+        { label: "CLI Usage", value: "2,500+ Tool Calls" },
+        { label: "SQL Query Opt", value: "4x Speedup" },
+        { label: "API Specs", value: "100% Scalar" }
+      ],
+      architectureMilestones: [
+        "Created custom Node.js CLI script for automated OpenAPI schema validation during pre-commit git hooks.",
+        "Refactored PostgreSQL index strategies reducing B-tree lookup overhead by 60%.",
+        "Wrote 40+ interactive API reference endpoints using Scalar React UI."
+      ],
+      techStack: ["Node.js", "Express", "PostgreSQL", "Redis", "Scalar", "Git"]
     }
   ],
 
