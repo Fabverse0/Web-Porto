@@ -33,7 +33,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-[var(--bg-page)] border-t border-[var(--border-color)]">
+    <section id="contact" className="py-20 bg-[#FAFAFA] dark:bg-[#09090B] border-t border-[#E4E4E7] dark:border-[#27272A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
@@ -42,10 +42,10 @@ export default function Contact() {
             <MessageSquare className="w-3.5 h-3.5" />
             Direct Communication Channel
           </div>
-          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight">
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
             Let's Build Something High-Performance Together.
           </h2>
-          <p className="text-[var(--text-secondary)] text-base leading-relaxed">
+          <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
             Open for full-time backend engineer roles, freelance system architecture consulting, and internship opportunities.
           </p>
         </div>
@@ -55,7 +55,7 @@ export default function Contact() {
           
           {/* Left Column: Direct Info & Quick Copy */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="card-black rounded-2xl p-6 sm:p-8 space-y-6 border border-[#27272A]">
+            <div className="bg-[#09090B] rounded-2xl p-6 sm:p-8 space-y-6 border border-[#27272A] shadow-xl">
               
               <div className="space-y-2">
                 <span className="font-mono text-xs text-[#10B981] uppercase font-bold">Primary Endpoint</span>
@@ -85,10 +85,10 @@ export default function Contact() {
               {/* Terminal Curl Command Box */}
               <div className="p-4 rounded-xl bg-[#18181B] border border-[#27272A] space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] text-[#2563EB] uppercase font-bold">Terminal cURL Request</span>
+                  <span className="font-mono text-[11px] text-[#2563EB] dark:text-[#60A5FA] uppercase font-bold">Terminal cURL Request</span>
                   <button
                     onClick={handleCopyCurl}
-                    className="text-xs font-mono text-[#2563EB] hover:underline flex items-center gap-1"
+                    className="text-xs font-mono text-[#2563EB] dark:text-[#60A5FA] hover:underline flex items-center gap-1"
                   >
                     {curlCopied ? <Check className="w-3.5 h-3.5 text-[#10B981]" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{curlCopied ? 'Copied!' : 'Copy cURL'}</span>
@@ -110,7 +110,7 @@ export default function Contact() {
 
           {/* Right Column: Interactive Contact Form */}
           <div className="lg:col-span-7">
-            <div className="card-light rounded-2xl p-6 sm:p-8 space-y-6">
+            <div className="bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
               
               {formSubmitted ? (
                 <div className="p-8 rounded-xl bg-[#09090B] text-[#FFFFFF] text-center space-y-3 animate-in fade-in duration-300">
@@ -126,45 +126,45 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="font-mono text-xs font-bold text-[var(--text-primary)] uppercase">Your Name</label>
+                      <label className="font-mono text-xs font-bold text-[#09090B] dark:text-[#FAFAFA] uppercase">Your Name</label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="John Doe"
-                        className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-muted)] font-sans text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
+                        className="w-full px-4 py-3 rounded-xl border border-[#E4E4E7] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#09090B] font-sans text-sm text-[#09090B] dark:text-[#FAFAFA] focus:outline-none focus:border-[#09090B] dark:focus:border-[#10B981] transition-colors"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="font-mono text-xs font-bold text-[var(--text-primary)] uppercase">Your Email</label>
+                      <label className="font-mono text-xs font-bold text-[#09090B] dark:text-[#FAFAFA] uppercase">Your Email</label>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="john@company.com"
-                        className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-muted)] font-sans text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
+                        className="w-full px-4 py-3 rounded-xl border border-[#E4E4E7] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#09090B] font-sans text-sm text-[#09090B] dark:text-[#FAFAFA] focus:outline-none focus:border-[#09090B] dark:focus:border-[#10B981] transition-colors"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="font-mono text-xs font-bold text-[var(--text-primary)] uppercase">Message / Project Inquiry</label>
+                    <label className="font-mono text-xs font-bold text-[#09090B] dark:text-[#FAFAFA] uppercase">Message / Project Inquiry</label>
                     <textarea
                       required
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Hi Fabian, I'd like to discuss a backend engineering opportunity..."
-                      className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-muted)] font-sans text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-[#E4E4E7] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#09090B] font-sans text-sm text-[#09090B] dark:text-[#FAFAFA] focus:outline-none focus:border-[#09090B] dark:focus:border-[#10B981] transition-colors resize-none"
                     ></textarea>
                   </div>
 
                   <button
                     type="submit"
-                    className="btn-black w-full justify-center text-sm py-3.5 shadow-md"
+                    className="inline-flex items-center gap-2 w-full justify-center font-heading font-semibold text-sm py-3.5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-md"
                   >
                     <Send className="w-4 h-4 text-[#10B981]" />
                     Send HTTP POST Request

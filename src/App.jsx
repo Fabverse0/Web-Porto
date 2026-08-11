@@ -17,7 +17,13 @@ export default function App() {
   });
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
     localStorage.setItem('fab_dev_theme', theme);
   }, [theme]);
 
@@ -26,7 +32,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[#FAFAFA] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] transition-colors duration-300">
       {/* Floating Navbar with Theme Toggle */}
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
 

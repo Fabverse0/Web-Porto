@@ -41,27 +41,27 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   };
 
   return (
-    <section id="skills" className="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
+    <section id="skills" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-y border-[#E4E4E7] dark:border-[#27272A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#2563EB] tracking-wider uppercase">
+            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#2563EB] dark:text-[#60A5FA] tracking-wider uppercase">
               <Filter className="w-3.5 h-3.5" />
               Technical Competencies & Stack Matrix
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
               Built with High-Performance Backend Infrastructure.
             </h2>
-            <p className="text-[var(--text-secondary)] text-base leading-relaxed">
+            <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
               Click any skill badge below to dynamically filter projects that utilize that technology in production.
             </p>
           </div>
 
           {/* Active Filter Indicator */}
           {selectedSkill && (
-            <div className="flex items-center gap-3 bg-[#09090B] dark:bg-[#18181B] text-[#FFFFFF] border border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs">
+            <div className="flex items-center gap-3 bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] border border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs">
               <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
               <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
               <button
@@ -75,15 +75,15 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap gap-2 border-b border-[var(--border-color)] pb-4">
+        <div className="flex flex-wrap gap-2 border-b border-[#E4E4E7] dark:border-[#27272A] pb-4">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
                 activeCategory === cat
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)] font-semibold shadow-sm'
-                  : 'bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-[var(--border-color)] hover:text-[var(--text-primary)]'
+                  ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-semibold shadow-sm'
+                  : 'bg-[#F4F4F5] dark:bg-[#27272A] text-[#71717A] dark:text-[#A1A1AA] hover:bg-[#E4E4E7] dark:hover:bg-[#3F3F46] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
               }`}
             >
               {cat}
@@ -101,28 +101,30 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
               <div
                 key={skill.name}
                 onClick={() => handleSkillClick(skill.name)}
-                className={`card-light p-5 rounded-xl cursor-pointer transition-all ${
-                  isSelected ? 'border-[#10B981] bg-[var(--text-primary)] text-[var(--bg-page)] shadow-lg ring-2 ring-[#10B981]' : ''
+                className={`p-5 rounded-xl cursor-pointer transition-all border ${
+                  isSelected
+                    ? 'border-[#10B981] bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] shadow-lg ring-2 ring-[#10B981]'
+                    : 'bg-[#FFFFFF] dark:bg-[#09090B] border-[#E4E4E7] dark:border-[#27272A] text-[#09090B] dark:text-[#FAFAFA] hover:border-[#09090B] dark:hover:border-[#10B981]'
                 }`}
               >
                 <div className="flex items-start justify-between">
-                  <div className={`p-3 rounded-lg ${isSelected ? 'bg-[#18181B] text-[#10B981]' : 'bg-[var(--bg-muted)] text-[var(--text-primary)]'}`}>
+                  <div className={`p-3 rounded-lg ${isSelected ? 'bg-[#18181B] text-[#10B981]' : 'bg-[#F4F4F5] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA]'}`}>
                     <IconComp className="w-5 h-5" />
                   </div>
                   <span className={`font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
                     isSelected
                       ? 'bg-[#10B981]/20 text-[#10B981]'
-                      : 'bg-[var(--bg-muted)] text-[var(--text-secondary)]'
+                      : 'bg-[#F4F4F5] dark:bg-[#27272A] text-[#71717A] dark:text-[#A1A1AA]'
                   }`}>
                     {skill.level}
                   </span>
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <h3 className={`font-heading font-bold text-base ${isSelected ? 'text-[var(--bg-page)]' : 'text-[var(--text-primary)]'}`}>
+                  <h3 className={`font-heading font-bold text-base ${isSelected ? 'text-[#FFFFFF]' : 'text-[#09090B] dark:text-[#FAFAFA]'}`}>
                     {skill.name}
                   </h3>
-                  <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[var(--text-secondary)]'}`}>
+                  <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}`}>
                     {skill.category}
                   </p>
                 </div>

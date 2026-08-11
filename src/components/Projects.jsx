@@ -17,7 +17,7 @@ export default function Projects({ selectedSkill, onOpenModal }) {
   }
 
   return (
-    <section id="projects" className="py-20 bg-[var(--bg-page)]">
+    <section id="projects" className="py-20 bg-[#FAFAFA] dark:bg-[#09090B]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
@@ -27,10 +27,10 @@ export default function Projects({ selectedSkill, onOpenModal }) {
               <Layers className="w-3.5 h-3.5" />
               Featured Backend Architectures
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
               Production-Grade Systems & High-Throughput APIs.
             </h2>
-            <p className="text-[var(--text-secondary)] text-base leading-relaxed">
+            <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
               Explore real-world backend projects complete with system topology diagrams, throughput benchmarks, and interactive cURL endpoints.
             </p>
           </div>
@@ -43,8 +43,8 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                 onClick={() => setActiveCategory(cat)}
                 className={`font-heading font-medium text-xs px-3.5 py-1.5 rounded-full transition-all ${
                   activeCategory === cat
-                    ? 'bg-[var(--text-primary)] text-[var(--bg-page)] font-semibold shadow-sm'
-                    : 'bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]'
+                    ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] font-semibold shadow-sm'
+                    : 'bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] text-[#71717A] dark:text-[#A1A1AA] hover:border-[#09090B] dark:hover:border-[#10B981] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
                 }`}
               >
                 {cat}
@@ -55,21 +55,21 @@ export default function Projects({ selectedSkill, onOpenModal }) {
 
         {/* Projects Grid */}
         {projectsList.length === 0 ? (
-          <div className="p-12 text-center bg-[var(--bg-card)] border border-[var(--border-color)] rounded-2xl space-y-3">
-            <div className="font-mono text-sm font-bold text-[var(--text-primary)]">No projects found for active filter.</div>
-            <p className="text-xs text-[var(--text-secondary)]">Try clearing the skill filter or selecting a different category.</p>
+          <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] rounded-2xl space-y-3">
+            <div className="font-mono text-sm font-bold text-[#09090B] dark:text-[#FAFAFA]">No projects found for active filter.</div>
+            <p className="text-xs text-[#71717A] dark:text-[#A1A1AA]">Try clearing the skill filter or selecting a different category.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projectsList.map((project) => (
               <div
                 key={project.id}
-                className="card-light rounded-2xl p-6 flex flex-col justify-between space-y-6 group"
+                className="bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] hover:border-[#09090B] dark:hover:border-[#10B981] transition-all rounded-2xl p-6 flex flex-col justify-between space-y-6 group shadow-sm hover:shadow-md"
               >
                 <div className="space-y-4">
                   {/* Category & Status */}
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#2563EB] bg-[#2563EB]/10 px-2.5 py-1 rounded">
+                    <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#2563EB] dark:text-[#60A5FA] bg-[#2563EB]/10 dark:bg-[#2563EB]/20 px-2.5 py-1 rounded">
                       {project.category}
                     </span>
                     <span className="font-mono text-[11px] text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
@@ -79,22 +79,22 @@ export default function Projects({ selectedSkill, onOpenModal }) {
 
                   {/* Title & Description */}
                   <div className="space-y-2">
-                    <h3 className="font-heading font-bold text-xl text-[var(--text-primary)] group-hover:text-[#2563EB] transition-colors">
+                    <h3 className="font-heading font-bold text-xl text-[#09090B] dark:text-[#FAFAFA] group-hover:text-[#2563EB] dark:group-hover:text-[#60A5FA] transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed line-clamp-3">
+                    <p className="text-xs sm:text-sm text-[#71717A] dark:text-[#A1A1AA] leading-relaxed line-clamp-3">
                       {project.shortDesc}
                     </p>
                   </div>
 
                   {/* High-Impact Metrics Pills */}
                   <div className="grid grid-cols-2 gap-2 pt-2">
-                    <div className="p-2.5 rounded-lg bg-[var(--bg-muted)] border border-[var(--border-color)] space-y-0.5">
-                      <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase">Latency (p99)</div>
-                      <div className="font-mono font-bold text-xs text-[var(--text-primary)]">{project.metrics.latency}</div>
+                    <div className="p-2.5 rounded-lg bg-[#F4F4F5] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] space-y-0.5">
+                      <div className="font-mono text-[10px] text-[#71717A] dark:text-[#A1A1AA] uppercase">Latency (p99)</div>
+                      <div className="font-mono font-bold text-xs text-[#09090B] dark:text-[#FAFAFA]">{project.metrics.latency}</div>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-[var(--bg-muted)] border border-[var(--border-color)] space-y-0.5">
-                      <div className="font-mono text-[10px] text-[var(--text-secondary)] uppercase">Uptime SLA</div>
+                    <div className="p-2.5 rounded-lg bg-[#F4F4F5] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] space-y-0.5">
+                      <div className="font-mono text-[10px] text-[#71717A] dark:text-[#A1A1AA] uppercase">Uptime SLA</div>
                       <div className="font-mono font-bold text-xs text-[#10B981]">{project.metrics.uptime}</div>
                     </div>
                   </div>
@@ -106,8 +106,8 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                         key={tag}
                         className={`font-mono text-[11px] px-2 py-0.5 rounded border ${
                           selectedSkill === tag
-                            ? 'bg-[var(--text-primary)] text-[var(--bg-page)] border-[var(--text-primary)] font-bold'
-                            : 'bg-[var(--bg-card)] text-[var(--text-primary)] border-[var(--border-color)]'
+                            ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] border-[#09090B] dark:border-[#FAFAFA] font-bold'
+                            : 'bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] border-[#E4E4E7] dark:border-[#27272A]'
                         }`}
                       >
                         {tag}
@@ -117,10 +117,10 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                 </div>
 
                 {/* Footer Action Trigger */}
-                <div className="pt-4 border-t border-[var(--border-color)]">
+                <div className="pt-4 border-t border-[#E4E4E7] dark:border-[#27272A]">
                   <button
                     onClick={() => onOpenModal(project)}
-                    className="btn-black w-full justify-center text-xs py-2.5 shadow-sm"
+                    className="inline-flex items-center gap-2 w-full justify-center font-heading font-semibold text-xs py-2.5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-sm"
                   >
                     View Architecture & Specs
                     <ArrowUpRight className="w-3.5 h-3.5" />
