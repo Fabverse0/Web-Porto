@@ -8,13 +8,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#09090B] text-[#FAFAFA] border-t border-[#27272A] py-12 px-4 sm:px-6 lg:px-8">
+    <footer className="bg-[#09090B] dark:bg-[#000000] text-[#FAFAFA] border-t border-[#27272A] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
         
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-[#27272A]">
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#18181B] border border-[#27272A] text-[#FFFFFF] flex items-center justify-center font-mono font-bold text-lg">
+            <div className="w-10 h-10 rounded-xl bg-[#18181B] border border-[#27272A] text-[#FFFFFF] flex items-center justify-center font-mono font-bold text-lg">
               &lt;/&gt;
             </div>
             <div>
@@ -33,7 +33,7 @@ export default function Footer() {
               href={PORTFOLIO_DATA.developer.github}
               target="_blank"
               rel="noreferrer"
-              className="p-2.5 rounded-lg bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] border border-[#27272A] transition-colors"
+              className="p-2.5 rounded-xl bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] border border-[#27272A] transition-colors shadow-sm"
               aria-label="GitHub Profile"
             >
               <Github className="w-4 h-4" />
@@ -42,7 +42,7 @@ export default function Footer() {
               href={PORTFOLIO_DATA.developer.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="p-2.5 rounded-lg bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] border border-[#27272A] transition-colors"
+              className="p-2.5 rounded-xl bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] border border-[#27272A] transition-colors shadow-sm"
               aria-label="LinkedIn Profile"
             >
               <Linkedin className="w-4 h-4" />
@@ -61,7 +61,7 @@ export default function Footer() {
             className="flex items-center gap-2 hover:text-[#FFFFFF] transition-colors"
           >
             <span>Back to Top</span>
-            <ArrowUp className="w-3.5 h-3.5" />
+            <ArrowUp className="w-3.5 h-3.5 text-[#10B981]" />
           </button>
         </div>
 

@@ -33,7 +33,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-[#FAFAFA] border-t border-[#E4E4E7]">
+    <section id="contact" className="py-20 bg-[var(--bg-page)] border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
@@ -42,10 +42,10 @@ export default function Contact() {
             <MessageSquare className="w-3.5 h-3.5" />
             Direct Communication Channel
           </div>
-          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] tracking-tight">
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight">
             Let's Build Something High-Performance Together.
           </h2>
-          <p className="text-[#71717A] text-base leading-relaxed">
+          <p className="text-[var(--text-secondary)] text-base leading-relaxed">
             Open for full-time backend engineer roles, freelance system architecture consulting, and internship opportunities.
           </p>
         </div>
@@ -55,7 +55,7 @@ export default function Contact() {
           
           {/* Left Column: Direct Info & Quick Copy */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="card-black rounded-2xl p-6 sm:p-8 space-y-6">
+            <div className="card-black rounded-2xl p-6 sm:p-8 space-y-6 border border-[#27272A]">
               
               <div className="space-y-2">
                 <span className="font-mono text-xs text-[#10B981] uppercase font-bold">Primary Endpoint</span>
@@ -126,39 +126,39 @@ export default function Contact() {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="font-mono text-xs font-bold text-[#09090B] uppercase">Your Name</label>
+                      <label className="font-mono text-xs font-bold text-[var(--text-primary)] uppercase">Your Name</label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="John Doe"
-                        className="w-full px-4 py-3 rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:border-[#09090B] transition-colors"
+                        className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-muted)] font-sans text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="font-mono text-xs font-bold text-[#09090B] uppercase">Your Email</label>
+                      <label className="font-mono text-xs font-bold text-[var(--text-primary)] uppercase">Your Email</label>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="john@company.com"
-                        className="w-full px-4 py-3 rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:border-[#09090B] transition-colors"
+                        className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-muted)] font-sans text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="font-mono text-xs font-bold text-[#09090B] uppercase">Message / Project Inquiry</label>
+                    <label className="font-mono text-xs font-bold text-[var(--text-primary)] uppercase">Message / Project Inquiry</label>
                     <textarea
                       required
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Hi Fabian, I'd like to discuss a backend engineering opportunity..."
-                      className="w-full px-4 py-3 rounded-lg border border-[#E4E4E7] bg-[#FAFAFA] font-sans text-sm focus:outline-none focus:border-[#09090B] transition-colors resize-none"
+                      className="w-full px-4 py-3 rounded-xl border border-[var(--border-color)] bg-[var(--bg-muted)] font-sans text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors resize-none"
                     ></textarea>
                   </div>
 

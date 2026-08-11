@@ -10,7 +10,7 @@ export default function ScalarHub() {
   const currentProject = projects[selectedProjectIndex];
 
   return (
-    <section id="scalar-hub" className="py-20 bg-[#FFFFFF] border-t border-[#E4E4E7]">
+    <section id="scalar-hub" className="py-20 bg-[var(--bg-card)] border-t border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
@@ -20,15 +20,15 @@ export default function ScalarHub() {
               <Globe className="w-3.5 h-3.5" />
               Scalar OpenAPI 3.0 Interactive Documentation
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight">
               Live Interactive Scalar API Reference.
             </h2>
-            <p className="text-[#71717A] text-base leading-relaxed">
+            <p className="text-[var(--text-secondary)] text-base leading-relaxed">
               Explore complete OpenAPI 3.0 technical specifications, request/response schemas, and multi-language client code generators powered by Scalar.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 font-mono text-xs text-[#10B981] bg-[#09090B] text-[#FAFAFA] px-4 py-2.5 rounded-lg">
+          <div className="flex items-center gap-2 font-mono text-xs text-[#10B981] bg-[#09090B] dark:bg-[#18181B] text-[#FAFAFA] px-4 py-2.5 rounded-xl border border-[#27272A]">
             <Sparkles className="w-4 h-4 text-[#10B981]" />
             <span>OpenAPI 3.0 Validated</span>
           </div>
@@ -42,11 +42,11 @@ export default function ScalarHub() {
               onClick={() => setSelectedProjectIndex(idx)}
               className={`flex items-center gap-2 font-mono text-xs sm:text-sm px-5 py-3 rounded-xl border transition-all ${
                 selectedProjectIndex === idx
-                  ? 'bg-[#09090B] text-[#FFFFFF] border-[#09090B] shadow-md font-bold'
-                  : 'bg-[#FAFAFA] text-[#71717A] border-[#E4E4E7] hover:border-[#09090B] hover:text-[#09090B]'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)] border-[var(--text-primary)] shadow-md font-bold'
+                  : 'bg-[var(--bg-page)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]'
               }`}
             >
-              <Code2 className={`w-4 h-4 ${selectedProjectIndex === idx ? 'text-[#10B981]' : 'text-[#71717A]'}`} />
+              <Code2 className={`w-4 h-4 ${selectedProjectIndex === idx ? 'text-[#10B981]' : 'text-[var(--text-secondary)]'}`} />
               <span>{proj.title}</span>
             </button>
           ))}

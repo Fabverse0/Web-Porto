@@ -33,7 +33,6 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
       onSelectSkill(null);
     } else {
       onSelectSkill(skillName);
-      // Smooth scroll to projects section
       const projectsElem = document.getElementById('projects');
       if (projectsElem) {
         projectsElem.scrollIntoView({ behavior: 'smooth' });
@@ -42,7 +41,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   };
 
   return (
-    <section id="skills" className="py-20 bg-[#FFFFFF] border-y border-[#E4E4E7]">
+    <section id="skills" className="py-20 bg-[var(--bg-card)] border-y border-[var(--border-color)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
@@ -52,17 +51,17 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
               <Filter className="w-3.5 h-3.5" />
               Technical Competencies & Stack Matrix
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[var(--text-primary)] tracking-tight">
               Built with High-Performance Backend Infrastructure.
             </h2>
-            <p className="text-[#71717A] text-base leading-relaxed">
+            <p className="text-[var(--text-secondary)] text-base leading-relaxed">
               Click any skill badge below to dynamically filter projects that utilize that technology in production.
             </p>
           </div>
 
           {/* Active Filter Indicator */}
           {selectedSkill && (
-            <div className="flex items-center gap-3 bg-[#09090B] text-[#FFFFFF] px-4 py-2.5 rounded-lg shadow-sm font-mono text-xs">
+            <div className="flex items-center gap-3 bg-[#09090B] dark:bg-[#18181B] text-[#FFFFFF] border border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs">
               <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
               <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
               <button
@@ -76,15 +75,15 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap gap-2 border-b border-[#E4E4E7] pb-4">
+        <div className="flex flex-wrap gap-2 border-b border-[var(--border-color)] pb-4">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-md transition-all ${
+              className={`font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
                 activeCategory === cat
-                  ? 'bg-[#09090B] text-[#FFFFFF] font-semibold'
-                  : 'bg-[#F4F4F5] text-[#71717A] hover:bg-[#E4E4E7] hover:text-[#09090B]'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)] font-semibold shadow-sm'
+                  : 'bg-[var(--bg-muted)] text-[var(--text-secondary)] hover:bg-[var(--border-color)] hover:text-[var(--text-primary)]'
               }`}
             >
               {cat}
@@ -103,27 +102,27 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
                 key={skill.name}
                 onClick={() => handleSkillClick(skill.name)}
                 className={`card-light p-5 rounded-xl cursor-pointer transition-all ${
-                  isSelected ? 'border-[#09090B] bg-[#09090B] text-[#FFFFFF] shadow-lg ring-2 ring-[#09090B]' : ''
+                  isSelected ? 'border-[#10B981] bg-[var(--text-primary)] text-[var(--bg-page)] shadow-lg ring-2 ring-[#10B981]' : ''
                 }`}
               >
                 <div className="flex items-start justify-between">
-                  <div className={`p-3 rounded-lg ${isSelected ? 'bg-[#18181B] text-[#10B981]' : 'bg-[#F4F4F5] text-[#09090B]'}`}>
+                  <div className={`p-3 rounded-lg ${isSelected ? 'bg-[#18181B] text-[#10B981]' : 'bg-[var(--bg-muted)] text-[var(--text-primary)]'}`}>
                     <IconComp className="w-5 h-5" />
                   </div>
                   <span className={`font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded ${
                     isSelected
                       ? 'bg-[#10B981]/20 text-[#10B981]'
-                      : 'bg-[#F4F4F5] text-[#71717A]'
+                      : 'bg-[var(--bg-muted)] text-[var(--text-secondary)]'
                   }`}>
                     {skill.level}
                   </span>
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <h3 className={`font-heading font-bold text-base ${isSelected ? 'text-[#FFFFFF]' : 'text-[#09090B]'}`}>
+                  <h3 className={`font-heading font-bold text-base ${isSelected ? 'text-[var(--bg-page)]' : 'text-[var(--text-primary)]'}`}>
                     {skill.name}
                   </h3>
-                  <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A]'}`}>
+                  <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[var(--text-secondary)]'}`}>
                     {skill.category}
                   </p>
                 </div>

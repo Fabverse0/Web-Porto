@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Globe } from 'lucide-react';
+import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Globe, Sun, Moon } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-export default function Navbar() {
+export default function Navbar({ theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [ping, setPing] = useState(PORTFOLIO_DATA.developer.pingMs);
@@ -38,15 +38,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           
           {/* Logo Brand */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-[#09090B] text-[#FFFFFF] flex items-center justify-center font-mono font-bold text-lg shadow-sm group-hover:scale-105 transition-transform">
+          <a href="#about" className="flex items-center gap-2.5 group">
+            <div className="w-10 h-10 rounded-xl bg-[#09090B] dark:bg-[#18181B] text-[#FFFFFF] border border-[#27272A] flex items-center justify-center font-mono font-bold text-lg shadow-sm group-hover:scale-105 transition-transform">
               &lt;/&gt;
             </div>
             <div>
-              <span className="font-heading font-bold text-lg text-[#09090B] tracking-tight block leading-none">
+              <span className="font-heading font-bold text-lg text-[var(--text-primary)] tracking-tight block leading-none">
                 Fab<span className="text-[#10B981]">.Dev</span>
               </span>
-              <span className="font-mono text-[10px] text-[#71717A] uppercase tracking-wider block mt-1">
+              <span className="font-mono text-[10px] text-[var(--text-secondary)] uppercase tracking-wider block mt-1">
                 Backend • Node & TS
               </span>
             </div>
@@ -58,44 +58,61 @@ export default function Navbar() {
               <a
                 key={link.name}
                 href={link.href}
-                className="font-heading font-medium text-xs lg:text-sm text-[#09090B]/80 hover:text-[#09090B] relative py-1 hover:font-semibold transition-all group"
+                className="font-heading font-medium text-xs lg:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] relative py-1 transition-all group"
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#09090B] transition-all duration-200 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#10B981] transition-all duration-200 group-hover:w-full"></span>
               </a>
             ))}
           </nav>
 
-          {/* Status Indicator Badge & CTA */}
+          {/* Status Indicator Badge, Theme Toggle & CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFFFFF] border border-[#E4E4E7] shadow-sm text-xs font-mono">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--bg-card)] border border-[var(--border-color)] shadow-sm text-xs font-mono">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]"></span>
               </span>
-              <span className="text-[#09090B] font-semibold tracking-tight">OPERATIONAL</span>
-              <span className="text-[#71717A] border-l border-[#E4E4E7] pl-2">{ping}ms</span>
+              <span className="text-[var(--text-primary)] font-semibold tracking-tight">OPERATIONAL</span>
+              <span className="text-[var(--text-secondary)] border-l border-[var(--border-color)] pl-2">{ping}ms</span>
             </div>
+
+            {/* Light / Dark Mode Toggle Button */}
+            <button
+              onClick={onToggleTheme}
+              className="p-2 rounded-xl bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[#10B981] transition-all shadow-sm"
+              aria-label="Toggle Dark/Light Theme"
+              title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+            >
+              {theme === 'light' ? (
+                <Moon className="w-4 h-4 text-[#09090B]" />
+              ) : (
+                <Sun className="w-4 h-4 text-[#F59E0B]" />
+              )}
+            </button>
 
             <a
               href="#scalar-hub"
-              className="btn-black text-xs py-2 px-3.5"
+              className="btn-black text-xs py-2 px-3.5 shadow-sm"
             >
               <Globe className="w-3.5 h-3.5 text-[#10B981]" />
               Scalar API Hub
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-3">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FFFFFF] border border-[#E4E4E7] text-[11px] font-mono">
-              <span className="w-2 h-2 rounded-full bg-[#10B981]"></span>
-              <span className="text-[#71717A]">{ping}ms</span>
-            </div>
+          {/* Mobile Menu & Theme Toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={onToggleTheme}
+              className="p-2 rounded-lg bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-primary)]"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'light' ? <Moon className="w-4 h-4 text-[#09090B]" /> : <Sun className="w-4 h-4 text-[#F59E0B]" />}
+            </button>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-md border border-[#E4E4E7] bg-[#FFFFFF] text-[#09090B] hover:bg-[#F4F4F5]"
+              className="p-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)]"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -106,18 +123,18 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FFFFFF] border-b border-[#E4E4E7] px-4 pt-3 pb-6 space-y-3 shadow-lg">
+        <div className="md:hidden bg-[var(--bg-card)] border-b border-[var(--border-color)] px-4 pt-3 pb-6 space-y-3 shadow-lg">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block font-heading font-medium text-base text-[#09090B] hover:bg-[#F4F4F5] px-3 py-2 rounded-md"
+              className="block font-heading font-medium text-base text-[var(--text-primary)] hover:bg-[var(--bg-muted)] px-3 py-2 rounded-md"
             >
               {link.name}
             </a>
           ))}
-          <div className="pt-2 border-t border-[#E4E4E7]">
+          <div className="pt-2 border-t border-[var(--border-color)]">
             <a
               href="#scalar-hub"
               onClick={() => setMobileMenuOpen(false)}
