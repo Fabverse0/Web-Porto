@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { X, ExternalLink, Github, Terminal, Activity, Layers, Copy, Check, Cpu, CheckCircle2, ArrowRight, Zap, Database, Server, ShieldCheck, HardDrive } from 'lucide-react';
 import { motion } from 'framer-motion';
-import ScalarReference from './ScalarReference';
 
 function InteractiveArchitectureTopology({ architectureSteps }) {
   const [activeNodeIndex, setActiveNodeIndex] = useState(0);
@@ -107,10 +106,9 @@ export default function ProjectModal({ project, onClose }) {
   if (!project) return null;
 
   const tabs = [
-    { id: 'overview', label: 'Overview & Specs' },
+    { id: 'overview', label: 'Overview & System Specs' },
     { id: 'architecture', label: 'Interactive System Topology' },
-    { id: 'metrics', label: 'Performance & Metrics' },
-    { id: 'scalar', label: 'Scalar API Reference' },
+    { id: 'metrics', label: 'Performance Metrics' },
   ];
 
   return (
@@ -123,9 +121,6 @@ export default function ProjectModal({ project, onClose }) {
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs text-[#10B981] font-bold uppercase tracking-wider">
                 {project.category} Architecture
-              </span>
-              <span className="text-xs bg-[#2563EB] text-[#FFFFFF] font-mono px-2 py-0.5 rounded font-semibold">
-                Scalar OpenAPI 3.0
               </span>
             </div>
             <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight text-[#FFFFFF]">
@@ -192,7 +187,7 @@ export default function ProjectModal({ project, onClose }) {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]"
+                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-sm"
                 >
                   <Github className="w-4 h-4" />
                   View GitHub Source
@@ -201,10 +196,10 @@ export default function ProjectModal({ project, onClose }) {
                   href={project.demoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#FFFFFF] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA] border border-[#E4E4E7] dark:border-[#27272A]"
+                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#FFFFFF] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA] border border-[#E4E4E7] dark:border-[#27272A] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all shadow-sm"
                 >
                   <ExternalLink className="w-4 h-4" />
-                  Live Scalar API Docs
+                  Live System Gateway
                 </a>
               </div>
             </div>
@@ -228,11 +223,6 @@ export default function ProjectModal({ project, onClose }) {
                 ))}
               </div>
             </div>
-          )}
-
-          {/* Tab 4: Scalar API Reference */}
-          {activeTab === 'scalar' && (
-            <ScalarReference project={project} />
           )}
 
         </div>

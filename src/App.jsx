@@ -3,7 +3,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSkills from './components/AboutSkills';
 import Projects from './components/Projects';
-import ScalarHub from './components/ScalarHub';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -36,7 +35,7 @@ export default function App() {
       {/* Floating Navbar with Theme Toggle */}
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
-      {/* Main Content Sections */}
+      {/* Main Content Sections - Fast Scanning UX */}
       <main className="flex-1">
         <Hero />
         <AboutSkills
@@ -47,7 +46,6 @@ export default function App() {
           selectedSkill={selectedSkill}
           onOpenModal={setActiveModalProject}
         />
-        <ScalarHub />
         <Experience />
         <Contact />
       </main>
@@ -55,7 +53,7 @@ export default function App() {
       {/* Footer */}
       <Footer />
 
-      {/* Interactive 4-Tab Project Modal */}
+      {/* Interactive 3-Tab Project Modal */}
       {activeModalProject && (
         <ProjectModal
           project={activeModalProject}

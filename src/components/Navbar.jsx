@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Globe, Sun, Moon } from 'lucide-react';
+import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Sun, Moon, Download } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 export default function Navbar({ theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [ping, setPing] = useState(PORTFOLIO_DATA.developer.pingMs);
+  const [ping, setPing] = useState(PORTFOLIO_DATA.developer.pingMs || 12);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,7 +14,7 @@ export default function Navbar({ theme, onToggleTheme }) {
     window.addEventListener('scroll', handleScroll);
 
     const interval = setInterval(() => {
-      setPing(Math.floor(10 + Math.random() * 6));
+      setPing(Math.floor(8 + Math.random() * 6));
     }, 4000);
 
     return () => {
@@ -27,7 +27,6 @@ export default function Navbar({ theme, onToggleTheme }) {
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Scalar API Hub', href: '#scalar-hub' },
     { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -92,11 +91,12 @@ export default function Navbar({ theme, onToggleTheme }) {
             </button>
 
             <a
-              href="#scalar-hub"
-              className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2 px-3.5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-sm"
+              href={PORTFOLIO_DATA.developer.resumeUrl}
+              download
+              className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2 px-4 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-sm"
             >
-              <Globe className="w-3.5 h-3.5 text-[#10B981]" />
-              Scalar API Hub
+              <Download className="w-3.5 h-3.5 text-[#10B981]" />
+              Download CV
             </a>
           </div>
 
@@ -136,12 +136,13 @@ export default function Navbar({ theme, onToggleTheme }) {
           ))}
           <div className="pt-2 border-t border-[#E4E4E7] dark:border-[#27272A]">
             <a
-              href="#scalar-hub"
+              href={PORTFOLIO_DATA.developer.resumeUrl}
+              download
               onClick={() => setMobileMenuOpen(false)}
               className="inline-flex items-center gap-2 w-full justify-center font-heading font-semibold text-sm py-2.5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B]"
             >
-              <Globe className="w-4 h-4 text-[#10B981]" />
-              Scalar API Hub
+              <Download className="w-4 h-4 text-[#10B981]" />
+              Download CV
             </a>
           </div>
         </div>
