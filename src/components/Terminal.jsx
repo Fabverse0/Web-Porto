@@ -25,19 +25,22 @@ function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
       canvas.width = width;
       canvas.height = height;
 
+      // Fill initial solid dark background
+      ctx.fillStyle = '#09090B';
+      ctx.fillRect(0, 0, width, height);
+
       columns = Math.max(1, Math.floor(width / fontSize));
       drops = [];
       for (let i = 0; i < columns; i++) {
         drops.push({
-          y: Math.floor(Math.random() * -30), // Start randomly off-screen above
-          speed: 0.8 + Math.random() * 1.4    // Randomized falling speed
+          y: Math.floor(Math.random() * -25),
+          speed: 0.8 + Math.random() * 1.5
         });
       }
     };
 
     setupCanvas();
 
-    // ResizeObserver ensures canvas updates dynamically on window/container resize
     const resizeObserver = new ResizeObserver(() => {
       setupCanvas();
     });
@@ -48,12 +51,11 @@ function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
     const renderFrame = (currentTime) => {
       const delta = currentTime - lastTime;
 
-      // Limit to ~60fps frame rate
       if (delta > 30) {
         lastTime = currentTime;
 
-        // Semi-transparent dark overlay for smooth cascading trail fade
-        ctx.fillStyle = 'rgba(9, 9, 11, 0.15)';
+        // Dark overlay with slight opacity for cascading trail fade over solid background
+        ctx.fillStyle = 'rgba(9, 9, 11, 0.18)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.font = `600 ${fontSize}px 'JetBrains Mono', monospace`;
@@ -63,13 +65,13 @@ function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
           const x = i * fontSize;
           const y = drops[i].y * fontSize;
 
-          // Draw bright white leading head character for authentic Matrix effect
+          // Leading bright white head character
           ctx.fillStyle = '#FFFFFF';
           ctx.shadowColor = '#FFFFFF';
           ctx.shadowBlur = 8;
           ctx.fillText(char, x, y);
 
-          // Draw glowing trailing character just behind the head
+          // Glowing trailing character
           if (drops[i].y > 1) {
             const prevY = (drops[i].y - 1) * fontSize;
             const trailChar = chars.charAt(Math.floor(Math.random() * chars.length));
@@ -79,10 +81,10 @@ function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
             ctx.fillText(trailChar, x, prevY);
           }
 
-          // Reset drop when it reaches bottom with randomized probability
+          // Reset drop when reaching bottom
           if (y > canvas.height && Math.random() > 0.975) {
             drops[i].y = 0;
-            drops[i].speed = 0.8 + Math.random() * 1.4;
+            drops[i].speed = 0.8 + Math.random() * 1.5;
           }
 
           drops[i].y += drops[i].speed;
@@ -108,7 +110,7 @@ function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-20 pointer-events-none rounded-b-xl transition-all"
+      className="w-full h-full block"
     />
   );
 }
@@ -192,7 +194,6 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain reset to EMERALD GREEN (#10B981). Available themes: cyber, amber, purple, emerald.' });
       }
       
-      // Auto trigger 60fps matrix rain in chosen theme color!
       setMatrixActive(false);
       setTimeout(() => setMatrixActive(true), 50);
     } else if (cmd === 'cv') {
@@ -238,9 +239,9 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
   };
 
   return (
-    <div className="terminal-window w-full font-mono text-xs sm:text-sm relative">
+    <div className="terminal-window w-full font-mono text-xs sm:text-sm relative overflow-hidden">
       {/* Terminal Top Window Header */}
-      <div className="terminal-header">
+      <div className="terminal-header relative z-40">
         <div className="flex items-center gap-2">
           <span className="terminal-dot bg-[#EF4444]"></span>
           <span className="terminal-dot bg-[#F59E0B]"></span>
@@ -267,17 +268,19 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         </div>
       </div>
 
+      {/* Outer Matrix Rain Canvas Overlay - Fixed to Terminal Screen Viewport */}
+      {matrixActive && (
+        <div className="absolute left-0 right-0 top-[37px] bottom-[33px] z-30 pointer-events-none overflow-hidden bg-[#09090B]">
+          <MatrixRainCanvas duration={12000} color={terminalTheme} onClose={() => setMatrixActive(false)} />
+        </div>
+      )}
+
       {/* Terminal Body Container - Scroll Internal Only */}
       <div
         ref={terminalBodyRef}
-        className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA] relative"
+        className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA] relative z-10"
         onClick={() => inputRef.current?.focus()}
       >
-        {/* Matrix Digital Rain Canvas Effect - Ultra Smooth 60fps */}
-        {matrixActive && (
-          <MatrixRainCanvas duration={12000} color={terminalTheme} onClose={() => setMatrixActive(false)} />
-        )}
-
         {history.map((item, idx) => (
           <div key={idx} className="leading-relaxed relative z-10">
             {item.type === 'input' && (
@@ -325,7 +328,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
       </div>
 
       {/* Terminal Footer Bar */}
-      <div className="bg-[#18181B] px-4 py-2 border-t border-[#27272A] flex items-center justify-between text-[11px] text-[#A1A1AA]">
+      <div className="bg-[#18181B] px-4 py-2 border-t border-[#27272A] flex items-center justify-between text-[11px] text-[#A1A1AA] relative z-40">
         <div className="flex items-center gap-2">
           <Sparkles style={{ color: terminalTheme }} className="w-3 h-3 transition-colors" />
           <span>Interactive CLI Active</span>
