@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-function MatrixRainCanvas({ duration = 8000, color = '#10B981', onClose }) {
+function MatrixRainCanvas({ duration = 10000, color = '#10B981', onClose }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +26,8 @@ function MatrixRainCanvas({ duration = 8000, color = '#10B981', onClose }) {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 6;
       ctx.font = `${fontSize}px 'JetBrains Mono', monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -53,7 +55,7 @@ function MatrixRainCanvas({ duration = 8000, color = '#10B981', onClose }) {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-20 pointer-events-none rounded-b-xl opacity-90"
+      className="absolute inset-0 z-20 pointer-events-none rounded-b-xl opacity-90 transition-opacity"
     />
   );
 }
@@ -61,7 +63,7 @@ function MatrixRainCanvas({ duration = 8000, color = '#10B981', onClose }) {
 export default function Terminal() {
   const [history, setHistory] = useState([
     { type: 'system', text: 'Welcome to Fab.Dev Interactive Backend Terminal v2.4.0' },
-    { type: 'system', text: 'Type "help" for commands, "matrix" for digital rain, or "benchmark" for latency test.' },
+    { type: 'system', text: 'Type "help" for commands, "matrix" for digital rain, or "theme <cyber|amber|purple|emerald>" for color preset.' },
     { type: 'input', text: 'cat bio.json' },
     { type: 'output', text: PORTFOLIO_DATA.terminalCommands.bio }
   ]);
@@ -114,21 +116,31 @@ HTTP 200 OK    : 10,000 (100.00%)
 Error Rate     : 0.00%
 Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
       newHistory.push({ type: 'output', text: benchmarkOutput });
-    } else if (cmd.startsWith('theme ')) {
-      const themeName = cmd.replace('theme ', '').trim();
+    } else if (cmd.startsWith('theme')) {
+      const themeName = cmd.replace('theme', '').trim();
+      let chosenColor = '#10B981';
+
       if (themeName === 'cyber' || themeName === 'cyan') {
-        setTerminalTheme('#06B6D4');
-        newHistory.push({ type: 'output', text: 'Terminal prompt theme switched to CYBER CYAN (#06B6D4).' });
+        chosenColor = '#06B6D4';
+        setTerminalTheme(chosenColor);
+        newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain switched to CYBER CYAN (#06B6D4).' });
       } else if (themeName === 'amber' || themeName === 'gold') {
-        setTerminalTheme('#F59E0B');
-        newHistory.push({ type: 'output', text: 'Terminal prompt theme switched to RETRO AMBER (#F59E0B).' });
+        chosenColor = '#F59E0B';
+        setTerminalTheme(chosenColor);
+        newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain switched to RETRO AMBER (#F59E0B).' });
       } else if (themeName === 'purple' || themeName === 'violet') {
-        setTerminalTheme('#A855F7');
-        newHistory.push({ type: 'output', text: 'Terminal prompt theme switched to VIOLET PURPLE (#A855F7).' });
+        chosenColor = '#A855F7';
+        setTerminalTheme(chosenColor);
+        newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain switched to VIOLET PURPLE (#A855F7).' });
       } else {
-        setTerminalTheme('#10B981');
-        newHistory.push({ type: 'output', text: 'Terminal prompt theme reset to EMERALD GREEN (#10B981). Available: cyber, amber, purple, emerald.' });
+        chosenColor = '#10B981';
+        setTerminalTheme(chosenColor);
+        newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain reset to EMERALD GREEN (#10B981). Available themes: cyber, amber, purple, emerald.' });
       }
+      
+      // Auto trigger matrix digital rain in chosen theme color!
+      setMatrixActive(false);
+      setTimeout(() => setMatrixActive(true), 50);
     } else if (cmd === 'cv') {
       newHistory.push({ type: 'output', text: PORTFOLIO_DATA.terminalCommands.cv });
       if (PORTFOLIO_DATA.developer.resumeUrl && PORTFOLIO_DATA.developer.resumeUrl !== '#') {
@@ -141,7 +153,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
   - skills       : List technical stack & core competencies
   - projects     : View highlight backend architecture projects
   - benchmark    : Run live high-concurrency throughput & latency test
-  - theme <color>: Change prompt accent (emerald, cyber, amber, purple)
+  - theme <color>: Change theme accent & matrix rain (cyber, amber, purple, emerald)
   - cv           : Download / view Fabian's Backend Engineer Resume PDF
   - contact      : Show direct contact channels & email
   - ping         : Measure simulated live network latency to backend API
@@ -207,9 +219,9 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         className="p-4 sm:p-5 h-[340px] sm:h-[380px] overflow-y-auto space-y-3 bg-[#09090B] text-[#FAFAFA] relative"
         onClick={() => inputRef.current?.focus()}
       >
-        {/* Matrix Digital Rain Canvas Effect */}
+        {/* Matrix Digital Rain Canvas Effect - Color Synchronized */}
         {matrixActive && (
-          <MatrixRainCanvas duration={10000} color={terminalTheme} onClose={() => setMatrixActive(false)} />
+          <MatrixRainCanvas duration={12000} color={terminalTheme} onClose={() => setMatrixActive(false)} />
         )}
 
         {history.map((item, idx) => (
@@ -265,7 +277,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
           <span>Interactive CLI Active</span>
         </div>
         <div>
-          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">benchmark</kbd> for live latency test
+          Type <kbd className="px-1.5 py-0.5 bg-[#27272A] text-[#FAFAFA] rounded text-[10px]">theme cyber</kbd> to test new color rain
         </div>
       </div>
     </div>
