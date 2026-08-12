@@ -123,7 +123,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           ))}
         </div>
 
-        {/* Skills Grid - Clean Authentic Cards without AI Slop Percentages */}
+        {/* Skills Grid - Clean Authentic Cards without stuck black borders */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {filteredSkills.map((skill, idx) => {
             const isSelected = selectedSkill === skill.name;
@@ -139,14 +139,16 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
                 whileHover={{
                   y: -5,
                   scale: 1.02,
-                  borderColor: brandColor,
                   boxShadow: `0 12px 30px -8px ${brandColor}40`
                 }}
                 onClick={() => handleSkillClick(skill.name)}
+                style={{
+                  '--hover-border-color': brandColor,
+                }}
                 className={`p-5 rounded-2xl cursor-pointer transition-all border flex flex-col justify-between space-y-4 group relative overflow-hidden ${
                   isSelected
                     ? 'border-[#10B981] bg-[#09090B] dark:bg-[#09090B] text-[#FFFFFF] shadow-xl ring-2 ring-[#10B981]'
-                    : 'bg-[#FFFFFF] dark:bg-[#09090B] border-[#E4E4E7] dark:border-[#27272A] text-[#09090B] dark:text-[#FAFAFA]'
+                    : 'bg-[#FFFFFF] dark:bg-[#09090B] border-[#E4E4E7] dark:border-[#27272A] hover:border-[var(--hover-border-color)] text-[#09090B] dark:text-[#FAFAFA] shadow-sm hover:shadow-lg'
                 }`}
               >
                 {/* Subtle Ambient Brand Glow Accent */}
