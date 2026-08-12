@@ -61,7 +61,7 @@ export default function Contact() {
                 <span className="font-mono text-xs text-[#10B981] uppercase font-bold">Primary Endpoint</span>
                 <h3 className="font-heading font-bold text-2xl text-[#FFFFFF]">Get In Touch</h3>
                 <p className="text-xs text-[#A1A1AA] leading-relaxed">
-                  Send a message directly via the form or use quick 1-click email and terminal commands.
+                  I'm always open to discussing new opportunities, creative ideas, or potential collaborations. Feel free to reach out if you have a project in mind or just want to say hello!
                 </p>
               </div>
 
