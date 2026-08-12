@@ -34,13 +34,17 @@ export default function Hero() {
           className="lg:col-span-7 space-y-6"
         >
           {/* Authentic Status & Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm -mt-3 sm:-mt-5">
             <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
+            <span className="font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] tracking-wide">
+              Portfolio
+            </span>
+            <span className="text-[#E4E4E7] dark:text-[#27272A]">|</span>
             <span className="font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] tracking-wide">
               Muhammad Fabian Rizky
             </span>
             <span className="text-[#E4E4E7] dark:text-[#27272A]">|</span>
-            <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold">Backend Engineer</span>
+            <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold">Backend Software Engineer</span>
           </div>
 
           {/* Main Title */}
