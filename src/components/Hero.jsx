@@ -40,11 +40,7 @@ export default function Hero() {
               Portfolio
             </span>
             <span className="text-[#E4E4E7] dark:text-[#27272A]">|</span>
-            <span className="font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] tracking-wide">
-              Muhammad Fabian Rizky
-            </span>
-            <span className="text-[#E4E4E7] dark:text-[#27272A]">|</span>
-            <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold">Backend Software Engineer</span>
+            <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold">Backend System Engineer</span>
           </div>
 
           {/* Main Title - 1 Single Line */}
