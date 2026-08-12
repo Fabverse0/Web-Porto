@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Sun, Moon, Download } from 'lucide-react';
+import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Download } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
+import { ThemeToggle } from './ui/ThemeToggle';
 
 export default function Navbar({ theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
@@ -65,7 +66,7 @@ export default function Navbar({ theme, onToggleTheme }) {
             ))}
           </nav>
 
-          {/* Status Indicator Badge, Theme Toggle & CTA */}
+          {/* Status Indicator Badge, Animated Theme Toggle & CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm text-xs font-mono">
               <span className="relative flex h-2.5 w-2.5">
@@ -76,19 +77,8 @@ export default function Navbar({ theme, onToggleTheme }) {
               <span className="text-[#71717A] dark:text-[#A1A1AA] border-l border-[#E4E4E7] dark:border-[#27272A] pl-2">{ping}ms</span>
             </div>
 
-            {/* Light / Dark Mode Toggle Button */}
-            <button
-              onClick={onToggleTheme}
-              className="p-2 rounded-xl bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] text-[#09090B] dark:text-[#FAFAFA] hover:border-[#10B981] transition-all shadow-sm"
-              aria-label="Toggle Dark/Light Theme"
-              title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-            >
-              {theme === 'light' ? (
-                <Moon className="w-4 h-4 text-[#09090B]" />
-              ) : (
-                <Sun className="w-4 h-4 text-[#F59E0B]" />
-              )}
-            </button>
+            {/* 21st.dev Animated Theme Toggle Button */}
+            <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
 
             <a
               href={PORTFOLIO_DATA.developer.resumeUrl}
@@ -102,13 +92,7 @@ export default function Navbar({ theme, onToggleTheme }) {
 
           {/* Mobile Menu & Theme Toggle */}
           <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={onToggleTheme}
-              className="p-2 rounded-lg bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] text-[#09090B] dark:text-[#FAFAFA]"
-              aria-label="Toggle Theme"
-            >
-              {theme === 'light' ? <Moon className="w-4 h-4 text-[#09090B]" /> : <Sun className="w-4 h-4 text-[#F59E0B]" />}
-            </button>
+            <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
