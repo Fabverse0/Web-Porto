@@ -16,7 +16,7 @@ export default function Hero() {
   };
 
   return (
-    <section id="about" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section id="about" className="relative pt-20 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* Magic UI DotPattern Background with Radial Gradient Mask */}
       <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-60" />
 
