@@ -4,7 +4,7 @@ export const PORTFOLIO_DATA = {
     brandName: "Fab.Dev",
     title: "Backend Software Engineer",
     subtitle: "Node.js & TypeScript • Microservices • Scalar OpenAPI Specs",
-    bio: "Specializing in building resilient Node.js / TypeScript backend services, real-time WebSocket event clusters, PostgreSQL database architectures, and production Scalar OpenAPI specifications.",
+    bio: "I am Fabian, a 3rd-semester informatics student at UPN \"Veteran\" Jakarta with a strong interest in backend development and system design. I am always eager to learn, solve problems, and contribute to real-world development projects.",
     email: "mfabian.rizky@gmail.com",
     location: "Jakarta, Indonesia / Remote",
     status: "OPERATIONAL",

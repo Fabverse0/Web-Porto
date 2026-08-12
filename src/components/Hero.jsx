@@ -49,12 +49,12 @@ export default function Hero() {
 
           {/* Main Title */}
           <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight leading-[1.1]">
-            Building <span className="underline decoration-[#10B981] decoration-4 underline-offset-8">Reliable</span> Backend Infrastructure & Web Services.
+            Hi, I'm <span className="underline decoration-[#10B981] decoration-4 underline-offset-8">Muhammad Fabian Rizky</span>
           </h1>
 
           {/* Subtitle / Bio */}
           <p className="text-lg sm:text-xl text-[#71717A] dark:text-[#A1A1AA] max-w-2xl leading-relaxed font-normal">
-            Software engineer focused on Node.js/TypeScript REST & WebSocket microservices, relational database schema design with PostgreSQL, and distributed caching with Redis.
+            I am Fabian, a 3rd-semester informatics student at UPN "Veteran" Jakarta with a strong interest in backend development and system design. I am always eager to learn, solve problems, and contribute to real-world development projects.
           </p>
 
           {/* Action CTAs */}
