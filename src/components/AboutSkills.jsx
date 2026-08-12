@@ -4,6 +4,7 @@ import { Filter, CheckCircle2, Server } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { fetchSimpleIcons } from 'react-icon-cloud';
 import { IconCloudDemo } from './ui/IconCloudDemo';
+import { DotPattern } from './ui/DotPattern';
 
 function BrandLogo({ slug, color, fallbackName }) {
   const [svgPath, setSvgPath] = useState(null);
@@ -64,8 +65,11 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   };
 
   return (
-    <section id="skills" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-y border-[#E4E4E7] dark:border-[#27272A]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <section id="skills" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-y border-[#E4E4E7] dark:border-[#27272A] relative overflow-hidden">
+      {/* Magic UI DotPattern Background */}
+      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-60" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
         
         {/* Section Header with Interactive 3D Icon Cloud */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

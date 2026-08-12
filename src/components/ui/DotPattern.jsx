@@ -1,15 +1,14 @@
 import { useId } from "react";
 
 export function DotPattern({
-  width = 24,
-  height = 24,
+  width = 20,
+  height = 20,
   x = 0,
   y = 0,
   cx = 1,
   cy = 1,
-  cr = 1,
+  cr = 1.5,
   className = "",
-  glow = true,
   ...props
 }) {
   const id = useId();
@@ -17,7 +16,7 @@ export function DotPattern({
   return (
     <svg
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-0 h-full w-full fill-[#A1A1AA]/25 dark:fill-[#52525B]/30 ${className}`}
+      className={`pointer-events-none absolute inset-0 h-full w-full text-[#09090B]/30 dark:text-[#FAFAFA]/35 ${className}`}
       {...props}
     >
       <defs>
@@ -30,7 +29,7 @@ export function DotPattern({
           x={x}
           y={y}
         >
-          <circle id="pattern-circle" cx={cx} cy={cy} r={cr} />
+          <circle id="pattern-circle" cx={cx} cy={cy} r={cr} fill="currentColor" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" strokeWidth={0} fill={`url(#${id})`} />
