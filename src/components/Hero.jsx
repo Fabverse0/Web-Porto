@@ -45,7 +45,12 @@ export default function Hero() {
 
           {/* Main Title - 1 Single Line */}
           <h1 className="font-heading font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-5xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight leading-tight whitespace-nowrap">
-            Hi, I'm <span className="underline decoration-[#10B981] decoration-4 underline-offset-8">Muhammad Fabian Rizky</span>
+            Hi, I'm{' '}
+            <span className="relative inline-block group/name cursor-default">
+              <span className="underline decoration-[#10B981] decoration-4 sm:decoration-[5px] underline-offset-8 transition-all duration-300 group-hover/name:underline-offset-[10px] group-hover/name:decoration-[#34D399] group-hover/name:drop-shadow-[0_0_16px_rgba(16,185,129,0.95)]">
+                Muhammad Fabian Rizky
+              </span>
+            </span>
           </h1>
 
           {/* Subtitle / Bio */}
