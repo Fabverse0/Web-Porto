@@ -24,7 +24,7 @@ export default function Hero() {
       <div className="ambient-glow-emerald"></div>
       <div className="ambient-glow-blue"></div>
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
         
         {/* Left Column - Intro & Persona */}
         <motion.div
@@ -34,7 +34,7 @@ export default function Hero() {
           className="lg:col-span-7 space-y-6"
         >
           {/* Authentic Status & Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm -mt-3 sm:-mt-5">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
             <span className="font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] tracking-wide">
               Portfolio
