@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowDown, Copy, Check, Terminal as TerminalIcon, FileText, Database, ShieldCheck, Zap, Globe, Download } from 'lucide-react';
+import { ArrowDown, Copy, Check, Database, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Terminal from './Terminal';
 import { DotPattern } from './ui/DotPattern';
@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section id="about" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* Magic UI DotPattern Background with Radial Gradient Mask */}
-      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-70" />
+      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-60" />
 
       {/* Ambient Radial Background Glows */}
       <div className="ambient-glow-emerald"></div>
@@ -33,28 +33,28 @@ export default function Hero() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="lg:col-span-7 space-y-6"
         >
-          {/* Status & Badge */}
+          {/* Authentic Status & Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>
             <span className="font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] tracking-wide">
               {dev.title}
             </span>
             <span className="text-[#E4E4E7] dark:text-[#27272A]">|</span>
-            <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold uppercase">Scalar OpenAPI 3.0</span>
+            <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold">Node.js & TypeScript</span>
           </div>
 
           {/* Main Title */}
           <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight leading-[1.1]">
-            Architecting <span className="underline decoration-[#10B981] decoration-4 underline-offset-8">Scalable</span> APIs & Event Systems.
+            Building <span className="underline decoration-[#10B981] decoration-4 underline-offset-8">Reliable</span> Backend Infrastructure & Web Services.
           </h1>
 
           {/* Subtitle / Bio */}
           <p className="text-lg sm:text-xl text-[#71717A] dark:text-[#A1A1AA] max-w-2xl leading-relaxed font-normal">
-            Specializing in high-throughput backend microservices, PostgreSQL query optimization, distributed caching with Redis, and interactive OpenAPI 3.0 specifications powered by Scalar.
+            Software engineer focused on Node.js/TypeScript REST & WebSocket microservices, relational database schema design with PostgreSQL, and distributed caching with Redis.
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+          <div className="flex flex-wrap items-center gap-3.5 pt-4">
             <motion.a
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
@@ -62,7 +62,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 font-heading font-semibold text-sm py-3 px-6 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-md"
             >
               <Database className="w-4 h-4 text-[#10B981]" />
-              Explore Backend Projects
+              Explore Projects
             </motion.a>
 
             <motion.a
@@ -94,24 +94,6 @@ export default function Hero() {
                 </>
               )}
             </motion.button>
-          </div>
-
-          {/* Real Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-[#E4E4E7] dark:border-[#27272A]">
-            {dev.stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                whileHover={{ y: -3, scale: 1.02 }}
-                className="p-3.5 rounded-xl bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] space-y-1 shadow-sm hover:border-[#10B981] transition-colors"
-              >
-                <div className="font-mono font-bold text-2xl sm:text-3xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
-                  {stat.value}
-                </div>
-                <div className="text-[11px] font-heading font-medium text-[#71717A] dark:text-[#A1A1AA] uppercase tracking-wider">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
           </div>
         </motion.div>
 

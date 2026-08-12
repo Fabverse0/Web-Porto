@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Filter, CheckCircle2, Server } from 'lucide-react';
+import { Filter, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { fetchSimpleIcons } from 'react-icon-cloud';
 import { IconCloudDemo } from './ui/IconCloudDemo';
@@ -67,7 +67,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   return (
     <section id="skills" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-y border-[#E4E4E7] dark:border-[#27272A] relative overflow-hidden">
       {/* Magic UI DotPattern Background */}
-      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-60" />
+      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-50" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
         
@@ -76,13 +76,13 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#2563EB] dark:text-[#60A5FA] tracking-wider uppercase">
               <Filter className="w-3.5 h-3.5" />
-              Technical Competencies & Stack Matrix
+              Technical Stack & Core Competencies
             </div>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
               Built with High-Performance Backend Infrastructure.
             </h2>
             <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
-              Explore my backend ecosystem interactively. Drag and hover over the 3D tech sphere to inspect language tools, databases, and microservices engines, or click any skill card below to filter projects.
+              Explore my backend ecosystem. Drag or hover over the 3D tech sphere to inspect language tools, databases, and cloud microservice engines, or click any skill card to filter projects.
             </p>
 
             {/* Active Filter Indicator */}
@@ -123,7 +123,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           ))}
         </div>
 
-        {/* Skills Grid - Brand Colored & Animated Progress Meter */}
+        {/* Skills Grid - Clean Authentic Cards without AI Slop Percentages */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {filteredSkills.map((skill, idx) => {
             const isSelected = selectedSkill === skill.name;
@@ -155,53 +155,32 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
                   style={{ backgroundColor: brandColor }}
                 />
 
-                <div className="space-y-3 relative z-10">
+                <div className="space-y-4 relative z-10">
                   {/* Top Row: Official SVG Logo & Level Badge */}
                   <div className="flex items-start justify-between">
                     <div
                       style={{ backgroundColor: `${brandColor}15`, borderColor: `${brandColor}30` }}
-                      className="p-3 rounded-xl border transition-all"
+                      className="p-3.5 rounded-xl border transition-all"
                     >
                       <BrandLogo slug={skill.slug} color={brandColor} fallbackName={skill.name} />
                     </div>
 
                     <span
                       style={{ color: isSelected ? '#10B981' : brandColor, backgroundColor: `${brandColor}15` }}
-                      className="font-mono text-[10px] uppercase font-extrabold px-2.5 py-1 rounded-md tracking-wider border border-current/20"
+                      className="font-mono text-[10px] uppercase font-bold px-2.5 py-1 rounded-md tracking-wider border border-current/20"
                     >
                       {skill.level}
                     </span>
                   </div>
 
                   {/* Title & Category */}
-                  <div>
+                  <div className="space-y-1">
                     <h3 className={`font-heading font-bold text-base transition-colors ${isSelected ? 'text-[#FFFFFF]' : 'text-[#09090B] dark:text-[#FAFAFA] group-hover:text-current'}`}>
                       {skill.name}
                     </h3>
                     <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}`}>
                       {skill.category}
                     </p>
-                  </div>
-                </div>
-
-                {/* Bottom Row: Animated Proficiency Progress Meter */}
-                <div className="space-y-1.5 pt-2 border-t border-[#E4E4E7]/60 dark:border-[#27272A] relative z-10">
-                  <div className="flex justify-between items-center font-mono text-[11px]">
-                    <span className={isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}>Proficiency</span>
-                    <span className="font-bold font-mono" style={{ color: isSelected ? '#10B981' : brandColor }}>
-                      {skill.percentage || 85}%
-                    </span>
-                  </div>
-
-                  <div className="h-1.5 w-full bg-[#F4F4F5] dark:bg-[#27272A] rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.percentage || 85}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
-                      style={{ backgroundColor: isSelected ? '#10B981' : brandColor }}
-                      className="h-full rounded-full shadow-sm"
-                    />
                   </div>
                 </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Briefcase, GraduationCap, Calendar, Building2, Award, Zap, CheckCircle2, Cpu, ChevronRight, MapPin } from 'lucide-react';
+import { Briefcase, GraduationCap, Calendar, Building2, CheckCircle2, Cpu, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Experience() {
@@ -15,13 +15,13 @@ export default function Experience() {
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#2563EB] dark:text-[#60A5FA] tracking-wider uppercase">
               <Briefcase className="w-3.5 h-3.5" />
-              Career Track Record & Impact
+              Career Track Record
             </div>
             <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
-              Engineering Milestones & Metrics.
+              Engineering Experience & Education.
             </h2>
             <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
-              Demonstrated track record of designing high-concurrency microservices, optimizing database throughput, and shipping production-grade backend infrastructure.
+              Demonstrated track record of designing backend microservices, optimizing database performance, and collaborating in high-velocity tech teams.
             </p>
           </div>
 
@@ -100,32 +100,14 @@ export default function Experience() {
                   {exp.description}
                 </p>
 
-                {/* Impact Metrics Grid */}
-                {exp.impactMetrics && (
-                  <div className="space-y-2">
-                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#10B981] flex items-center gap-1.5">
-                      <Zap className="w-3.5 h-3.5" />
-                      Impact & Performance Metrics
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      {exp.impactMetrics.map((metric, mIdx) => (
-                        <div key={mIdx} className="p-3 rounded-xl bg-[#F4F4F5] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] space-y-0.5">
-                          <div className="font-mono text-[10px] text-[#71717A] dark:text-[#A1A1AA] uppercase">{metric.label}</div>
-                          <div className="font-mono font-bold text-sm sm:text-base text-[#09090B] dark:text-[#FAFAFA] text-[#10B981]">{metric.value}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Architecture Milestones Checklist */}
+                {/* Key Architecture Milestones Checklist */}
                 {exp.architectureMilestones && (
                   <div className="space-y-3 pt-2">
                     <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#2563EB] dark:text-[#60A5FA] flex items-center gap-1.5">
                       <Cpu className="w-3.5 h-3.5" />
-                      Key Architecture Milestones
+                      Key Architecture Responsibilities & Solutions
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-2.5">
                       {exp.architectureMilestones.map((ms, msIdx) => (
                         <div key={msIdx} className="flex items-start gap-2.5 text-xs text-[#09090B] dark:text-[#FAFAFA] leading-relaxed">
                           <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
@@ -138,7 +120,7 @@ export default function Experience() {
 
                 {/* Tech Stack Pills */}
                 {exp.techStack && (
-                  <div className="flex flex-wrap gap-1.5 pt-2">
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#E4E4E7]/60 dark:border-[#27272A]">
                     {exp.techStack.map((tech) => (
                       <span
                         key={tech}

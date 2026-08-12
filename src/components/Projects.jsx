@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Layers, Activity, ArrowUpRight, Github, ExternalLink, Terminal } from 'lucide-react';
+import { Layers, ArrowUpRight, Github, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DotPattern } from './ui/DotPattern';
 
@@ -36,7 +36,7 @@ export default function Projects({ selectedSkill, onOpenModal }) {
               Production-Grade Systems & High-Throughput APIs.
             </h2>
             <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
-              Explore real-world backend projects complete with system topology diagrams, throughput benchmarks, and interactive cURL endpoints.
+              Explore real-world backend projects complete with interactive node topology diagrams, relational database schemas, and source code.
             </p>
           </div>
 
@@ -58,7 +58,7 @@ export default function Projects({ selectedSkill, onOpenModal }) {
           </div>
         </div>
 
-        {/* Projects Grid */}
+        {/* Projects Grid - Clean Authentic Cards */}
         {projectsList.length === 0 ? (
           <div className="p-12 text-center bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] rounded-2xl space-y-3">
             <div className="font-mono text-sm font-bold text-[#09090B] dark:text-[#FAFAFA]">No projects found for active filter.</div>
@@ -77,13 +77,10 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                 className="bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] hover:border-[#09090B] dark:hover:border-[#10B981] transition-colors rounded-2xl p-6 flex flex-col justify-between space-y-6 group shadow-sm hover:shadow-xl"
               >
                 <div className="space-y-4">
-                  {/* Category & Status */}
+                  {/* Category Badge */}
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#2563EB] dark:text-[#60A5FA] bg-[#2563EB]/10 dark:bg-[#2563EB]/20 px-2.5 py-1 rounded">
                       {project.category}
-                    </span>
-                    <span className="font-mono text-[11px] text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded border border-[#10B981]/20">
-                      {project.metrics.throughput}
                     </span>
                   </div>
 
@@ -97,27 +94,15 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                     </p>
                   </div>
 
-                  {/* High-Impact Metrics Pills */}
-                  <div className="grid grid-cols-2 gap-2 pt-2">
-                    <div className="p-2.5 rounded-lg bg-[#F4F4F5] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] space-y-0.5">
-                      <div className="font-mono text-[10px] text-[#71717A] dark:text-[#A1A1AA] uppercase">Latency (p99)</div>
-                      <div className="font-mono font-bold text-xs text-[#09090B] dark:text-[#FAFAFA]">{project.metrics.latency}</div>
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-[#F4F4F5] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] space-y-0.5">
-                      <div className="font-mono text-[10px] text-[#71717A] dark:text-[#A1A1AA] uppercase">Uptime SLA</div>
-                      <div className="font-mono font-bold text-xs text-[#10B981]">{project.metrics.uptime}</div>
-                    </div>
-                  </div>
-
                   {/* Tech Stack Badges */}
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className={`font-mono text-[11px] px-2 py-0.5 rounded border ${
+                        className={`font-mono text-[11px] px-2.5 py-0.5 rounded border ${
                           selectedSkill === tag
                             ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] border-[#09090B] dark:border-[#FAFAFA] font-bold'
-                            : 'bg-[#FFFFFF] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] border-[#E4E4E7] dark:border-[#27272A]'
+                            : 'bg-[#F4F4F5] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] border-[#E4E4E7] dark:border-[#27272A]'
                         }`}
                       >
                         {tag}
