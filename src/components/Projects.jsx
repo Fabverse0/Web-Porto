@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { Layers, Activity, ArrowUpRight, Github, ExternalLink, Terminal } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { DotPattern } from './ui/DotPattern';
 
 export default function Projects({ selectedSkill, onOpenModal }) {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -18,8 +19,11 @@ export default function Projects({ selectedSkill, onOpenModal }) {
   }
 
   return (
-    <section id="projects" className="py-20 bg-[#FAFAFA] dark:bg-[#09090B]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section id="projects" className="py-20 bg-[#FAFAFA] dark:bg-[#09090B] relative overflow-hidden">
+      {/* Magic UI DotPattern Background */}
+      <DotPattern className="[mask-image:radial-gradient(800px_circle_at_center,white,transparent)] opacity-60" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowDown, Copy, Check, Terminal as TerminalIcon, FileText, Database, ShieldCheck, Zap, Globe, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Terminal from './Terminal';
+import { DotPattern } from './ui/DotPattern';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 export default function Hero() {
@@ -16,6 +17,9 @@ export default function Hero() {
 
   return (
     <section id="about" className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+      {/* Magic UI DotPattern Background with Radial Gradient Mask */}
+      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-70" />
+
       {/* Ambient Radial Background Glows */}
       <div className="ambient-glow-emerald"></div>
       <div className="ambient-glow-blue"></div>
