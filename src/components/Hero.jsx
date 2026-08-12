@@ -47,8 +47,8 @@ export default function Hero() {
             <span className="font-mono text-xs text-[#2563EB] dark:text-[#60A5FA] font-bold">Backend Software Engineer</span>
           </div>
 
-          {/* Main Title */}
-          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl lg:text-6xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight leading-[1.1]">
+          {/* Main Title - 1 Single Line */}
+          <h1 className="font-heading font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-5xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight leading-tight whitespace-nowrap">
             Hi, I'm <span className="underline decoration-[#10B981] decoration-4 underline-offset-8">Muhammad Fabian Rizky</span>
           </h1>
 
