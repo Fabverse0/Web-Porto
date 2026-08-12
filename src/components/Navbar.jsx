@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Terminal, Code, Cpu, Activity, Menu, X, ArrowUpRight, Download } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { ThemeToggle } from './ui/ThemeToggle';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export default function Navbar({ theme, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
@@ -66,7 +66,7 @@ export default function Navbar({ theme, onToggleTheme }) {
             ))}
           </nav>
 
-          {/* Status Indicator Badge, Animated Theme Toggle & CTA */}
+          {/* Status Indicator Badge, Sliding Pill Theme Toggle & CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm text-xs font-mono">
               <span className="relative flex h-2.5 w-2.5">
@@ -77,7 +77,7 @@ export default function Navbar({ theme, onToggleTheme }) {
               <span className="text-[#71717A] dark:text-[#A1A1AA] border-l border-[#E4E4E7] dark:border-[#27272A] pl-2">{ping}ms</span>
             </div>
 
-            {/* 21st.dev Animated Theme Toggle Button */}
+            {/* Sliding Pill Theme Toggle */}
             <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
 
             <a
