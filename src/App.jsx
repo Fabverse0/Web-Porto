@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
+import HeroSectionDemo from './components/ui/HeroSectionDemo';
 import AboutSkills from './components/AboutSkills';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
@@ -37,7 +37,7 @@ export default function App() {
 
       {/* Main Content Sections - Fast Scanning UX */}
       <main className="flex-1">
-        <Hero />
+        <HeroSectionDemo />
         <AboutSkills
           selectedSkill={selectedSkill}
           onSelectSkill={setSelectedSkill}
