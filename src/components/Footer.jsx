@@ -1,6 +1,7 @@
 import React from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Github, Linkedin, Twitter, ArrowUp, Globe } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+import { SocialIcon } from '@/components/ui/social-icon';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -28,25 +29,31 @@ export default function Footer() {
           </div>
 
           {/* Social Links */}
-          <div className="flex items-center gap-4">
-            <a
+          <div className="flex items-center gap-3">
+            <SocialIcon
+              platform="github"
               href={PORTFOLIO_DATA.developer.github}
-              target="_blank"
-              rel="noreferrer"
-              className="p-2.5 rounded-xl bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] border border-[#27272A] transition-colors shadow-sm"
-              aria-label="GitHub Profile"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
+              label="GitHub"
+              size="md"
+              variant="outline"
+              className="bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-[#FFFFFF]"
+            />
+            <SocialIcon
+              platform="linkedin"
               href={PORTFOLIO_DATA.developer.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="p-2.5 rounded-xl bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] border border-[#27272A] transition-colors shadow-sm"
-              aria-label="LinkedIn Profile"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
+              label="LinkedIn"
+              size="md"
+              variant="outline"
+              className="bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-[#0077B5]"
+            />
+            <SocialIcon
+              platform="mail"
+              href={`mailto:${PORTFOLIO_DATA.developer.email}`}
+              label="Email"
+              size="md"
+              variant="outline"
+              className="bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-[#10B981]"
+            />
           </div>
         </div>
 
