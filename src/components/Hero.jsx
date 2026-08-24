@@ -212,22 +212,6 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-5xl mx-auto w-full text-center space-y-8 sm:space-y-10 flex flex-col items-center">
         
-        {/* Status Pill Badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF8F5] dark:bg-[#18181B] border border-[#DDD7C8] dark:border-[#27272A] shadow-xs text-xs font-mono"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
-          </span>
-          <span className="text-[#004741] dark:text-[#FAFAFA] font-semibold tracking-wide uppercase">
-            Portfolio | Backend System Engineer
-          </span>
-        </motion.div>
-
         {/* Editorial Responsive Headline */}
         <div className="space-y-4 sm:space-y-5 max-w-4xl mx-auto">
           <motion.h1
