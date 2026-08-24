@@ -7,7 +7,7 @@ export default function Experience() {
   const [activeTab, setActiveTab] = useState('experience');
 
   return (
-    <section id="experience" className="py-20 bg-[#FAF8F5] dark:bg-[#18181B] border-t border-[#DDD7C8] dark:border-[#27272A] transition-colors duration-300">
+    <section id="experience" className="py-20 sm:py-24 bg-[#FAF8F5] dark:bg-[#18181B] border-t border-[#DDD7C8] dark:border-[#27272A] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
@@ -17,62 +17,77 @@ export default function Experience() {
               <Briefcase className="w-3.5 h-3.5 text-[#10B981]" />
               Career Track Record
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#004741] dark:text-[#FAFAFA] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[#004741] dark:text-[#FAFAFA] tracking-tight">
               Engineering Experience & Education.
             </h2>
-            <p className="text-[#4A635F] dark:text-[#A1A1AA] text-base leading-relaxed">
+            <p className="text-[#4A635F] dark:text-[#A1A1AA] text-base sm:text-lg leading-relaxed">
               Demonstrated track record of designing backend microservices, optimizing database performance, and collaborating in high-velocity tech teams.
             </p>
           </div>
 
-          {/* Tab Switcher */}
-          <div className="flex bg-[#E5E0D4] dark:bg-[#09090B] p-1 rounded-xl border border-[#DDD7C8] dark:border-[#27272A]">
+          {/* Tab Switcher with Framer Motion Sliding Pill */}
+          <div className="flex bg-[#E5E0D4] dark:bg-[#09090B] p-1 rounded-2xl border border-[#DDD7C8] dark:border-[#27272A] self-start md:self-auto">
             <button
               onClick={() => setActiveTab('experience')}
-              className={`flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
+              className={`relative flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#004741] ${
                 activeTab === 'experience'
-                  ? 'bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] shadow-sm font-semibold'
+                  ? 'text-[#F0EDE4] dark:text-[#09090B] font-semibold'
                   : 'text-[#4A635F] dark:text-[#A1A1AA] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
               }`}
             >
+              {activeTab === 'experience' && (
+                <motion.span
+                  layoutId="activeExperienceTabPill"
+                  className="absolute inset-0 bg-[#004741] dark:bg-[#FAFAFA] rounded-xl -z-10 shadow-xs"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
               <Briefcase className="w-4 h-4" />
-              Work Experience
+              <span>Work Experience</span>
             </button>
+
             <button
               onClick={() => setActiveTab('education')}
-              className={`flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
+              className={`relative flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all min-h-[40px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#004741] ${
                 activeTab === 'education'
-                  ? 'bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] shadow-sm font-semibold'
+                  ? 'text-[#F0EDE4] dark:text-[#09090B] font-semibold'
                   : 'text-[#4A635F] dark:text-[#A1A1AA] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
               }`}
             >
+              {activeTab === 'education' && (
+                <motion.span
+                  layoutId="activeExperienceTabPill"
+                  className="absolute inset-0 bg-[#004741] dark:bg-[#FAFAFA] rounded-xl -z-10 shadow-xs"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
               <GraduationCap className="w-4 h-4" />
-              Education
+              <span>Education</span>
             </button>
           </div>
         </div>
 
-        {/* Timeline Content */}
-        <div className="relative border-l-2 border-[#DDD7C8] dark:border-[#27272A] ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
+        {/* Timeline Content with Safe Insets for 375px screens */}
+        <div className="relative border-l-2 border-[#DDD7C8] dark:border-[#27272A] ml-2 sm:ml-6 pl-5 sm:pl-8 space-y-10 sm:space-y-12">
           
           {activeTab === 'experience' && PORTFOLIO_DATA.experiences.map((exp, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              transition={{ duration: 0.4, delay: idx * 0.08 }}
               className="relative group"
             >
               {/* Timeline Dot Indicator */}
-              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#004741] dark:bg-[#10B981] border-4 border-[#FAF8F5] dark:border-[#18181B] ring-2 ring-[#004741] dark:ring-[#10B981] shadow-md"></div>
+              <div className="absolute -left-[27px] sm:-left-[39px] top-3 w-3.5 h-3.5 rounded-full bg-[#004741] dark:bg-[#10B981] border-3 border-[#FAF8F5] dark:border-[#18181B] ring-2 ring-[#004741] dark:ring-[#10B981] shadow-xs"></div>
 
-              <div className="bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] hover:border-[#004741] dark:hover:border-[#10B981] transition-all rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm hover:shadow-xl">
+              <div className="bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] hover:border-[#004741] dark:hover:border-[#10B981] transition-all rounded-2xl p-5 sm:p-7 space-y-5 shadow-xs hover:shadow-lg">
                 
                 {/* Header Info */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#DDD7C8] dark:border-[#27272A]">
                   <div className="space-y-1">
-                    <h3 className="font-heading font-bold text-xl sm:text-2xl text-[#004741] dark:text-[#FAFAFA] flex items-center gap-2">
+                    <h3 className="font-heading font-bold text-lg sm:text-xl md:text-2xl text-[#004741] dark:text-[#FAFAFA] flex items-center gap-2">
                       {exp.role}
                     </h3>
                     <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-mono text-[#004741] dark:text-[#60A5FA]">
@@ -89,14 +104,14 @@ export default function Experience() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF8F5] dark:bg-[#18181B] border border-[#DDD7C8] dark:border-[#27272A] font-mono text-xs font-semibold text-[#004741] dark:text-[#FAFAFA] w-fit shrink-0">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FAF8F5] dark:bg-[#18181B] border border-[#DDD7C8] dark:border-[#27272A] font-mono text-xs font-semibold text-[#004741] dark:text-[#FAFAFA] w-fit shrink-0">
                     <Calendar className="w-3.5 h-3.5 text-[#10B981]" />
                     <span>{exp.period}</span>
                   </div>
                 </div>
 
                 {/* Role Description */}
-                <p className="text-sm text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed">
                   {exp.description}
                 </p>
 
@@ -139,19 +154,19 @@ export default function Experience() {
           {activeTab === 'education' && PORTFOLIO_DATA.education.map((edu, idx) => (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              transition={{ duration: 0.4, delay: idx * 0.08 }}
               className="relative group"
             >
-              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#004741] dark:bg-[#10B981] border-4 border-[#FAF8F5] dark:border-[#18181B] ring-2 ring-[#004741] dark:ring-[#10B981]"></div>
+              <div className="absolute -left-[27px] sm:-left-[39px] top-3 w-3.5 h-3.5 rounded-full bg-[#004741] dark:bg-[#10B981] border-3 border-[#FAF8F5] dark:border-[#18181B] ring-2 ring-[#004741] dark:ring-[#10B981]"></div>
 
-              <div className="bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
+              <div className="bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] rounded-2xl p-5 sm:p-7 space-y-4 shadow-xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-heading font-bold text-xl text-[#004741] dark:text-[#FAFAFA]">{edu.degree}</h3>
-                    <div className="flex items-center gap-2 text-sm font-mono text-[#004741] dark:text-[#10B981] mt-1">
+                    <h3 className="font-heading font-bold text-lg sm:text-xl text-[#004741] dark:text-[#FAFAFA]">{edu.degree}</h3>
+                    <div className="flex items-center gap-2 text-xs sm:text-sm font-mono text-[#004741] dark:text-[#10B981] mt-1">
                       <GraduationCap className="w-4 h-4 text-[#10B981]" />
                       <span>{edu.institution}</span>
                     </div>
@@ -162,7 +177,7 @@ export default function Experience() {
                   </div>
                 </div>
 
-                <p className="text-sm text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed">
                   {edu.highlights}
                 </p>
               </div>

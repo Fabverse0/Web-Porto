@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Filter, CheckCircle2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Filter, CheckCircle2, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { fetchSimpleIcons } from 'react-icon-cloud';
 import { IconCloudDemo } from './ui/IconCloudDemo';
 import { DotPattern } from './ui/DotPattern';
@@ -65,38 +65,44 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   };
 
   return (
-    <section id="skills" className="py-20 bg-[#FAF8F5] dark:bg-[#18181B] border-y border-[#DDD7C8] dark:border-[#27272A] relative overflow-hidden transition-colors duration-300">
+    <section id="skills" className="py-20 sm:py-24 bg-[#FAF8F5] dark:bg-[#18181B] border-y border-[#DDD7C8] dark:border-[#27272A] relative overflow-hidden transition-colors duration-300">
       {/* Magic UI DotPattern Background */}
       <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-40 text-[#004741] dark:text-[#FAFAFA]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 sm:space-y-16 relative z-10">
         
         {/* Section Header with Interactive 3D Icon Cloud */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-7 space-y-4">
             <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#004741] dark:text-[#60A5FA] tracking-wider uppercase">
-              <Filter className="w-3.5 h-3.5" />
+              <Filter className="w-3.5 h-3.5 text-[#10B981]" />
               Technical Stack & Core Competencies
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#004741] dark:text-[#FAFAFA] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl lg:text-5xl text-[#004741] dark:text-[#FAFAFA] tracking-tight">
               Built with High-Performance Backend Infrastructure.
             </h2>
-            <p className="text-[#4A635F] dark:text-[#A1A1AA] text-base leading-relaxed">
+            <p className="text-[#4A635F] dark:text-[#A1A1AA] text-base sm:text-lg leading-relaxed">
               Explore my backend ecosystem. Drag or hover over the 3D tech sphere to inspect language tools, databases, and cloud microservice engines, or click any skill card to filter projects.
             </p>
 
             {/* Active Filter Indicator */}
             {selectedSkill && (
-              <div className="inline-flex items-center gap-3 bg-[#004741] dark:bg-[#09090B] text-[#F0EDE4] dark:text-[#FFFFFF] border border-[#004741] dark:border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs mt-2">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="inline-flex items-center gap-3 bg-[#004741] dark:bg-[#09090B] text-[#F0EDE4] dark:text-[#FFFFFF] border border-[#004741] dark:border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs mt-2"
+              >
                 <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
                 <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
                 <button
                   onClick={() => onSelectSkill(null)}
-                  className="ml-2 underline text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
+                  className="ml-2 p-1 hover:bg-[#003833] rounded-md transition-colors text-[#DDD7C8] hover:text-[#FFFFFF] flex items-center gap-1"
+                  aria-label="Clear filter"
                 >
-                  Clear
+                  <X className="w-3.5 h-3.5" />
+                  <span>Clear</span>
                 </button>
-              </div>
+              </motion.div>
             )}
           </div>
 
@@ -106,25 +112,35 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           </div>
         </div>
 
-        {/* Category Pills */}
+        {/* Category Pills with Framer Motion Sliding Pill */}
         <div className="flex flex-wrap gap-2 border-b border-[#DDD7C8] dark:border-[#27272A] pb-4">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
-                activeCategory === cat
-                  ? 'bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] font-semibold shadow-sm'
-                  : 'bg-[#E5E0D4] dark:bg-[#27272A] text-[#4A635F] dark:text-[#A1A1AA] hover:bg-[#DDD7C8] dark:hover:bg-[#3F3F46] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`relative font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-xl transition-all min-h-[38px] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#004741] ${
+                  isActive
+                    ? 'text-[#F0EDE4] dark:text-[#09090B] font-semibold'
+                    : 'text-[#4A635F] dark:text-[#A1A1AA] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="activeCategoryPill"
+                    className="absolute inset-0 bg-[#004741] dark:bg-[#FAFAFA] rounded-xl -z-10 shadow-xs"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                {cat}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Skills Grid - Clean Authentic Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Skills Grid - Clean Authentic Cards with accessible focus states */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {filteredSkills.map((skill, idx) => {
             const isSelected = selectedSkill === skill.name;
             const brandColor = skill.brandColor || '#10B981';
@@ -135,20 +151,29 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: idx * 0.04 }}
+                transition={{ duration: 0.35, delay: idx * 0.03 }}
                 whileHover={{
-                  y: -5,
-                  scale: 1.02,
+                  y: -4,
+                  scale: 1.015,
                   boxShadow: `0 12px 30px -8px ${brandColor}40`
                 }}
                 onClick={() => handleSkillClick(skill.name)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleSkillClick(skill.name);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-pressed={isSelected}
                 style={{
                   '--hover-border-color': brandColor,
                 }}
-                className={`p-5 rounded-2xl cursor-pointer transition-all border flex flex-col justify-between space-y-4 group relative overflow-hidden ${
+                className={`p-5 rounded-2xl cursor-pointer transition-all border flex flex-col justify-between space-y-4 group relative overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-[#004741] ${
                   isSelected
                     ? 'border-[#10B981] bg-[#004741] dark:bg-[#09090B] text-[#F0EDE4] shadow-xl ring-2 ring-[#10B981]'
-                    : 'bg-[#FAF8F5] dark:bg-[#09090B] border-[#DDD7C8] dark:border-[#27272A] hover:border-[var(--hover-border-color)] text-[#004741] dark:text-[#FAFAFA] shadow-sm hover:shadow-lg'
+                    : 'bg-[#FAF8F5] dark:bg-[#09090B] border-[#DDD7C8] dark:border-[#27272A] hover:border-[var(--hover-border-color)] text-[#004741] dark:text-[#FAFAFA] shadow-xs hover:shadow-lg'
                 }`}
               >
                 {/* Subtle Ambient Brand Glow Accent */}
@@ -162,7 +187,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
                   <div className="flex items-start justify-between">
                     <div
                       style={{ backgroundColor: `${brandColor}15`, borderColor: `${brandColor}30` }}
-                      className="p-3.5 rounded-xl border transition-all"
+                      className="p-3 rounded-xl border transition-all"
                     >
                       <BrandLogo slug={skill.slug} color={brandColor} fallbackName={skill.name} />
                     </div>
