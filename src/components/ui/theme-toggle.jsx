@@ -23,12 +23,13 @@ export function ThemeToggle({ className, theme, onToggleTheme }) {
         "flex w-16 h-8 p-1 rounded-full cursor-pointer transition-all duration-300 select-none",
         isDark 
           ? "bg-zinc-950 border border-zinc-800" 
-          : "bg-white border border-zinc-200 shadow-sm",
+          : "bg-[#FAF8F5] border border-[#DDD7C8] shadow-sm",
         className
       )}
       onClick={handleToggle}
       role="button"
       tabIndex={0}
+      aria-label="Toggle dark/light theme"
     >
       <div className="flex justify-between items-center w-full relative">
         <div
@@ -36,7 +37,7 @@ export function ThemeToggle({ className, theme, onToggleTheme }) {
             "flex justify-center items-center w-6 h-6 rounded-full transition-transform duration-300 z-10",
             isDark 
               ? "transform translate-x-0 bg-zinc-800" 
-              : "transform translate-x-8 bg-gray-200"
+              : "transform translate-x-8 bg-[#004741]"
           )}
         >
           {isDark ? (
@@ -46,7 +47,7 @@ export function ThemeToggle({ className, theme, onToggleTheme }) {
             />
           ) : (
             <Sun 
-              className="w-4 h-4 text-gray-700" 
+              className="w-4 h-4 text-[#F0EDE4]" 
               strokeWidth={1.5}
             />
           )}
@@ -66,7 +67,7 @@ export function ThemeToggle({ className, theme, onToggleTheme }) {
             />
           ) : (
             <Moon 
-              className="w-4 h-4 text-black" 
+              className="w-4 h-4 text-[#4A635F]" 
               strokeWidth={1.5}
             />
           )}

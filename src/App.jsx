@@ -31,7 +31,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFA] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-[#F0EDE4] dark:bg-[#09090B] text-[#004741] dark:text-[#FAFAFA] transition-colors duration-300">
       {/* Floating Navbar with Theme Toggle */}
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
 

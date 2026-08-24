@@ -1,6 +1,13 @@
 {
   "primitive": {
     "color": {
+      "pine": "#004741",
+      "pineHover": "#005C55",
+      "pineDark": "#003833",
+      "cream": "#F0EDE4",
+      "creamSurface": "#FAF8F5",
+      "creamMuted": "#E5E0D4",
+      "creamBorder": "#DDD7C8",
       "snow": "#FAFAFA",
       "white": "#FFFFFF",
       "zinc900": "#09090B",
@@ -19,29 +26,31 @@
   },
   "semantic": {
     "color": {
-      "bgPage": "{primitive.color.snow}",
-      "bgCard": "{primitive.color.white}",
-      "bgContrast": "{primitive.color.zinc900}",
-      "textMain": "{primitive.color.zinc900}",
-      "textMuted": "#71717A",
+      "bgPage": "{primitive.color.cream}",
+      "bgCard": "{primitive.color.creamSurface}",
+      "bgMuted": "{primitive.color.creamMuted}",
+      "borderColor": "{primitive.color.creamBorder}",
+      "bgContrast": "{primitive.color.pine}",
+      "textMain": "{primitive.color.pine}",
+      "textMuted": "#4A635F",
       "statusOperational": "{primitive.color.emerald500}",
-      "brandAccent": "{primitive.color.blue600}"
+      "brandAccent": "{primitive.color.pine}"
     }
   },
   "component": {
     "terminal": {
-      "background": "{semantic.color.bgContrast}",
+      "background": "{primitive.color.zinc900}",
       "border": "{primitive.color.zinc700}",
-      "text": "{primitive.color.snow}"
+      "text": "{primitive.color.cream}"
     },
     "navbar": {
-      "background": "rgba(255, 255, 255, 0.85)",
-      "border": "#E4E4E7"
+      "background": "rgba(240, 237, 228, 0.88)",
+      "border": "#DDD7C8"
     },
     "buttonPrimary": {
-      "background": "{primitive.color.zinc900}",
-      "text": "{primitive.color.white}",
-      "hover": "{primitive.color.zinc800}"
+      "background": "{primitive.color.pine}",
+      "text": "{primitive.color.cream}",
+      "hover": "{primitive.color.pineHover}"
     }
   }
 }

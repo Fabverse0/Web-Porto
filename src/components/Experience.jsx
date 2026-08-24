@@ -7,32 +7,32 @@ export default function Experience() {
   const [activeTab, setActiveTab] = useState('experience');
 
   return (
-    <section id="experience" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-t border-[#E4E4E7] dark:border-[#27272A]">
+    <section id="experience" className="py-20 bg-[#FAF8F5] dark:bg-[#18181B] border-t border-[#DDD7C8] dark:border-[#27272A] transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#2563EB] dark:text-[#60A5FA] tracking-wider uppercase">
-              <Briefcase className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#004741] dark:text-[#60A5FA] tracking-wider uppercase">
+              <Briefcase className="w-3.5 h-3.5 text-[#10B981]" />
               Career Track Record
             </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#004741] dark:text-[#FAFAFA] tracking-tight">
               Engineering Experience & Education.
             </h2>
-            <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
+            <p className="text-[#4A635F] dark:text-[#A1A1AA] text-base leading-relaxed">
               Demonstrated track record of designing backend microservices, optimizing database performance, and collaborating in high-velocity tech teams.
             </p>
           </div>
 
           {/* Tab Switcher */}
-          <div className="flex bg-[#F4F4F5] dark:bg-[#09090B] p-1 rounded-xl border border-[#E4E4E7] dark:border-[#27272A]">
+          <div className="flex bg-[#E5E0D4] dark:bg-[#09090B] p-1 rounded-xl border border-[#DDD7C8] dark:border-[#27272A]">
             <button
               onClick={() => setActiveTab('experience')}
               className={`flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
                 activeTab === 'experience'
-                  ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] shadow-sm font-semibold'
-                  : 'text-[#71717A] dark:text-[#A1A1AA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
+                  ? 'bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] shadow-sm font-semibold'
+                  : 'text-[#4A635F] dark:text-[#A1A1AA] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
               }`}
             >
               <Briefcase className="w-4 h-4" />
@@ -42,8 +42,8 @@ export default function Experience() {
               onClick={() => setActiveTab('education')}
               className={`flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
                 activeTab === 'education'
-                  ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] shadow-sm font-semibold'
-                  : 'text-[#71717A] dark:text-[#A1A1AA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
+                  ? 'bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] shadow-sm font-semibold'
+                  : 'text-[#4A635F] dark:text-[#A1A1AA] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
               }`}
             >
               <GraduationCap className="w-4 h-4" />
@@ -53,7 +53,7 @@ export default function Experience() {
         </div>
 
         {/* Timeline Content */}
-        <div className="relative border-l-2 border-[#E4E4E7] dark:border-[#27272A] ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
+        <div className="relative border-l-2 border-[#DDD7C8] dark:border-[#27272A] ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
           
           {activeTab === 'experience' && PORTFOLIO_DATA.experiences.map((exp, idx) => (
             <motion.div
@@ -65,23 +65,23 @@ export default function Experience() {
               className="relative group"
             >
               {/* Timeline Dot Indicator */}
-              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#10B981] border-4 border-[#FFFFFF] dark:border-[#18181B] ring-2 ring-[#10B981] shadow-md"></div>
+              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#004741] dark:bg-[#10B981] border-4 border-[#FAF8F5] dark:border-[#18181B] ring-2 ring-[#004741] dark:ring-[#10B981] shadow-md"></div>
 
-              <div className="bg-[#FFFFFF] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] hover:border-[#10B981] transition-all rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm hover:shadow-xl">
+              <div className="bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] hover:border-[#004741] dark:hover:border-[#10B981] transition-all rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm hover:shadow-xl">
                 
                 {/* Header Info */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E4E4E7] dark:border-[#27272A]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#DDD7C8] dark:border-[#27272A]">
                   <div className="space-y-1">
-                    <h3 className="font-heading font-bold text-xl sm:text-2xl text-[#09090B] dark:text-[#FAFAFA] flex items-center gap-2">
+                    <h3 className="font-heading font-bold text-xl sm:text-2xl text-[#004741] dark:text-[#FAFAFA] flex items-center gap-2">
                       {exp.role}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-mono text-[#2563EB] dark:text-[#60A5FA]">
+                    <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-mono text-[#004741] dark:text-[#60A5FA]">
                       <span className="flex items-center gap-1.5 font-bold">
-                        <Building2 className="w-4 h-4" />
+                        <Building2 className="w-4 h-4 text-[#10B981]" />
                         {exp.company}
                       </span>
                       {exp.location && (
-                        <span className="flex items-center gap-1 text-[#71717A] dark:text-[#A1A1AA]">
+                        <span className="flex items-center gap-1 text-[#4A635F] dark:text-[#A1A1AA]">
                           <MapPin className="w-3.5 h-3.5" />
                           {exp.location}
                         </span>
@@ -89,27 +89,27 @@ export default function Experience() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#F4F4F5] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] w-fit shrink-0">
+                  <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF8F5] dark:bg-[#18181B] border border-[#DDD7C8] dark:border-[#27272A] font-mono text-xs font-semibold text-[#004741] dark:text-[#FAFAFA] w-fit shrink-0">
                     <Calendar className="w-3.5 h-3.5 text-[#10B981]" />
                     <span>{exp.period}</span>
                   </div>
                 </div>
 
                 {/* Role Description */}
-                <p className="text-sm text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
+                <p className="text-sm text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed">
                   {exp.description}
                 </p>
 
                 {/* Key Architecture Milestones Checklist */}
                 {exp.architectureMilestones && (
                   <div className="space-y-3 pt-2">
-                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#2563EB] dark:text-[#60A5FA] flex items-center gap-1.5">
-                      <Cpu className="w-3.5 h-3.5" />
+                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#004741] dark:text-[#60A5FA] flex items-center gap-1.5">
+                      <Cpu className="w-3.5 h-3.5 text-[#10B981]" />
                       Key Architecture Responsibilities & Solutions
                     </div>
                     <div className="space-y-2.5">
                       {exp.architectureMilestones.map((ms, msIdx) => (
-                        <div key={msIdx} className="flex items-start gap-2.5 text-xs text-[#09090B] dark:text-[#FAFAFA] leading-relaxed">
+                        <div key={msIdx} className="flex items-start gap-2.5 text-xs text-[#112A27] dark:text-[#FAFAFA] leading-relaxed">
                           <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
                           <span>{ms}</span>
                         </div>
@@ -120,11 +120,11 @@ export default function Experience() {
 
                 {/* Tech Stack Pills */}
                 {exp.techStack && (
-                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#E4E4E7]/60 dark:border-[#27272A]">
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#DDD7C8]/60 dark:border-[#27272A]">
                     {exp.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="font-mono text-[11px] px-2.5 py-0.5 rounded bg-[#F4F4F5] dark:bg-[#18181B] text-[#71717A] dark:text-[#A1A1AA] border border-[#E4E4E7] dark:border-[#27272A]"
+                        className="font-mono text-[11px] px-2.5 py-0.5 rounded bg-[#FAF8F5] dark:bg-[#18181B] text-[#4A635F] dark:text-[#A1A1AA] border border-[#DDD7C8] dark:border-[#27272A]"
                       >
                         {tech}
                       </span>
@@ -145,24 +145,24 @@ export default function Experience() {
               transition={{ duration: 0.4, delay: idx * 0.1 }}
               className="relative group"
             >
-              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#10B981] border-4 border-[#FFFFFF] dark:border-[#18181B] ring-2 ring-[#10B981]"></div>
+              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#004741] dark:bg-[#10B981] border-4 border-[#FAF8F5] dark:border-[#18181B] ring-2 ring-[#004741] dark:ring-[#10B981]"></div>
 
-              <div className="bg-[#FFFFFF] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
+              <div className="bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
-                    <h3 className="font-heading font-bold text-xl text-[#09090B] dark:text-[#FAFAFA]">{edu.degree}</h3>
-                    <div className="flex items-center gap-2 text-sm font-mono text-[#10B981] mt-1">
-                      <GraduationCap className="w-4 h-4" />
+                    <h3 className="font-heading font-bold text-xl text-[#004741] dark:text-[#FAFAFA]">{edu.degree}</h3>
+                    <div className="flex items-center gap-2 text-sm font-mono text-[#004741] dark:text-[#10B981] mt-1">
+                      <GraduationCap className="w-4 h-4 text-[#10B981]" />
                       <span>{edu.institution}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F4F4F5] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] w-fit">
-                    <Calendar className="w-3.5 h-3.5 text-[#71717A] dark:text-[#A1A1AA]" />
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#18181B] border border-[#DDD7C8] dark:border-[#27272A] font-mono text-xs font-semibold text-[#004741] dark:text-[#FAFAFA] w-fit">
+                    <Calendar className="w-3.5 h-3.5 text-[#4A635F] dark:text-[#A1A1AA]" />
                     <span>{edu.period}</span>
                   </div>
                 </div>
 
-                <p className="text-sm text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
+                <p className="text-sm text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed">
                   {edu.highlights}
                 </p>
               </div>

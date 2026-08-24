@@ -1,99 +1,126 @@
 import React, { useState } from 'react';
-import { X, ExternalLink, Github, Terminal, Activity, Layers, Copy, Check, Cpu, CheckCircle2, ArrowRight, Zap, Database, Server, ShieldCheck, HardDrive } from 'lucide-react';
+import { X, ExternalLink, Github, ArrowRight, Play, Pause, Database, Server, Cpu, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+// Interactive System Topology Visualizer
 function InteractiveArchitectureTopology({ architectureSteps }) {
-  const [activeNodeIndex, setActiveNodeIndex] = useState(0);
-  const activeStep = architectureSteps[activeNodeIndex] || architectureSteps[0];
+  const [activeStep, setActiveStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  React.useEffect(() => {
+    if (!isPlaying || !architectureSteps || architectureSteps.length === 0) return;
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % architectureSteps.length);
+    }, 2800);
+    return () => clearInterval(timer);
+  }, [isPlaying, architectureSteps]);
+
+  const step = architectureSteps[activeStep] || architectureSteps[0];
+
+  const getNodeIcon = (type) => {
+    switch (type?.toLowerCase()) {
+      case 'database':
+      case 'storage':
+        return <Database className="w-4 h-4 text-[#10B981]" />;
+      case 'security':
+      case 'auth':
+        return <ShieldCheck className="w-4 h-4 text-[#10B981]" />;
+      case 'compute':
+      case 'worker':
+        return <Cpu className="w-4 h-4 text-[#10B981]" />;
+      default:
+        return <Server className="w-4 h-4 text-[#10B981]" />;
+    }
+  };
 
   return (
     <div className="space-y-6">
-      {/* Animated Connector Flow Track */}
-      <div className="p-6 rounded-2xl bg-[#09090B] text-[#FAFAFA] border border-[#27272A] space-y-6 shadow-xl relative overflow-hidden">
+      {/* Node Topology Canvas Box */}
+      <div className="p-6 rounded-2xl bg-[#004741] dark:bg-[#09090B] text-[#F0EDE4] dark:text-[#FAFAFA] border border-[#003833] dark:border-[#27272A] space-y-6 shadow-xl relative overflow-hidden">
         
-        {/* Animated Data Packet Pulse Line */}
-        <div className="relative flex items-center justify-between gap-2 overflow-x-auto pb-4 pt-2">
-          <div className="absolute top-1/2 left-0 right-0 h-1 bg-[#27272A] -translate-y-1/2 z-0">
-            <motion.div
-              className="h-full bg-gradient-to-r from-[#10B981] via-[#2563EB] to-[#10B981] shadow-[0_0_12px_#10B981]"
-              animate={{
-                x: ['0%', '100%', '0%']
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: 'easeInOut'
-              }}
-              style={{ width: '30%' }}
-            />
+        {/* Play / Pause & Step Navigation Controls */}
+        <div className="flex items-center justify-between border-b border-[#005C55]/60 dark:border-[#27272A] pb-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-ping" />
+            <span className="font-mono text-xs text-[#10B981] font-bold uppercase tracking-wider">
+              Live Topology Simulation ({activeStep + 1}/{architectureSteps.length})
+            </span>
           </div>
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#003833] dark:bg-[#18181B] text-xs font-mono text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#FFFFFF] border border-[#005C55]/80 dark:border-[#27272A] transition-colors"
+          >
+            {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+            <span>{isPlaying ? 'Pause Flow' : 'Auto Play'}</span>
+          </button>
+        </div>
 
-          {architectureSteps.map((step, idx) => {
-            const isActive = activeNodeIndex === idx;
-
+        {/* Node Pipeline Flow Chart */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center relative py-4">
+          {architectureSteps.map((s, idx) => {
+            const isActive = activeStep === idx;
             return (
-              <motion.button
-                key={idx}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveNodeIndex(idx)}
-                className={`relative z-10 flex flex-col items-center gap-2 p-3 rounded-xl border transition-all cursor-pointer min-w-[130px] ${
-                  isActive
-                    ? 'bg-[#18181B] border-[#10B981] text-[#FFFFFF] ring-2 ring-[#10B981]/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
-                    : 'bg-[#09090B] border-[#27272A] text-[#A1A1AA] hover:border-[#52525B] hover:text-[#FFFFFF]'
-                }`}
-              >
-                <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono font-bold text-xs ${
-                  isActive ? 'bg-[#10B981] text-[#09090B]' : 'bg-[#27272A] text-[#FAFAFA]'
-                }`}>
-                  0{step.step}
-                </div>
-                <span className="font-heading font-semibold text-xs text-center line-clamp-1">
-                  {step.title.split(' ')[0]} {step.title.split(' ')[1] || ''}
-                </span>
-                <span className="font-mono text-[9px] text-[#10B981]">
-                  {isActive ? '● ACTIVE NODE' : 'CLICK NODE'}
-                </span>
-              </motion.button>
+              <React.Fragment key={idx}>
+                <motion.div
+                  onClick={() => {
+                    setActiveStep(idx);
+                    setIsPlaying(false);
+                  }}
+                  animate={{
+                    scale: isActive ? 1.04 : 1,
+                    borderColor: isActive ? '#10B981' : '#005C55',
+                  }}
+                  className={`p-4 rounded-xl cursor-pointer border transition-all text-left space-y-2 relative overflow-hidden ${
+                    isActive
+                      ? 'bg-[#003833] dark:bg-[#18181B] text-[#FFFFFF] shadow-lg ring-2 ring-[#10B981]'
+                      : 'bg-[#003833]/60 dark:bg-[#18181B]/60 text-[#DDD7C8] dark:text-[#A1A1AA] hover:bg-[#003833] dark:hover:bg-[#18181B]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#002B27] dark:bg-[#09090B] border border-[#005C55] dark:border-[#27272A] font-bold">
+                      STEP 0{idx + 1}
+                    </span>
+                    <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#10B981]' : 'bg-[#005C55] dark:bg-[#27272A]'}`} />
+                  </div>
+                  <div className="font-heading font-bold text-sm text-[#FFFFFF] flex items-center gap-1.5">
+                    {getNodeIcon(s.nodeType)}
+                    {s.title}
+                  </div>
+                  <div className="font-mono text-[11px] text-[#A1A1AA] line-clamp-1">
+                    {s.layer}
+                  </div>
+                </motion.div>
+
+                {idx < architectureSteps.length - 1 && (
+                  <div className="hidden md:flex justify-center items-center text-[#10B981]">
+                    <motion.div
+                      animate={{ x: isActive ? [0, 4, 0] : 0 }}
+                      transition={{ repeat: Infinity, duration: 1.2 }}
+                    >
+                      <ArrowRight className="w-5 h-5 text-[#10B981]" />
+                    </motion.div>
+                  </div>
+                )}
+              </React.Fragment>
             );
           })}
         </div>
 
-        {/* Selected Node Spec Inspector Panel */}
-        <motion.div
-          key={activeNodeIndex}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="p-5 rounded-xl bg-[#18181B] border border-[#27272A] space-y-3"
-        >
-          <div className="flex items-center justify-between border-b border-[#27272A] pb-3">
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-bold text-[#10B981] uppercase bg-[#10B981]/10 px-2.5 py-0.5 rounded border border-[#10B981]/20">
-                Step 0{activeStep.step} Architecture Node
-              </span>
-              <h4 className="font-heading font-bold text-base text-[#FFFFFF]">
-                {activeStep.title}
-              </h4>
-            </div>
-            <span className="font-mono text-xs text-[#2563EB] bg-[#2563EB]/10 px-2 py-0.5 rounded border border-[#2563EB]/20 hidden sm:inline">
-              Latency: &lt; 2.4ms
-            </span>
+        {/* Active Node Detail Inspector */}
+        <div className="p-4 rounded-xl bg-[#003833] dark:bg-[#18181B] border border-[#005C55]/60 dark:border-[#27272A] space-y-2">
+          <div className="flex items-center justify-between text-xs font-mono">
+            <span className="text-[#10B981] font-bold">Active Phase: {step.title}</span>
+            <span className="text-[#DDD7C8] dark:text-[#A1A1AA]">{step.layer}</span>
           </div>
-
-          <p className="text-xs sm:text-sm text-[#A1A1AA] leading-relaxed">
-            {activeStep.desc}
+          <p className="text-xs sm:text-sm text-[#E5E0D4] dark:text-[#FAFAFA] leading-relaxed">
+            {step.description}
           </p>
-
-          <div className="flex flex-wrap items-center gap-4 pt-2 text-[11px] font-mono text-[#71717A]">
-            <span className="flex items-center gap-1 text-[#10B981]">
-              <Zap className="w-3.5 h-3.5" /> High Availability SLA: 99.99%
-            </span>
-            <span className="flex items-center gap-1 text-[#2563EB]">
-              <ShieldCheck className="w-3.5 h-3.5" /> Idempotent Lock: SETNX Enabled
-            </span>
-          </div>
-        </motion.div>
+          {step.protocol && (
+            <div className="font-mono text-[11px] text-[#DDD7C8] dark:text-[#A1A1AA] pt-1">
+              <strong>Protocol / Engine:</strong> <span className="text-[#10B981]">{step.protocol}</span>
+            </div>
+          )}
+        </div>
 
       </div>
     </div>
@@ -113,23 +140,23 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 modal-backdrop overflow-y-auto">
-      <div className="bg-[#FFFFFF] dark:bg-[#18181B] border border-[#09090B] dark:border-[#27272A] rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+      <div className="bg-[#FAF8F5] dark:bg-[#18181B] border border-[#DDD7C8] dark:border-[#27272A] rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         
         {/* Modal Header */}
-        <div className="bg-[#09090B] text-[#FFFFFF] px-6 py-5 flex items-center justify-between border-b border-[#27272A]">
+        <div className="bg-[#004741] dark:bg-[#09090B] text-[#F0EDE4] dark:text-[#FFFFFF] px-6 py-5 flex items-center justify-between border-b border-[#003833] dark:border-[#27272A]">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs text-[#10B981] font-bold uppercase tracking-wider">
                 {project.category} Architecture
               </span>
             </div>
-            <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight text-[#FFFFFF]">
+            <h2 className="font-heading font-bold text-xl sm:text-2xl tracking-tight text-[#F0EDE4] dark:text-[#FFFFFF]">
               {project.title}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg bg-[#18181B] text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#27272A] transition-colors"
+            className="p-2 rounded-lg bg-[#003833] dark:bg-[#18181B] text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#FFFFFF] hover:bg-[#005C55] dark:hover:bg-[#27272A] transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -137,15 +164,15 @@ export default function ProjectModal({ project, onClose }) {
         </div>
 
         {/* Modal Tabs Bar */}
-        <div className="flex border-b border-[#E4E4E7] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#09090B] overflow-x-auto">
+        <div className="flex border-b border-[#DDD7C8] dark:border-[#27272A] bg-[#E5E0D4] dark:bg-[#09090B] overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`font-heading font-medium text-xs sm:text-sm px-6 py-3.5 whitespace-nowrap transition-all border-b-2 ${
                 activeTab === tab.id
-                  ? 'border-[#09090B] dark:border-[#10B981] text-[#09090B] dark:text-[#FAFAFA] bg-[#FFFFFF] dark:bg-[#18181B] font-bold'
-                  : 'border-transparent text-[#71717A] dark:text-[#A1A1AA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
+                  ? 'border-[#004741] dark:border-[#10B981] text-[#004741] dark:text-[#FAFAFA] bg-[#FAF8F5] dark:bg-[#18181B] font-bold'
+                  : 'border-transparent text-[#4A635F] dark:text-[#A1A1AA] hover:text-[#004741] dark:hover:text-[#FAFAFA]'
               }`}
             >
               {tab.label}
@@ -154,26 +181,26 @@ export default function ProjectModal({ project, onClose }) {
         </div>
 
         {/* Modal Body Content */}
-        <div className="p-6 sm:p-8 overflow-y-auto flex-1 space-y-6 bg-[#FFFFFF] dark:bg-[#18181B]">
+        <div className="p-6 sm:p-8 overflow-y-auto flex-1 space-y-6 bg-[#FAF8F5] dark:bg-[#18181B]">
           
           {/* Tab 1: Overview */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
               <div className="space-y-3">
-                <h3 className="font-heading font-bold text-lg text-[#09090B] dark:text-[#FAFAFA]">System Summary</h3>
-                <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
+                <h3 className="font-heading font-bold text-lg text-[#004741] dark:text-[#FAFAFA]">System Summary</h3>
+                <p className="text-[#4A635F] dark:text-[#A1A1AA] text-base leading-relaxed">
                   {project.shortDesc}
                 </p>
               </div>
 
               {/* Tech Stack Badges */}
               <div className="space-y-2">
-                <h4 className="font-mono text-xs uppercase font-bold text-[#09090B] dark:text-[#FAFAFA]">Technology Stack</h4>
+                <h4 className="font-mono text-xs uppercase font-bold text-[#004741] dark:text-[#FAFAFA]">Technology Stack</h4>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-[#F4F4F5] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] rounded-md font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA]"
+                      className="px-3 py-1 bg-[#F0EDE4] dark:bg-[#09090B] border border-[#DDD7C8] dark:border-[#27272A] rounded-md font-mono text-xs font-semibold text-[#004741] dark:text-[#FAFAFA]"
                     >
                       {tag}
                     </span>
@@ -182,12 +209,12 @@ export default function ProjectModal({ project, onClose }) {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 pt-4 border-t border-[#E4E4E7] dark:border-[#27272A]">
+              <div className="flex flex-wrap gap-4 pt-4 border-t border-[#DDD7C8] dark:border-[#27272A]">
                 <a
                   href={project.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FFFFFF] dark:text-[#09090B] hover:opacity-90 transition-all shadow-sm"
+                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] hover:bg-[#005C55] dark:hover:opacity-90 transition-all shadow-sm"
                 >
                   <Github className="w-4 h-4" />
                   View GitHub Source
@@ -196,7 +223,7 @@ export default function ProjectModal({ project, onClose }) {
                   href={project.demoUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#FFFFFF] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA] border border-[#E4E4E7] dark:border-[#27272A] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all shadow-sm"
+                  className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2.5 px-5 rounded-xl bg-[#FAF8F5] dark:bg-[#18181B] text-[#004741] dark:text-[#FAFAFA] border border-[#DDD7C8] dark:border-[#27272A] hover:bg-[#E5E0D4] dark:hover:bg-[#27272A] transition-all shadow-sm"
                 >
                   <ExternalLink className="w-4 h-4" />
                   Live System Gateway
@@ -213,11 +240,11 @@ export default function ProjectModal({ project, onClose }) {
           {/* Tab 3: Performance & Metrics */}
           {activeTab === 'metrics' && (
             <div className="space-y-6">
-              <h3 className="font-heading font-bold text-lg text-[#09090B] dark:text-[#FAFAFA]">Production Benchmark Metrics</h3>
+              <h3 className="font-heading font-bold text-lg text-[#004741] dark:text-[#FAFAFA]">Production Benchmark Metrics</h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {Object.entries(project.metrics).map(([key, val]) => (
-                  <div key={key} className="p-4 rounded-xl bg-[#09090B] text-[#FFFFFF] space-y-1 border border-[#27272A]">
-                    <div className="font-mono text-[10px] uppercase text-[#A1A1AA]">{key}</div>
+                  <div key={key} className="p-4 rounded-xl bg-[#004741] dark:bg-[#09090B] text-[#F0EDE4] dark:text-[#FFFFFF] space-y-1 border border-[#003833] dark:border-[#27272A]">
+                    <div className="font-mono text-[10px] uppercase text-[#DDD7C8] dark:text-[#A1A1AA]">{key}</div>
                     <div className="font-mono font-bold text-lg sm:text-xl text-[#10B981]">{val}</div>
                   </div>
                 ))}

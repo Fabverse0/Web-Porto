@@ -9,20 +9,20 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#09090B] dark:bg-[#000000] text-[#FAFAFA] border-t border-[#27272A] py-12 px-4 sm:px-6 lg:px-8">
+    <footer className="bg-[#004741] dark:bg-[#000000] text-[#F0EDE4] dark:text-[#FAFAFA] border-t border-[#003833] dark:border-[#27272A] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto space-y-8">
         
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-[#27272A]">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-[#003833] dark:border-[#27272A]">
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#18181B] border border-[#27272A] text-[#FFFFFF] flex items-center justify-center font-mono font-bold text-lg">
+            <div className="w-10 h-10 rounded-xl bg-[#003833] dark:bg-[#18181B] border border-[#005C55]/60 dark:border-[#27272A] text-[#F0EDE4] dark:text-[#FFFFFF] flex items-center justify-center font-mono font-bold text-lg">
               &lt;/&gt;
             </div>
             <div>
-              <span className="font-heading font-bold text-lg text-[#FFFFFF] tracking-tight block leading-none">
+              <span className="font-heading font-bold text-lg text-[#F0EDE4] dark:text-[#FFFFFF] tracking-tight block leading-none">
                 Fab<span className="text-[#10B981]">.Dev</span>
               </span>
-              <span className="font-mono text-xs text-[#A1A1AA] block mt-1">
+              <span className="font-mono text-xs text-[#DDD7C8] dark:text-[#A1A1AA] block mt-1">
                 Muhammad Fabian Rizky • Backend Engineer
               </span>
             </div>
@@ -36,7 +36,7 @@ export default function Footer() {
               label="GitHub"
               size="md"
               variant="outline"
-              className="bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-[#FFFFFF]"
+              className="bg-[#003833] dark:bg-[#18181B] border-[#005C55]/60 dark:border-[#27272A] text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
             />
             <SocialIcon
               platform="linkedin"
@@ -44,7 +44,15 @@ export default function Footer() {
               label="LinkedIn"
               size="md"
               variant="outline"
-              className="bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-[#0077B5]"
+              className="bg-[#003833] dark:bg-[#18181B] border-[#005C55]/60 dark:border-[#27272A] text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
+            />
+            <SocialIcon
+              platform="instagram"
+              href={PORTFOLIO_DATA.developer.instagram}
+              label="Instagram"
+              size="md"
+              variant="outline"
+              className="bg-[#003833] dark:bg-[#18181B] border-[#005C55]/60 dark:border-[#27272A] text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
             />
             <SocialIcon
               platform="mail"
@@ -52,15 +60,15 @@ export default function Footer() {
               label="Email"
               size="md"
               variant="outline"
-              className="bg-[#18181B] border-[#27272A] text-[#A1A1AA] hover:text-[#10B981]"
+              className="bg-[#003833] dark:bg-[#18181B] border-[#005C55]/60 dark:border-[#27272A] text-[#DDD7C8] dark:text-[#A1A1AA] hover:text-[#10B981]"
             />
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#A1A1AA]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#DDD7C8] dark:text-[#A1A1AA]">
           <div>
-            © {new Date().getFullYear()} Fab.Dev (Muhammad Fabian Rizky). All rights reserved. Built with Scalar & ui-ux-pro-max.
+            © {new Date().getFullYear()} Fab.Dev (Muhammad Fabian Rizky). All rights reserved. Built with #004741 & #F0EDE4 and ui-ux-pro-max.
           </div>
 
           <button

@@ -11,6 +11,7 @@ export const PORTFOLIO_DATA = {
     pingMs: 12,
     github: "https://github.com/Fabverse0",
     linkedin: "https://www.linkedin.com/in/fabianrizky",
+    instagram: "https://www.instagram.com/fabianverse_?igsh=bjQyMzAxcmI4emY3",
     twitter: "https://github.com/Fabverse0",
     resumeUrl: "/Fabian_CV.pdf",
     stats: [

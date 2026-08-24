@@ -4,6 +4,14 @@
 
 :root {
   /* 1. PRIMITIVE LAYER (Raw Design Values) */
+  --primitive-color-pine: #004741;
+  --primitive-color-pine-hover: #005C55;
+  --primitive-color-pine-dark: #003833;
+  --primitive-color-cream: #F0EDE4;
+  --primitive-color-cream-surface: #FAF8F5;
+  --primitive-color-cream-muted: #E5E0D4;
+  --primitive-color-cream-border: #DDD7C8;
+  
   --primitive-color-snow: #FAFAFA;
   --primitive-color-white: #FFFFFF;
   --primitive-color-zinc-900: #09090B;
@@ -18,24 +26,26 @@
   --primitive-font-mono: 'JetBrains Mono', monospace;
   --primitive-font-body: 'Inter', -apple-system, sans-serif;
 
-  /* 2. SEMANTIC LAYER (Purpose Aliases) */
-  --color-bg-page: var(--primitive-color-snow);
-  --color-bg-card: var(--primitive-color-white);
-  --color-bg-contrast: var(--primitive-color-zinc-900);
-  --color-text-main: var(--primitive-color-zinc-900);
-  --color-text-muted: #71717A;
+  /* 2. SEMANTIC LAYER (Light Mode Default) */
+  --color-bg-page: var(--primitive-color-cream);
+  --color-bg-card: var(--primitive-color-cream-surface);
+  --color-bg-muted: var(--primitive-color-cream-muted);
+  --color-border: var(--primitive-color-cream-border);
+  --color-bg-contrast: var(--primitive-color-pine);
+  --color-text-main: var(--primitive-color-pine);
+  --color-text-muted: #4A635F;
   --color-status-operational: var(--primitive-color-emerald-500);
-  --color-brand-accent: var(--primitive-color-blue-600);
+  --color-brand-accent: var(--primitive-color-pine);
 
   /* 3. COMPONENT LAYER (Component Specs) */
-  --terminal-bg: var(--color-bg-contrast);
+  --terminal-bg: var(--primitive-color-zinc-900);
   --terminal-border: var(--primitive-color-zinc-700);
-  --terminal-text: var(--primitive-color-snow);
+  --terminal-text: var(--primitive-color-cream);
 
-  --navbar-bg: rgba(255, 255, 255, 0.85);
-  --navbar-border: #E4E4E7;
+  --navbar-bg: rgba(240, 237, 228, 0.88);
+  --navbar-border: #DDD7C8;
 
-  --btn-primary-bg: var(--primitive-color-zinc-900);
-  --btn-primary-text: var(--primitive-color-white);
-  --btn-primary-hover: var(--primitive-color-zinc-800);
+  --btn-primary-bg: var(--primitive-color-pine);
+  --btn-primary-text: var(--primitive-color-cream);
+  --btn-primary-hover: var(--primitive-color-pine-hover);
 }
