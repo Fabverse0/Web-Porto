@@ -283,18 +283,6 @@ export default function Hero() {
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#10B981] dark:text-[#059669]" />
           </motion.a>
 
-          {/* Download Resume Button */}
-          <motion.a
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            href={dev.resumeUrl}
-            download
-            className="inline-flex items-center gap-2 font-heading font-semibold text-sm py-3.5 px-5 rounded-xl bg-[#FAF8F5] dark:bg-[#18181B] text-[#004741] dark:text-[#FAFAFA] border border-[#DDD7C8] dark:border-[#27272A] hover:bg-[#E5E0D4] dark:hover:bg-[#27272A] transition-all shadow-sm"
-          >
-            <Download className="w-4 h-4 text-[#10B981]" />
-            <span>Download CV</span>
-          </motion.a>
-
           {/* Copy Email Button */}
           <motion.button
             whileHover={{ scale: 1.02, y: -2 }}
@@ -315,8 +303,15 @@ export default function Hero() {
             )}
           </motion.button>
 
-          {/* Direct Social Links */}
+          {/* Direct Social & CV Links */}
           <div className="flex items-center gap-2 sm:ml-2">
+            <SocialIcon
+              platform="cv"
+              href={dev.resumeUrl}
+              label="View CV"
+              size="md"
+              variant="outline"
+            />
             <SocialIcon
               platform="github"
               href={dev.github}
