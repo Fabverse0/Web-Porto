@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Download } from 'lucide-react';
-import { PORTFOLIO_DATA } from '../data/portfolioData';
+import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export default function Navbar({ theme, onToggleTheme }) {
@@ -60,19 +59,9 @@ export default function Navbar({ theme, onToggleTheme }) {
             ))}
           </nav>
 
-          {/* Sliding Pill Theme Toggle & CTA */}
+          {/* Sliding Pill Theme Toggle */}
           <div className="hidden lg:flex items-center gap-3">
-            {/* Sliding Pill Theme Toggle */}
             <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
-
-            <a
-              href={PORTFOLIO_DATA.developer.resumeUrl}
-              download
-              className="inline-flex items-center gap-2 font-heading font-semibold text-xs py-2 px-4 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FAFAFA] dark:text-[#09090B] hover:bg-[#27272A] dark:hover:opacity-90 transition-all shadow-sm"
-            >
-              <Download className="w-3.5 h-3.5 text-[#10B981]" />
-              Download CV
-            </a>
           </div>
 
           {/* Mobile Menu & Theme Toggle */}
@@ -103,17 +92,6 @@ export default function Navbar({ theme, onToggleTheme }) {
               {link.name}
             </a>
           ))}
-          <div className="pt-2 border-t border-[#E4E4E7] dark:border-[#27272A]">
-            <a
-              href={PORTFOLIO_DATA.developer.resumeUrl}
-              download
-              onClick={() => setMobileMenuOpen(false)}
-              className="inline-flex items-center gap-2 w-full justify-center font-heading font-semibold text-sm py-2.5 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FAFAFA] dark:text-[#09090B]"
-            >
-              <Download className="w-4 h-4 text-[#10B981]" />
-              Download CV
-            </a>
-          </div>
         </div>
       )}
     </header>
