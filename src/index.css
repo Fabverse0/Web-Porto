@@ -4,30 +4,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light Theme Variables — Pine (#004741) & Warm Cream (#F0EDE4) */
+/* Light Theme Variables — Monochrome Snow (#FAFAFA) & Jet Black (#09090B) */
 :root {
-  --bg-page: #F0EDE4;
-  --bg-card: #FAF8F5;
-  --bg-muted: #E5E0D4;
-  --border-color: #DDD7C8;
-  --border-hover: #004741;
-  --text-primary: #004741;
-  --text-body: #112A27;
-  --text-secondary: #4A635F;
-  --text-tertiary: #7D918D;
+  --bg-page: #FAFAFA;
+  --bg-card: #FFFFFF;
+  --bg-muted: #F4F4F5;
+  --border-color: #E4E4E7;
+  --border-hover: #09090B;
+  --text-primary: #09090B;
+  --text-body: #18181B;
+  --text-secondary: #71717A;
+  --text-tertiary: #A1A1AA;
   --terminal-bg: #09090B;
-  --terminal-text: #F0EDE4;
+  --terminal-text: #FAFAFA;
   --accent-emerald: #10B981;
-  --accent-pine: #004741;
-  --accent-blue: #004741;
-  --accent-cyan: #0D9488;
-  
+  --accent-blue: #2563EB;
+  --accent-cyan: #06B6D4;
+
   --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  --card-shadow: 0 4px 20px -4px rgba(0, 71, 65, 0.05);
-  --card-shadow-hover: 0 12px 32px -6px rgba(0, 71, 65, 0.12);
+  --card-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+  --card-shadow-hover: 0 12px 32px -6px rgba(0, 0, 0, 0.10);
 }
 
 /* Dark Theme Variables */
@@ -80,7 +79,7 @@ code, pre, .font-mono {
   position: absolute;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(0, 71, 65, 0.14) 0%, rgba(0, 71, 65, 0) 70%);
+  background: radial-gradient(circle, rgba(9, 9, 11, 0.06) 0%, rgba(9, 9, 11, 0) 70%);
   top: -100px;
   left: -150px;
   pointer-events: none;
@@ -95,7 +94,7 @@ code, pre, .font-mono {
   position: absolute;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(0, 92, 85, 0.1) 0%, rgba(0, 92, 85, 0) 70%);
+  background: radial-gradient(circle, rgba(9, 9, 11, 0.04) 0%, rgba(9, 9, 11, 0) 70%);
   top: 100px;
   right: -200px;
   pointer-events: none;
@@ -108,7 +107,7 @@ code, pre, .font-mono {
 
 /* Glassmorphism Navigation */
 .glass-nav {
-  background: rgba(240, 237, 228, 0.88);
+  background: rgba(250, 250, 250, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
@@ -191,7 +190,7 @@ code, pre, .font-mono {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #DDD7C8;
+  background: #D4D4D8;
   border-radius: 4px;
 }
 
@@ -200,7 +199,7 @@ code, pre, .font-mono {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #004741;
+  background: #09090B;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
@@ -226,7 +225,7 @@ code, pre, .font-mono {
 .btn-black:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 71, 65, 0.2);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline {
@@ -251,7 +250,7 @@ code, pre, .font-mono {
 
 /* Modal Overlay Backdrop */
 .modal-backdrop {
-  background: rgba(0, 71, 65, 0.6);
+  background: rgba(9, 9, 11, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }

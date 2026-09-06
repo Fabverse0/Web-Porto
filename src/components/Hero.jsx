@@ -64,7 +64,7 @@ function FluidInteractiveCanvas() {
         vy: (Math.random() - 0.5) * 0.7,
         radius: Math.random() * 2 + 1.2,
         baseRadius: Math.random() * 2 + 1.2,
-        colorType: Math.random() > 0.4 ? 'pine' : 'teal',
+        colorType: Math.random() > 0.4 ? 'zinc' : 'blue',
       });
     }
 
@@ -77,9 +77,9 @@ function FluidInteractiveCanvas() {
       mouse.y += (mouse.targetY - mouse.y) * 0.08;
 
       const dark = isDarkMode();
-      const pineColor = dark ? 'rgba(16, 185, 129, ' : 'rgba(0, 71, 65, ';
-      const tealColor = dark ? 'rgba(37, 99, 235, ' : 'rgba(0, 92, 85, ';
-      const neutralColor = dark ? 'rgba(255, 255, 255, ' : 'rgba(0, 71, 65, ';
+      const zincColor = dark ? 'rgba(16, 185, 129, ' : 'rgba(9, 9, 11, ';
+      const blueColor = dark ? 'rgba(37, 99, 235, ' : 'rgba(63, 63, 70, ';
+      const neutralColor = dark ? 'rgba(255, 255, 255, ' : 'rgba(9, 9, 11, ';
 
       // Ambient Mouse Glow
       if (mouse.isActive) {
@@ -87,8 +87,8 @@ function FluidInteractiveCanvas() {
           mouse.x, mouse.y, 0,
           mouse.x, mouse.y, mouse.radius * 1.5
         );
-        gradient.addColorStop(0, dark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(0, 71, 65, 0.12)');
-        gradient.addColorStop(0.5, dark ? 'rgba(37, 99, 235, 0.06)' : 'rgba(0, 92, 85, 0.06)');
+        gradient.addColorStop(0, dark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(9, 9, 11, 0.06)');
+        gradient.addColorStop(0.5, dark ? 'rgba(37, 99, 235, 0.06)' : 'rgba(63, 63, 70, 0.03)');
         gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, width, height);
@@ -127,7 +127,7 @@ function FluidInteractiveCanvas() {
         // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        const col = p.colorType === 'pine' ? pineColor : tealColor;
+        const col = p.colorType === 'zinc' ? zincColor : blueColor;
         ctx.fillStyle = `${col}0.6)`;
         ctx.fill();
 
@@ -139,7 +139,7 @@ function FluidInteractiveCanvas() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < 110) {
-            const alpha = (1 - dist / 110) * (dark ? 0.15 : 0.18);
+            const alpha = (1 - dist / 110) * (dark ? 0.15 : 0.12);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
@@ -156,7 +156,7 @@ function FluidInteractiveCanvas() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < mouse.radius) {
-            const alpha = (1 - dist / mouse.radius) * (dark ? 0.35 : 0.32);
+            const alpha = (1 - dist / mouse.radius) * (dark ? 0.35 : 0.25);
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -201,13 +201,13 @@ export default function Hero() {
   };
 
   return (
-    <section id="about" className="relative min-h-[85vh] flex items-center justify-center pt-24 sm:pt-28 pb-14 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#F0EDE4] dark:bg-[#09090B] text-[#004741] dark:text-[#FAFAFA] transition-colors duration-300">
+    <section id="about" className="relative min-h-[85vh] flex items-center justify-center pt-24 sm:pt-28 pb-14 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#FAFAFA] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] transition-colors duration-300">
       
       {/* Interactive Fluid Particle Canvas Background */}
       <FluidInteractiveCanvas />
 
       {/* Subtle Ambient Radial Gradients */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-gradient-to-tr from-[#004741]/10 via-[#005C55]/5 to-transparent dark:from-[#10B981]/10 dark:via-[#2563EB]/5 dark:to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-gradient-to-tr from-[#09090B]/5 via-[#3F3F46]/3 to-transparent dark:from-[#10B981]/10 dark:via-[#2563EB]/5 dark:to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="relative z-10 max-w-5xl mx-auto w-full text-center space-y-8 sm:space-y-9 flex flex-col items-center">
         
@@ -217,7 +217,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="font-heading text-2xl sm:text-4xl md:text-5xl lg:text-[3.65rem] tracking-[-0.04em] leading-tight whitespace-nowrap text-[#004741] dark:text-[#FAFAFA]"
+            className="font-heading text-2xl sm:text-4xl md:text-5xl lg:text-[3.65rem] tracking-[-0.04em] leading-tight text-[#09090B] dark:text-[#FAFAFA]"
           >
             <VariableFontHover
               label="Hi, I'm Muhammad Fabian Rizky"
@@ -234,7 +234,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-xl sm:text-2xl font-medium tracking-tight text-[#004741] dark:text-[#E4E4E7] leading-snug flex justify-center"
+            className="text-xl sm:text-2xl font-medium tracking-tight text-[#09090B] dark:text-[#E4E4E7] leading-snug flex justify-center"
           >
             <VariableFontHover
               label="Software Developer & System Builder"
@@ -251,7 +251,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-base sm:text-lg text-[#4A635F] dark:text-[#A1A1AA] max-w-2xl mx-auto leading-relaxed font-normal flex justify-center text-center"
+            className="text-base sm:text-lg text-[#71717A] dark:text-[#A1A1AA] max-w-2xl mx-auto leading-relaxed font-normal flex justify-center text-center"
           >
             <VariableFontHover
               label='I am Fabian, a 3rd-semester informatics student at UPN "Veteran" Jakarta with a strong interest in backend development and system design. I am always eager to learn, solve problems, and contribute to real-world development projects.'
@@ -277,7 +277,7 @@ export default function Hero() {
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             href="#projects"
-            className="inline-flex items-center gap-2 font-heading font-semibold text-sm py-3.5 px-6 rounded-xl bg-[#004741] dark:bg-[#FAFAFA] text-[#F0EDE4] dark:text-[#09090B] hover:bg-[#005C55] dark:hover:opacity-90 transition-all shadow-md group"
+            className="inline-flex items-center gap-2 font-heading font-semibold text-sm py-3.5 px-6 rounded-xl bg-[#09090B] dark:bg-[#FAFAFA] text-[#FAFAFA] dark:text-[#09090B] hover:bg-[#27272A] dark:hover:opacity-90 transition-all shadow-md group"
           >
             <span>Explore My Work</span>
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#10B981] dark:text-[#059669]" />
@@ -288,7 +288,7 @@ export default function Hero() {
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleCopyEmail}
-            className="inline-flex items-center gap-2 font-heading font-semibold text-sm py-3.5 px-4 rounded-xl bg-[#FAF8F5] dark:bg-[#18181B] text-[#004741] dark:text-[#FAFAFA] border border-[#DDD7C8] dark:border-[#27272A] hover:bg-[#E5E0D4] dark:hover:bg-[#27272A] transition-all shadow-sm"
+            className="inline-flex items-center gap-2 font-heading font-semibold text-sm py-3.5 px-4 rounded-xl bg-[#FFFFFF] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA] border border-[#E4E4E7] dark:border-[#27272A] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] transition-all shadow-sm"
           >
             {emailCopied ? (
               <>
@@ -297,7 +297,7 @@ export default function Hero() {
               </>
             ) : (
               <>
-                <Copy className="w-4 h-4 text-[#4A635F] dark:text-[#A1A1AA]" />
+                <Copy className="w-4 h-4 text-[#71717A] dark:text-[#A1A1AA]" />
                 <span>Copy Email</span>
               </>
             )}

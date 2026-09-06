@@ -44,7 +44,7 @@ const HeroSection = React.forwardRef(
       <motion.section
         ref={ref}
         className={cn(
-          "relative flex w-full flex-col overflow-hidden bg-[#F0EDE4] dark:bg-[#09090B] text-[#004741] dark:text-[#FAFAFA] md:flex-row transition-colors duration-300",
+          "relative flex w-full flex-col overflow-hidden bg-[#FAFAFA] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] md:flex-row",
           className
         )}
         initial="hidden"
@@ -63,12 +63,12 @@ const HeroSection = React.forwardRef(
                   <img src={logo.url} alt={logo.alt} className="h-8 rounded-lg" />
                   <div>
                     {logo.text && (
-                      <p className="text-lg font-bold font-heading text-[#004741] dark:text-[#FAFAFA]">
+                      <p className="text-lg font-bold font-heading text-[#09090B] dark:text-[#FAFAFA]">
                         {logo.text}
                       </p>
                     )}
                     {slogan && (
-                      <p className="text-xs tracking-wider text-[#4A635F] dark:text-[#A1A1AA] font-mono uppercase">
+                      <p className="text-xs tracking-wider text-[#71717A] dark:text-[#A1A1AA] font-mono uppercase">
                         {slogan}
                       </p>
                     )}
@@ -79,7 +79,7 @@ const HeroSection = React.forwardRef(
 
             <motion.main variants={containerVariants}>
               <motion.h1
-                className="text-4xl font-extrabold leading-tight text-[#004741] dark:text-[#FAFAFA] md:text-5xl font-heading"
+                className="text-4xl font-extrabold leading-tight text-[#09090B] dark:text-[#FAFAFA] md:text-5xl font-heading"
                 variants={itemVariants}
               >
                 {title}
@@ -90,14 +90,14 @@ const HeroSection = React.forwardRef(
                 variants={itemVariants}
               />
               <motion.p
-                className="mb-8 max-w-md text-base text-[#4A635F] dark:text-[#A1A1AA] leading-relaxed"
+                className="mb-8 max-w-md text-base text-[#71717A] dark:text-[#A1A1AA] leading-relaxed"
                 variants={itemVariants}
               >
                 {subtitle}
               </motion.p>
               <motion.a
                 href={callToAction.href}
-                className="text-base font-bold tracking-widest text-[#004741] dark:text-[#60A5FA] transition-colors hover:text-[#10B981] dark:hover:text-[#10B981] font-mono uppercase"
+                className="text-base font-bold tracking-widest text-[#2563EB] dark:text-[#60A5FA] transition-colors hover:text-[#10B981] dark:hover:text-[#10B981] font-mono uppercase"
                 variants={itemVariants}
               >
                 {callToAction.text} →
@@ -107,7 +107,7 @@ const HeroSection = React.forwardRef(
 
           {/* Bottom Section: Footer Contact Info */}
           <motion.footer className="mt-12 w-full" variants={itemVariants}>
-            <div className="grid grid-cols-1 gap-4 text-xs text-[#4A635F] dark:text-[#A1A1AA] sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 text-xs text-[#71717A] dark:text-[#A1A1AA] sm:grid-cols-3">
               <div className="flex items-center gap-2">
                 <InfoIcon type="website" />
                 <span className="font-mono">{contactInfo.website}</span>
