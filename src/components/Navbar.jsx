@@ -28,23 +28,38 @@ export default function Navbar({ theme, onToggleTheme }) {
 
     if (!sections.length) return;
 
+    /* Track which sections are currently intersecting */
+    const visibleMap = new Map();
+
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries.filter(
-          (e) => e.isIntersecting && e.intersectionRatio >= 0.2
-        );
-        if (visible.length) {
-          const top = visible.reduce((a, b) =>
-            a.target.getBoundingClientRect().top <
-            b.target.getBoundingClientRect().top
-              ? a
-              : b
-          );
-          const id = top.target.id || top.target.getAttribute('id');
-          if (id) setActiveSection(id);
+        /* Update visibility map from all entries in this batch */
+        for (const entry of entries) {
+          const id = entry.target.id || entry.target.getAttribute('id');
+          if (id) {
+            if (entry.isIntersecting) {
+              visibleMap.set(id, entry);
+            } else {
+              visibleMap.delete(id);
+            }
+          }
+        }
+
+        /* Among all currently visible sections, pick the topmost one */
+        if (visibleMap.size > 0) {
+          let topId = null;
+          let topY = Infinity;
+          for (const [id, entry] of visibleMap) {
+            const rect = entry.target.getBoundingClientRect();
+            if (rect.top < topY) {
+              topY = rect.top;
+              topId = id;
+            }
+          }
+          if (topId) setActiveSection(topId);
         }
       },
-      { rootMargin: '-10% 0px -60% 0px', threshold: [0, 0.2, 0.5, 0.8, 1] }
+      { rootMargin: '-10% 0px -55% 0px', threshold: [0, 0.1, 0.2, 0.5] }
     );
 
     sections.forEach((s) => observer.observe(s));
