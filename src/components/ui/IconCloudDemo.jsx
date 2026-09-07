@@ -10,7 +10,7 @@ const slugs = [
   "redis",
   "docker",
   "kubernetes",
-  "amazonaws",
+  "amazonwebservices",
   "nginx",
   "apachekafka",
   "mongodb",
@@ -36,8 +36,10 @@ const slugs = [
 
 export function IconCloudDemo() {
   return (
-    <div className="relative flex size-full max-w-lg items-center justify-center overflow-hidden rounded-2xl border border-[#E4E4E7] dark:border-[#27272A] bg-[#FFFFFF] dark:bg-[#18181B] px-6 py-6 shadow-xl">
+    <div className="relative flex size-full max-w-lg items-center justify-center overflow-hidden border border-[var(--border-strong)] bg-[var(--bg-card)] px-6 py-6">
       <IconCloud iconSlugs={slugs} />
     </div>
   )
 }
+
+export default IconCloudDemo;

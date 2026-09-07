@@ -3,7 +3,7 @@ export const PORTFOLIO_DATA = {
     name: "Muhammad Fabian Rizky",
     brandName: "Fab.Dev",
     title: "Backend Software Engineer",
-    subtitle: "Node.js & TypeScript • Microservices • Scalar OpenAPI Specs",
+    subtitle: "Node.js & TypeScript â€¢ Microservices â€¢ Scalar OpenAPI Specs",
     bio: "I am Fabian, a 3rd-semester informatics student at UPN \"Veteran\" Jakarta with a strong interest in backend development and system design. I am always eager to learn, solve problems, and contribute to real-world development projects.",
     email: "mfabian.rizky@gmail.com",
     location: "Jakarta, Indonesia / Remote",
@@ -35,10 +35,10 @@ export const PORTFOLIO_DATA = {
     { name: "MongoDB", category: "Databases", icon: "Database", level: "Advanced", percentage: 86, brandColor: "#47A248", slug: "mongodb", featured: false },
     { name: "Apache Kafka", category: "API & Messaging", icon: "Layers", level: "Advanced", percentage: 84, brandColor: "#E0234E", slug: "apachekafka", featured: true },
     { name: "RabbitMQ", category: "API & Messaging", icon: "MessageSquare", level: "Advanced", percentage: 82, brandColor: "#FF6600", slug: "rabbitmq", featured: false },
-    { name: "gRPC & Protocol Buffers", category: "API & Messaging", icon: "Cpu", level: "Intermediate", percentage: 76, brandColor: "#2DA6B0", slug: "grpc", featured: false },
+    { name: "gRPC & Protocol Buffers", category: "API & Messaging", icon: "Cpu", level: "Intermediate", percentage: 76, brandColor: "#2DA6B0", featured: false },
     { name: "Docker & Containerization", category: "Cloud & DevOps", icon: "Box", level: "Expert", percentage: 92, brandColor: "#2496ED", slug: "docker", featured: true },
     { name: "Kubernetes (k8s)", category: "Cloud & DevOps", icon: "Cloud", level: "Intermediate", percentage: 78, brandColor: "#326CE5", slug: "kubernetes", featured: false },
-    { name: "AWS (S3, EC2, Lambda)", category: "Cloud & DevOps", icon: "CloudRain", level: "Advanced", percentage: 85, brandColor: "#FF9900", slug: "amazonaws", featured: true },
+    { name: "AWS (S3, EC2, Lambda)", category: "Cloud & DevOps", icon: "CloudRain", level: "Advanced", percentage: 85, brandColor: "#FF9900", slug: "amazonwebservices", featured: true },
     { name: "CI/CD (GitHub Actions)", category: "Cloud & DevOps", icon: "GitBranch", level: "Advanced", percentage: 87, brandColor: "#2088FF", slug: "githubactions", featured: false }
   ],
 
@@ -395,7 +395,7 @@ GitHub    : https://github.com/Fabverse0
 LinkedIn  : https://www.linkedin.com/in/fabianrizky
 Status    : Open for Full-time, Freelance, & Internship opportunities.`,
 
-    sudo: `[SECURITY ALERT] Nice try! Access denied. Permission requires hiring Fabian for root privileges 😉`,
+    sudo: `[SECURITY ALERT] Nice try! Access denied. Permission requires hiring Fabian for root privileges ðŸ˜‰`,
 
     ping: `PING api.dev (127.0.0.1): 56 data bytes
 64 bytes from 127.0.0.1: icmp_seq=0 ttl=64 time=11.8 ms

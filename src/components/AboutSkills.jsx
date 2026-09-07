@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { fetchSimpleIcons } from 'react-icon-cloud';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { IconCloudDemo } from './ui/IconCloudDemo';
+const IconCloudDemo = lazy(() => import('./ui/IconCloudDemo'));
 
 function BrandLogo({ slug, color, fallbackName }) {
   const [svgPath, setSvgPath] = useState(null);
@@ -10,11 +9,13 @@ function BrandLogo({ slug, color, fallbackName }) {
   useEffect(() => {
     let isMounted = true;
     if (slug) {
-      fetchSimpleIcons({ slugs: [slug] }).then((res) => {
-        if (isMounted && res && res.simpleIcons && res.simpleIcons[slug]) {
-          setSvgPath(res.simpleIcons[slug].path);
-        }
-      }).catch(() => {});
+      import('react-icon-cloud')
+        .then(({ fetchSimpleIcons }) => fetchSimpleIcons({ slugs: [slug] }))
+        .then((res) => {
+          if (isMounted && res && res.simpleIcons && res.simpleIcons[slug]) {
+            setSvgPath(res.simpleIcons[slug].path);
+          }
+        }).catch(() => {});
     }
     return () => { isMounted = false; };
   }, [slug]);
@@ -76,7 +77,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
     <section id="skills" className="py-20 sm:py-24 bg-[var(--bg-muted)] border-b border-[var(--border-color)] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header with 3D icon cloud (kept) */}
+        {/* Header with 3D icon cloud (kept, lazy-loaded) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pb-12 border-b border-[var(--border-strong)]">
           <div className="lg:col-span-7">
             <h2 className="font-heading font-semibold text-[28px] sm:text-[32px] tracking-[-0.01em] text-[var(--text-primary)]">
@@ -101,7 +102,9 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           </div>
 
           <div className="lg:col-span-5 flex justify-center w-full">
-            <IconCloudDemo />
+            <Suspense fallback={<div className="h-[280px] w-full max-w-lg" aria-hidden="true" />}>
+              <IconCloudDemo />
+            </Suspense>
           </div>
         </div>
 

@@ -52,8 +52,8 @@ function StatusLine() {
   }, [shown, text, reduce]);
 
   return (
-    <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-6" aria-label={text}>
-      <span aria-hidden="true">
+    <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-6">
+      <span className="sr-only">{text}</span><span aria-hidden="true">
         {'> '}
         {text.slice(0, shown)}
         <span className="cursor-blink" />

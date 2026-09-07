@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -7,7 +7,7 @@ import Projects from './components/Projects';
 import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import ProjectModal from './components/ProjectModal';
+const ProjectModal = lazy(() => import('./components/ProjectModal'));
 
 export default function App() {
   const [selectedSkill, setSelectedSkill] = useState(null);
@@ -55,12 +55,14 @@ export default function App() {
         <Footer />
 
         {/* Interactive project detail modal */}
-        {activeModalProject && (
-          <ProjectModal
-            project={activeModalProject}
-            onClose={() => setActiveModalProject(null)}
-          />
-        )}
+        <Suspense fallback={null}>
+          {activeModalProject && (
+            <ProjectModal
+              project={activeModalProject}
+              onClose={() => setActiveModalProject(null)}
+            />
+          )}
+        </Suspense>
       </div>
     </MotionConfig>
   );
