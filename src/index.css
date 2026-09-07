@@ -600,20 +600,68 @@ code, pre, .font-mono { font-family: var(--font-mono); }
 }
 
 /* ============================================================
-   SKILL BANDS: editorial category layout (replaces rigid grid)
+
+/* ============================================================
+   SKILL BANDS v2: capsule pills + logo cloud + level arcs
    ============================================================ */
+
+/* ── Cinematic logo cloud ── */
+.skill-logo-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 20px;
+  padding: 28px 0 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+.skill-logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.skill-logo-label {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  font-family: var(--font-mono, monospace);
+  white-space: nowrap;
+}
+
+/* ── Shared icon ── */
+.skill-icon {
+  flex-shrink: 0;
+  fill: currentColor;
+}
+.skill-icon-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* ── Level arc ring ── */
+.level-arc {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
 
 /* ── Marquee strip ── */
 .skill-marquee {
   overflow: hidden;
-  padding: 16px 0 8px;
+  padding: 12px 0 6px;
   border-bottom: 1px solid var(--border-color);
 }
 .skill-marquee-track {
   display: flex;
   gap: 0;
   width: max-content;
-  animation: skill-marquee-scroll 40s linear infinite;
+  animation: skill-marquee-scroll 45s linear infinite;
 }
 .skill-marquee:hover .skill-marquee-track {
   animation-play-state: paused;
@@ -623,140 +671,127 @@ code, pre, .font-mono { font-family: var(--font-mono); }
   letter-spacing: 0.12em;
   color: var(--text-secondary);
   white-space: nowrap;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 @keyframes skill-marquee-scroll {
   to { transform: translateX(-33.33%); }
 }
 @media (prefers-reduced-motion: reduce) {
   .skill-marquee-track { animation: none; }
+  .skill-logo-cloud .skill-logo-item { opacity: 1; transform: none; }
 }
 
 /* ── Bands container ── */
 .skill-bands {
-  padding-top: 20px;
+  padding-top: 16px;
 }
 
 /* ── Category band ── */
 .skill-band {
-  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 10px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border-color);
 }
 .skill-band:last-child {
   border-bottom: none;
 }
-.skill-band-header {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 14px;
-}
 .skill-band-label {
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-secondary);
-}
-.skill-band-count {
-  font-size: 10px;
-  color: var(--text-secondary);
-  opacity: 0.5;
+  font-family: var(--font-mono, monospace);
+  min-width: 100px;
+  flex-shrink: 0;
+  padding-top: 7px;
 }
 
-/* ── Pill items flow ── */
-.skill-band-items {
+/* ── Capsule pills flow ── */
+.skill-band-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* ── Skill pill ── */
-.skill-pill {
+/* ── Skill capsule (rounded pill, no hard border) ── */
+.skill-capsule {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-family: var(--font-body);
-  font-size: 13.5px;
-  padding: 7px 14px 7px 10px;
-  min-height: 40px;
+  font-size: 13px;
+  padding: 5px 12px 5px 8px;
+  min-height: 36px;
+  border-radius: 999px;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: 1px solid transparent;
   color: var(--text-primary);
   cursor: pointer;
-  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
 }
-.skill-pill:hover {
+.skill-capsule:hover {
   background: var(--bg-page);
   border-color: var(--border-strong);
 }
-.skill-pill--active {
+.skill-capsule--active {
   background: var(--text-primary);
   color: var(--bg-page);
   border-color: var(--text-primary);
 }
-.skill-pill--active:hover {
+.skill-capsule--active:hover {
   background: var(--text-primary);
   color: var(--bg-page);
   border-color: var(--text-primary);
 }
 
-/* ── Pill icon ── */
-.skill-pill-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  fill: currentColor;
-}
-.skill-pill-fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 9px;
-  line-height: 1;
-}
-
-/* ── Pill name ── */
-.skill-pill-name {
+/* ── Capsule name ── */
+.skill-capsule-name {
   white-space: nowrap;
-}
-
-/* ── Level dot ── */
-.skill-level-dot {
-  font-size: 8px;
   line-height: 1;
-  margin-left: 2px;
-  flex-shrink: 0;
-}
-.level-expert { color: var(--accent-emerald); }
-.level-advanced { color: var(--text-secondary); }
-.level-intermediate { opacity: 0.4; color: var(--text-secondary); }
-.skill-pill--active .level-expert,
-.skill-pill--active .level-advanced,
-.skill-pill--active .level-intermediate {
-  color: var(--bg-page);
-  opacity: 0.7;
 }
 
 /* ── Focus ── */
-.skill-pill:focus-visible {
+.skill-capsule:focus-visible {
   outline: 2px solid var(--text-primary);
   outline-offset: 2px;
 }
 
+/* ── Active state: invert level arc ── */
+.skill-capsule--active .level-arc circle {
+  stroke: var(--bg-page);
+}
+.skill-capsule--active .level-arc circle:nth-child(2) {
+  stroke: var(--bg-page);
+  opacity: 0.6;
+}
+
 /* ── Mobile ── */
 @media (max-width: 639px) {
-  .skill-pill {
-    font-size: 12.5px;
-    padding: 6px 11px 6px 8px;
-    min-height: 36px;
+  .skill-capsule {
+    font-size: 12px;
+    padding: 4px 10px 4px 7px;
+    min-height: 32px;
+    gap: 5px;
   }
-  .skill-pill-icon {
-    width: 16px;
-    height: 16px;
+  .skill-band-pills {
+    gap: 6px;
   }
-  .skill-band-items {
-    gap: 8px;
+  .skill-logo-cloud {
+    gap: 20px 14px;
+    padding: 20px 0 14px;
+  }
+  .skill-band-label {
+    min-width: 80px;
+    font-size: 9px;
+  }
+}
+
+/* ── Desktop wider ── */
+@media (min-width: 1024px) {
+  .skill-band-label {
+    min-width: 130px;
   }
 }
