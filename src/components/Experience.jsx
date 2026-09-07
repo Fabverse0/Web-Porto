@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Briefcase, GraduationCap, ChevronRight, ExternalLink, MapPin, Calendar, Stack } from 'lucide-react';
+import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 /* ── spring easing (expo-out, no bounce) ── */

@@ -59,11 +59,9 @@ const SPEC_ROWS = [
 
 /* Props signature kept for App.jsx compatibility. selectedSkill
    filtering is intentionally retired in this visual-first redesign;
-   it returns when real entries land. onOpenModal is unused — the
-   spec sheet is self-contained inside this component. */
-export default function Projects({ selectedSkill, onOpenModal }) {
+   it returns when real entries land. */
+export default function Projects({ selectedSkill }) {
   void selectedSkill;
-  void onOpenModal;
 
   const [activePlate, setActivePlate] = useState(null);
   const openSheet = useCallback((plate) => setActivePlate(plate), []);

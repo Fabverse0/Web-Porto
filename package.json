@@ -10,7 +10,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@scalar/api-reference-react": "^0.9.61",
     "clsx": "^2.1.1",
     "framer-motion": "^11.0.8",
     "lucide-react": "^0.344.0",

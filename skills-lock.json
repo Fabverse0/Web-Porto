@@ -54,6 +54,18 @@
       "skillPath": "skills/engineering/prototype/SKILL.md",
       "computedHash": "08c1a6d45a79180f795368e0bbf9820df9017d9ad2f5e4f858315d57ad357606"
     },
+    "sentry-react-sdk": {
+      "source": "getsentry/sentry-for-claude",
+      "sourceType": "github",
+      "skillPath": "skills-legacy/sentry-react-sdk/SKILL.md",
+      "computedHash": "3939c1470cf1065b57829233c4c6813bd3aaeae3bb587c3ce935517fb2b3139b"
+    },
+    "tailwind-design-system": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "computedHash": "992ab1e874c4f4159aa18d4ff45d1c3f86f322f0bd2a6744cc32f7d6147f9f06"
+    },
     "tdd": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -69,6 +81,30 @@
       "source": "uizze.com",
       "sourceType": "well-known",
       "computedHash": "34305420bba52f3fe7d1d3b2dd355b64ccf12de7411cbbf4557a1231e8ef8ddb"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "6b526d013e28073246a36f99b529bc43745d30832ecfa8217b359c34f260ca6b"
+    },
+    "vercel-react-view-transitions": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-view-transitions/SKILL.md",
+      "computedHash": "6987574e0ed69abc2521b2fd56f9df41106cc1fe65d5ca818be396c5149af7b6"
+    },
+    "vibeindex": {
+      "source": "vibeindex/skills",
+      "sourceType": "github",
+      "skillPath": "skills/vibeindex/SKILL.md",
+      "computedHash": "4933699caac1ebc9ef4c9b6fddf3654b8ae25b707439a59c382acae6ed350c23"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "d8e7d3afe37dcc8a97b99ffb5afdb4d0919ae0092ea8b68f44eb201f035e33ac"
     },
     "writing-for-agents": {
       "source": "mattpocock/skills",
