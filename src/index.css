@@ -230,3 +230,21 @@ code, pre, .font-mono { font-family: var(--font-mono); }
    Modal backdrop: ink veil (flat, no blur)
    ============================================================ */
 .modal-backdrop { background: rgba(9, 9, 11, 0.62); }
+
+/* ============================================================
+   Projects: travelling packet along the pipeline rail.
+   Motivated feedback: shows data flowing while the band is hovered.
+   ============================================================ */
+.packet { top: 4%; opacity: 0; }
+.group:hover .packet {
+  animation: packet-run 2.4s linear infinite;
+}
+@keyframes packet-run {
+  0%   { top: 3%; opacity: 0; }
+  10%  { opacity: 0.75; }
+  90%  { opacity: 0.75; }
+  100% { top: 96%; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .group:hover .packet { animation: none; }
+}

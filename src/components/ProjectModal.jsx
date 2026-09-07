@@ -187,7 +187,6 @@ export default function ProjectModal({ project, onClose }) {
   const tabs = [
     { id: 'overview', label: 'Overview & System Specs' },
     { id: 'architecture', label: 'Interactive System Topology' },
-    { id: 'metrics', label: 'Performance Metrics' },
   ];
 
   return (
@@ -311,21 +310,6 @@ export default function ProjectModal({ project, onClose }) {
           {/* Architecture */}
           {activeTab === 'architecture' && (
             <InteractiveArchitectureTopology architectureSteps={project.architectureDiagram} />
-          )}
-
-          {/* Metrics */}
-          {activeTab === 'metrics' && (
-            <div className="space-y-6">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-secondary)]">Production Benchmark Metrics</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[var(--border-color)] border border-[var(--border-color)]">
-                {Object.entries(project.metrics).map(([key, val]) => (
-                  <div key={key} className="bg-[var(--bg-page)] p-4 space-y-1.5">
-                    <div className="font-mono text-[10.5px] uppercase tracking-[0.06em] text-[var(--text-secondary)]">{key}</div>
-                    <div className="font-mono text-[17px] text-[var(--text-primary)]">{val}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
 
         </div>
