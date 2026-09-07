@@ -236,3 +236,19 @@ code, pre, .font-mono { font-family: var(--font-mono); }
    ============================================================ */
 .topo-node { transition: stroke 0.2s ease; }
 .group:hover .topo-node { stroke: var(--text-primary); }
+
+/* ============================================================
+   Projects: tech marquee (monochrome, pauses on hover)
+   ============================================================ */
+.marquee { overflow: hidden; }
+.marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
