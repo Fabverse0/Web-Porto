@@ -1,47 +1,24 @@
 /* ==========================================================================
-   FAB.DEV DESIGN SYSTEM TOKENS (Primitive → Semantic → Component)
+   FAB.DEV PRIMITIVE TOKENS (single source of raw values)
+   Semantic theme tokens live in src/index.css and map to these primitives.
    ========================================================================== */
 
 :root {
-  /* 1. PRIMITIVE LAYER (Raw Design Values) */
   --primitive-color-snow: #FAFAFA;
   --primitive-color-white: #FFFFFF;
   --primitive-color-zinc-900: #09090B;
   --primitive-color-zinc-800: #18181B;
   --primitive-color-zinc-700: #27272A;
   --primitive-color-zinc-600: #3F3F46;
-  --primitive-color-zinc-500: #71717A;
-  --primitive-color-zinc-400: #A1A1AA;
+  --primitive-color-zinc-500: #52525B;
+  --primitive-color-zinc-400: #71717A;
+  --primitive-color-zinc-300: #D4D4D8;
   --primitive-color-zinc-200: #E4E4E7;
   --primitive-color-zinc-100: #F4F4F5;
+  --primitive-color-emerald-700: #047857;
   --primitive-color-emerald-500: #10B981;
-  --primitive-color-blue-600: #2563EB;
-  --primitive-color-cyan-500: #06B6D4;
 
-  --primitive-font-heading: 'Space Grotesk', -apple-system, sans-serif;
-  --primitive-font-mono: 'JetBrains Mono', monospace;
-  --primitive-font-body: 'Inter', -apple-system, sans-serif;
-
-  /* 2. SEMANTIC LAYER (Light Mode — Monochrome) */
-  --color-bg-page: var(--primitive-color-snow);
-  --color-bg-card: var(--primitive-color-white);
-  --color-bg-muted: var(--primitive-color-zinc-100);
-  --color-border: var(--primitive-color-zinc-200);
-  --color-bg-contrast: var(--primitive-color-zinc-900);
-  --color-text-main: var(--primitive-color-zinc-900);
-  --color-text-muted: var(--primitive-color-zinc-500);
-  --color-status-operational: var(--primitive-color-emerald-500);
-  --color-brand-accent: var(--primitive-color-zinc-900);
-
-  /* 3. COMPONENT LAYER (Component Specs) */
-  --terminal-bg: var(--primitive-color-zinc-900);
-  --terminal-border: var(--primitive-color-zinc-700);
-  --terminal-text: var(--primitive-color-snow);
-
-  --navbar-bg: rgba(250, 250, 250, 0.88);
-  --navbar-border: var(--primitive-color-zinc-200);
-
-  --btn-primary-bg: var(--primitive-color-zinc-900);
-  --btn-primary-text: var(--primitive-color-white);
-  --btn-primary-hover: var(--primitive-color-zinc-700);
+  --primitive-font-heading: 'IBM Plex Sans', -apple-system, sans-serif;
+  --primitive-font-mono: 'IBM Plex Mono', monospace;
+  --primitive-font-body: 'IBM Plex Sans', -apple-system, sans-serif;
 }

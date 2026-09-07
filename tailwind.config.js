@@ -8,17 +8,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['Space Grotesk', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
-        sans: ['Inter', 'sans-serif'],
+        heading: ['"IBM Plex Sans"', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
+        sans: ['"IBM Plex Sans"', 'sans-serif'],
       },
       colors: {
         brand: {
           dark: '#09090B',
           snow: '#FAFAFA',
-          emerald: '#10B981',
-          blue: '#2563EB',
-          cyan: '#06B6D4',
+          emerald: '#047857',
         }
       }
     },

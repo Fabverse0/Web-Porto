@@ -4,150 +4,159 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light Theme Variables — Monochrome Snow (#FAFAFA) & Jet Black (#09090B) */
+/* ============================================================
+   FAB.DEV - SPEC SHEET DESIGN LANGUAGE
+   Semantic layer: maps to primitives in design-tokens.css.
+   Light = paper spec sheet. Dark = inverted ink, no glows.
+   Structure comes from hairlines, not shadows.
+   ============================================================ */
+
 :root {
-  --bg-page: #FAFAFA;
-  --bg-card: #FFFFFF;
-  --bg-muted: #F4F4F5;
-  --border-color: #E4E4E7;
+  --bg-page: var(--primitive-color-snow);
+  --bg-card: var(--primitive-color-white);
+  --bg-muted: var(--primitive-color-zinc-100);
+  --border-color: var(--primitive-color-zinc-200);
+  --border-strong: var(--primitive-color-zinc-300);
   --border-hover: #09090B;
-  --text-primary: #09090B;
-  --text-body: #18181B;
-  --text-secondary: #71717A;
-  --text-tertiary: #A1A1AA;
-  --terminal-bg: #09090B;
-  --terminal-text: #FAFAFA;
-  --accent-emerald: #10B981;
-  --accent-blue: #2563EB;
-  --accent-cyan: #06B6D4;
+  --text-primary: var(--primitive-color-zinc-900);
+  --text-body: var(--primitive-color-zinc-600);
+  --text-secondary: var(--primitive-color-zinc-500);
+  --text-tertiary: var(--primitive-color-zinc-500);
+  --terminal-bg: var(--primitive-color-zinc-900);
+  --terminal-text: var(--primitive-color-snow);
+  --accent-emerald: var(--primitive-color-emerald-700);
+  --btn-hover: var(--primitive-color-zinc-700);
 
-  --font-heading: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  --card-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
-  --card-shadow-hover: 0 12px 32px -6px rgba(0, 0, 0, 0.10);
+  --font-heading: var(--primitive-font-heading);
+  --font-mono: var(--primitive-font-mono);
+  --font-body: var(--primitive-font-body);
 }
 
-/* Dark Theme Variables */
 [data-theme="dark"] {
-  --bg-page: #09090B;
-  --bg-card: #18181B;
-  --bg-muted: #27272A;
-  --border-color: #27272A;
-  --border-hover: #10B981;
+  --bg-page: #0B0B0D;
+  --bg-card: #131316;
+  --bg-muted: #1B1B1F;
+  --border-color: #26262B;
+  --border-strong: #323238;
+  --border-hover: #FAFAFA;
   --text-primary: #FAFAFA;
-  --text-body: #FAFAFA;
+  --text-body: #D4D4D8;
   --text-secondary: #A1A1AA;
-  --text-tertiary: #71717A;
+  --text-tertiary: #A1A1AA;
   --terminal-bg: #000000;
   --terminal-text: #FAFAFA;
-  --accent-emerald: #10B981;
-  --accent-pine: #10B981;
-  --accent-blue: #2563EB;
-  --accent-cyan: #06B6D4;
-
-  --card-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.4);
-  --card-shadow-hover: 0 12px 32px -6px rgba(16, 185, 129, 0.15);
+  --accent-emerald: #34D399;
+  --btn-hover: #D4D4D8;
 }
 
-/* Custom Base Styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* Base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: var(--font-body);
   background-color: var(--bg-page);
   color: var(--text-primary);
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-h1, h2, h3, h4, .font-heading {
-  font-family: var(--font-heading);
-}
+h1, h2, h3, h4, .font-heading { font-family: var(--font-heading); }
+code, pre, .font-mono { font-family: var(--font-mono); }
 
-code, pre, .font-mono {
-  font-family: var(--font-mono);
-}
+::selection { background: var(--text-primary); color: var(--bg-page); }
 
-/* Ambient Background Light Effects */
-.ambient-glow-emerald {
+:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+
+/* ============================================================
+   HERO: interactive spec grid.
+   The radial-gradient below is a functional mask (vignette that
+   focuses the grid toward content), not a decorative gradient.
+   ============================================================ */
+.spec-grid {
   position: absolute;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(9, 9, 11, 0.06) 0%, rgba(9, 9, 11, 0) 70%);
-  top: -100px;
-  left: -150px;
-  pointer-events: none;
+  inset: 0;
   z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: 0 0;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 75%);
 }
 
-[data-theme="dark"] .ambient-glow-emerald {
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0) 70%);
-}
-
-.ambient-glow-blue {
+.spec-grid-cell {
   position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(9, 9, 11, 0.04) 0%, rgba(9, 9, 11, 0) 70%);
-  top: 100px;
-  right: -200px;
+  width: 44px;
+  height: 44px;
   pointer-events: none;
-  z-index: 0;
+  background: transparent;
+  border-left: 1px solid var(--border-hover);
+  border-top: 1px solid var(--border-hover);
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
-[data-theme="dark"] .ambient-glow-blue {
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0) 70%);
+.spec-grid-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--accent-emerald);
+  opacity: 0.9;
 }
 
-/* Glassmorphism Navigation */
+.spec-grid[data-active] .spec-grid-cell {
+  opacity: 1;
+  left: var(--cell-x, -999px);
+  top: var(--cell-y, -999px);
+}
+.spec-grid[data-active] .spec-grid-dot {
+  left: var(--dot-x, -999px);
+  top: var(--dot-y, -999px);
+  transform: translate(-50%, -50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-grid-cell, .spec-grid-dot { display: none; }
+}
+
+/* ============================================================
+   Header compat class (flat document header)
+   ============================================================ */
 .glass-nav {
-  background: rgba(250, 250, 250, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-page);
   border-bottom: 1px solid var(--border-color);
 }
 
-[data-theme="dark"] .glass-nav {
-  background: rgba(9, 9, 11, 0.85);
-  border-bottom: 1px solid #27272A;
-}
-
-/* Theme Cards */
+/* ============================================================
+   Cards compat: flat, hairline, sharp
+   ============================================================ */
 .card-light {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  box-shadow: var(--card-shadow);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0;
+  box-shadow: none;
+  transition: border-color 0.2s ease;
 }
-
-.card-light:hover {
-  border-color: var(--border-hover);
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px);
-}
+.card-light:hover { border-color: var(--border-hover); }
 
 .card-black {
-  background: #09090B;
-  color: #FAFAFA;
-  border: 1px solid #27272A;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
 }
 
-/* Terminal Styling */
+/* ============================================================
+   Terminal (kept for Terminal.jsx + its tests)
+   ============================================================ */
 .terminal-window {
   background: var(--terminal-bg);
-  border: 1px solid #27272A;
-  border-radius: 12px;
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
 }
-
 .terminal-header {
   background: #18181B;
   border-bottom: 1px solid #27272A;
@@ -156,105 +165,68 @@ code, pre, .font-mono {
   align-items: center;
   justify-content: space-between;
 }
+.terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-.terminal-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-/* Cursor Glow & Blinking */
 .cursor-blink {
   display: inline-block;
   width: 8px;
   height: 16px;
-  background-color: #10B981;
+  background-color: var(--accent-emerald);
   margin-left: 4px;
   animation: blink 1s step-end infinite;
   vertical-align: middle;
 }
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink { animation: none; }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-page);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #D4D4D8;
-  border-radius: 4px;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #3F3F46;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #09090B;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #10B981;
-}
-
-/* Primary Buttons */
+/* ============================================================
+   Buttons compat: sharp, mono, tactile. Hover = opacity so the
+   light/dark inverted pairing never breaks contrast.
+   ============================================================ */
 .btn-black {
   background-color: var(--text-primary);
   color: var(--bg-page);
-  font-family: var(--font-heading);
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-weight: 500;
   padding: 12px 24px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: 0;
+  transition: opacity 0.2s ease, transform 0.1s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   border: 1px solid var(--text-primary);
 }
-
-.btn-black:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
+.btn-black:hover { opacity: 0.9; }
+.btn-black:active { transform: translateY(1px); }
 
 .btn-outline {
   background-color: transparent;
   color: var(--text-primary);
-  font-family: var(--font-heading);
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-weight: 500;
   padding: 12px 24px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  transition: all 0.2s ease;
+  border-radius: 0;
+  border: 1px solid var(--border-strong);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
 }
+.btn-outline:hover { border-color: var(--text-primary); background-color: var(--bg-muted); }
 
-.btn-outline:hover {
-  border-color: var(--text-primary);
-  background-color: var(--bg-muted);
-}
-
-/* Modal Overlay Backdrop */
-.modal-backdrop {
-  background: rgba(9, 9, 11, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-[data-theme="dark"] .modal-backdrop {
-  background: rgba(9, 9, 11, 0.7);
-}
+/* ============================================================
+   Modal backdrop: ink veil (flat, no blur)
+   ============================================================ */
+.modal-backdrop { background: rgba(9, 9, 11, 0.62); }

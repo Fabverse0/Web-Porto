@@ -1,82 +1,60 @@
 import React from 'react';
-import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { ArrowUp } from 'lucide-react';
-import { SocialIcon } from '@/components/ui/social-icon';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 export default function Footer() {
+  const dev = PORTFOLIO_DATA.developer;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const socialLinks = [
+    { name: 'GitHub', href: dev.github },
+    { name: 'LinkedIn', href: dev.linkedin },
+    { name: 'Instagram', href: dev.instagram },
+    { name: 'Email', href: `mailto:${dev.email}` },
+  ];
+
   return (
-    <footer className="bg-[#09090B] dark:bg-[#000000] text-[#FAFAFA] dark:text-[#FAFAFA] border-t border-[#27272A] dark:border-[#27272A] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto space-y-8">
-        
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-[#27272A] dark:border-[#27272A]">
-          {/* Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#18181B] dark:bg-[#18181B] border border-[#27272A] dark:border-[#27272A] text-[#FAFAFA] dark:text-[#FFFFFF] flex items-center justify-center font-mono font-bold text-lg">
-              &lt;/&gt;
-            </div>
-            <div>
-              <span className="font-heading font-bold text-lg text-[#FAFAFA] dark:text-[#FFFFFF] tracking-tight block leading-none">
-                Fab<span className="text-[#10B981]">.Dev</span>
-              </span>
-              <span className="font-mono text-xs text-[#A1A1AA] dark:text-[#A1A1AA] block mt-1">
-                Muhammad Fabian Rizky • Backend Engineer
-              </span>
-            </div>
+    <footer className="bg-[var(--bg-page)] border-t border-[var(--border-strong)] transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-8">
+          <div>
+            <span className="font-mono text-[14px] text-[var(--text-primary)]">
+              <span aria-hidden="true">&lt;/&gt;&nbsp;</span>Fab<span className="text-[var(--text-secondary)]">.Dev</span>
+            </span>
+            <span className="block font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-secondary)] mt-1">
+              Muhammad Fabian Rizky / Backend Engineer
+            </span>
           </div>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-3">
-            <SocialIcon
-              platform="github"
-              href={PORTFOLIO_DATA.developer.github}
-              label="GitHub"
-              size="md"
-              variant="outline"
-              className="bg-[#18181B] dark:bg-[#18181B] border-[#27272A] dark:border-[#27272A] text-[#A1A1AA] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
-            />
-            <SocialIcon
-              platform="linkedin"
-              href={PORTFOLIO_DATA.developer.linkedin}
-              label="LinkedIn"
-              size="md"
-              variant="outline"
-              className="bg-[#18181B] dark:bg-[#18181B] border-[#27272A] dark:border-[#27272A] text-[#A1A1AA] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
-            />
-            <SocialIcon
-              platform="instagram"
-              href={PORTFOLIO_DATA.developer.instagram}
-              label="Instagram"
-              size="md"
-              variant="outline"
-              className="bg-[#18181B] dark:bg-[#18181B] border-[#27272A] dark:border-[#27272A] text-[#A1A1AA] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
-            />
-            <SocialIcon
-              platform="mail"
-              href={`mailto:${PORTFOLIO_DATA.developer.email}`}
-              label="Email"
-              size="md"
-              variant="outline"
-              className="bg-[#18181B] dark:bg-[#18181B] border-[#27272A] dark:border-[#27272A] text-[#A1A1AA] dark:text-[#A1A1AA] hover:text-[#10B981]"
-            />
-          </div>
+          <nav className="flex flex-wrap gap-1" aria-label="Social">
+            {socialLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+                rel={link.href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                className="font-mono text-[13px] text-[var(--text-body)] hover:text-[var(--text-primary)] px-3 py-2.5 underline-offset-4 hover:underline transition-colors"
+              >
+                {link.name}
+              </a>
+            ))}
+          </nav>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#A1A1AA] dark:text-[#A1A1AA]">
-          <div>
-            © {new Date().getFullYear()} Fab.Dev (Muhammad Fabian Rizky). All rights reserved.
-          </div>
-
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-5 border-t border-[var(--border-color)]">
+          <span className="font-mono text-[12px] text-[var(--text-secondary)]">
+            &copy; {new Date().getFullYear()} Fab.Dev (Muhammad Fabian Rizky). All rights reserved.
+          </span>
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-2 hover:text-[#FFFFFF] transition-colors"
+            className="inline-flex items-center gap-2 font-mono text-[12.5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors px-3 py-2"
           >
             <span>Back to Top</span>
-            <ArrowUp className="w-3.5 h-3.5 text-[#10B981]" />
+            <ArrowUp className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
         </div>
 

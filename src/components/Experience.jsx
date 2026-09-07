@@ -1,175 +1,123 @@
 import React, { useState } from 'react';
-import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Briefcase, GraduationCap, Calendar, Building2, CheckCircle2, Cpu, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 export default function Experience() {
   const [activeTab, setActiveTab] = useState('experience');
 
   return (
-    <section id="experience" className="py-20 bg-[#FFFFFF] dark:bg-[#18181B] border-t border-[#E4E4E7] dark:border-[#27272A] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#09090B] dark:text-[#60A5FA] tracking-wider uppercase">
-              <Briefcase className="w-3.5 h-3.5 text-[#10B981]" />
-              Career Track Record
-            </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
+    <section id="experience" className="py-20 sm:py-24 bg-[var(--bg-page)] border-b border-[var(--border-color)] transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Section header + tabs */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-10 border-b border-[var(--border-strong)]">
+          <div className="max-w-xl">
+            <h2 className="font-heading font-semibold text-[28px] sm:text-[32px] tracking-[-0.01em] text-[var(--text-primary)]">
               Engineering Experience &amp; Education.
             </h2>
-            <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
+            <p className="mt-3 text-[15.5px] text-[var(--text-body)] leading-relaxed max-w-[58ch]">
               Demonstrated track record of designing backend microservices, optimizing database performance, and collaborating in high-velocity tech teams.
             </p>
           </div>
 
-          {/* Tab Switcher */}
-          <div className="flex bg-[#F4F4F5] dark:bg-[#09090B] p-1 rounded-xl border border-[#E4E4E7] dark:border-[#27272A]">
+          <div className="flex border border-[var(--border-strong)]" role="group" aria-label="Switch between work experience and education">
             <button
               onClick={() => setActiveTab('experience')}
-              className={`flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
+              aria-pressed={activeTab === 'experience'}
+              className={`font-mono text-[13px] px-4 py-2.5 transition-colors ${
                 activeTab === 'experience'
-                  ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FAFAFA] dark:text-[#09090B] shadow-sm font-semibold'
-                  : 'text-[#71717A] dark:text-[#A1A1AA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)]'
               }`}
             >
-              <Briefcase className="w-4 h-4" />
               Work Experience
             </button>
             <button
               onClick={() => setActiveTab('education')}
-              className={`flex items-center gap-2 font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
+              aria-pressed={activeTab === 'education'}
+              className={`font-mono text-[13px] px-4 py-2.5 border-l border-[var(--border-strong)] transition-colors ${
                 activeTab === 'education'
-                  ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FAFAFA] dark:text-[#09090B] shadow-sm font-semibold'
-                  : 'text-[#71717A] dark:text-[#A1A1AA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)]'
               }`}
             >
-              <GraduationCap className="w-4 h-4" />
               Education
             </button>
           </div>
         </div>
 
-        {/* Timeline Content */}
-        <div className="relative border-l-2 border-[#E4E4E7] dark:border-[#27272A] ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
-          
-          {activeTab === 'experience' && PORTFOLIO_DATA.experiences.map((exp, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="relative group"
-            >
-              {/* Timeline Dot Indicator */}
-              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#09090B] dark:bg-[#10B981] border-4 border-[#FFFFFF] dark:border-[#18181B] ring-2 ring-[#09090B] dark:ring-[#10B981] shadow-md"></div>
-
-              <div className="bg-[#FAFAFA] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] hover:border-[#09090B] dark:hover:border-[#10B981] transition-all rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm hover:shadow-xl">
-                
-                {/* Header Info */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E4E4E7] dark:border-[#27272A]">
-                  <div className="space-y-1">
-                    <h3 className="font-heading font-bold text-xl sm:text-2xl text-[#09090B] dark:text-[#FAFAFA] flex items-center gap-2">
-                      {exp.role}
-                    </h3>
-                    <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-mono text-[#09090B] dark:text-[#60A5FA]">
-                      <span className="flex items-center gap-1.5 font-bold">
-                        <Building2 className="w-4 h-4 text-[#10B981]" />
-                        {exp.company}
-                      </span>
-                      {exp.location && (
-                        <span className="flex items-center gap-1 text-[#71717A] dark:text-[#A1A1AA]">
-                          <MapPin className="w-3.5 h-3.5" />
-                          {exp.location}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] w-fit shrink-0">
-                    <Calendar className="w-3.5 h-3.5 text-[#10B981]" />
-                    <span>{exp.period}</span>
-                  </div>
+        {/* Work experience rows */}
+        {activeTab === 'experience' && (
+          <div>
+            {PORTFOLIO_DATA.experiences.map((exp, idx) => (
+              <motion.article
+                key={idx}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                className="py-10 border-b border-[var(--border-color)] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10"
+              >
+                {/* Meta column */}
+                <div className="lg:col-span-4">
+                  <p className="font-mono text-[13px] text-[var(--text-primary)]">{exp.period}</p>
+                  <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-2">{exp.company}</p>
+                  {exp.location && (
+                    <p className="font-mono text-[12.5px] text-[var(--text-secondary)]">{exp.location}</p>
+                  )}
                 </div>
 
-                {/* Role Description */}
-                <p className="text-sm text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
-                  {exp.description}
-                </p>
+                {/* Content column */}
+                <div className="lg:col-span-8">
+                  <h3 className="font-heading font-medium text-[20px] text-[var(--text-primary)]">{exp.role}</h3>
+                  <p className="text-[15px] text-[var(--text-body)] leading-relaxed mt-3 max-w-[65ch]">{exp.description}</p>
 
-                {/* Key Architecture Milestones Checklist */}
-                {exp.architectureMilestones && (
-                  <div className="space-y-3 pt-2">
-                    <div className="font-mono text-[11px] font-bold uppercase tracking-wider text-[#09090B] dark:text-[#60A5FA] flex items-center gap-1.5">
-                      <Cpu className="w-3.5 h-3.5 text-[#10B981]" />
-                      Key Architecture Responsibilities &amp; Solutions
-                    </div>
-                    <div className="space-y-2.5">
+                  {exp.architectureMilestones && (
+                    <ul className="mt-5 space-y-2.5">
                       {exp.architectureMilestones.map((ms, msIdx) => (
-                        <div key={msIdx} className="flex items-start gap-2.5 text-xs text-[#18181B] dark:text-[#FAFAFA] leading-relaxed">
-                          <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
+                        <li key={msIdx} className="flex items-start gap-3 text-[14px] text-[var(--text-body)] leading-relaxed max-w-[70ch]">
+                          <span className="mt-[7px] w-1.5 h-1.5 bg-[var(--text-primary)] shrink-0" aria-hidden="true" />
                           <span>{ms}</span>
-                        </div>
+                        </li>
                       ))}
-                    </div>
-                  </div>
-                )}
+                    </ul>
+                  )}
 
-                {/* Tech Stack Pills */}
-                {exp.techStack && (
-                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#E4E4E7]/60 dark:border-[#27272A]">
-                    {exp.techStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="font-mono text-[11px] px-2.5 py-0.5 rounded bg-[#FFFFFF] dark:bg-[#18181B] text-[#71717A] dark:text-[#A1A1AA] border border-[#E4E4E7] dark:border-[#27272A]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-              </div>
-            </motion.div>
-          ))}
-
-          {activeTab === 'education' && PORTFOLIO_DATA.education.map((edu, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="relative group"
-            >
-              <div className="absolute -left-[31px] sm:-left-[47px] top-2 w-4 h-4 rounded-full bg-[#09090B] dark:bg-[#10B981] border-4 border-[#FFFFFF] dark:border-[#18181B] ring-2 ring-[#09090B] dark:ring-[#10B981]"></div>
-
-              <div className="bg-[#FAFAFA] dark:bg-[#09090B] border border-[#E4E4E7] dark:border-[#27272A] rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div>
-                    <h3 className="font-heading font-bold text-xl text-[#09090B] dark:text-[#FAFAFA]">{edu.degree}</h3>
-                    <div className="flex items-center gap-2 text-sm font-mono text-[#09090B] dark:text-[#10B981] mt-1">
-                      <GraduationCap className="w-4 h-4 text-[#10B981]" />
-                      <span>{edu.institution}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] font-mono text-xs font-semibold text-[#09090B] dark:text-[#FAFAFA] w-fit">
-                    <Calendar className="w-3.5 h-3.5 text-[#71717A] dark:text-[#A1A1AA]" />
-                    <span>{edu.period}</span>
-                  </div>
+                  {exp.techStack && (
+                    <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-5">
+                      {exp.techStack.join(', ')}
+                    </p>
+                  )}
                 </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
 
-                <p className="text-sm text-[#71717A] dark:text-[#A1A1AA] leading-relaxed">
-                  {edu.highlights}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-
-        </div>
+        {/* Education rows */}
+        {activeTab === 'education' && (
+          <div>
+            {PORTFOLIO_DATA.education.map((edu, idx) => (
+              <motion.article
+                key={idx}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                className="py-10 border-b border-[var(--border-color)] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10"
+              >
+                <div className="lg:col-span-4">
+                  <p className="font-mono text-[13px] text-[var(--text-primary)]">{edu.period}</p>
+                  <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-2">{edu.institution}</p>
+                </div>
+                <div className="lg:col-span-8">
+                  <h3 className="font-heading font-medium text-[20px] text-[var(--text-primary)]">{edu.degree}</h3>
+                  <p className="text-[15px] text-[var(--text-body)] leading-relaxed mt-3 max-w-[65ch]">{edu.highlights}</p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
+        )}
 
       </div>
     </section>

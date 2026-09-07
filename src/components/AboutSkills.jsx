@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { PORTFOLIO_DATA } from '../data/portfolioData';
-import { Filter, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { fetchSimpleIcons } from 'react-icon-cloud';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { IconCloudDemo } from './ui/IconCloudDemo';
-import { DotPattern } from './ui/DotPattern';
 
 function BrandLogo({ slug, color, fallbackName }) {
   const [svgPath, setSvgPath] = useState(null);
@@ -26,8 +24,9 @@ function BrandLogo({ slug, color, fallbackName }) {
       <svg
         role="img"
         viewBox="0 0 24 24"
-        className="w-6 h-6 fill-current transition-transform duration-300 group-hover:scale-110"
-        style={{ color: color || '#10B981' }}
+        className="w-6 h-6 fill-current"
+        style={{ color: color || 'var(--text-primary)' }}
+        aria-hidden="true"
       >
         <path d={svgPath} />
       </svg>
@@ -36,8 +35,9 @@ function BrandLogo({ slug, color, fallbackName }) {
 
   return (
     <div
-      style={{ color: color || '#10B981', backgroundColor: `${color || '#10B981'}15` }}
-      className="w-6 h-6 rounded flex items-center justify-center font-mono font-bold text-[10px]"
+      style={{ color: color || 'var(--text-primary)' }}
+      className="w-6 h-6 flex items-center justify-center font-mono font-bold text-[10px]"
+      aria-hidden="true"
     >
       {fallbackName ? fallbackName.substring(0, 2).toUpperCase() : 'TC'}
     </div>
@@ -59,40 +59,40 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
       onSelectSkill(skillName);
       const projectsElem = document.getElementById('projects');
       if (projectsElem) {
-        projectsElem.scrollIntoView({ behavior: 'smooth' });
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        projectsElem.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
       }
     }
   };
 
-  return (
-    <section id="skills" className="py-20 bg-[#F4F4F5] dark:bg-[#18181B] border-y border-[#E4E4E7] dark:border-[#27272A] relative overflow-hidden transition-colors duration-300">
-      {/* Magic UI DotPattern Background */}
-      <DotPattern className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)] opacity-40 text-[#09090B] dark:text-[#FAFAFA]" />
+  const handleSkillKey = (e, skillName) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleSkillClick(skillName);
+    }
+  };
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
-        
-        {/* Section Header with Interactive 3D Icon Cloud */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-4">
-            <div className="inline-flex items-center gap-2 font-mono text-xs font-bold text-[#09090B] dark:text-[#60A5FA] tracking-wider uppercase">
-              <Filter className="w-3.5 h-3.5" />
-              Technical Stack &amp; Core Competencies
-            </div>
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-[#09090B] dark:text-[#FAFAFA] tracking-tight">
+  return (
+    <section id="skills" className="py-20 sm:py-24 bg-[var(--bg-muted)] border-b border-[var(--border-color)] transition-colors duration-300">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* Header with 3D icon cloud (kept) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pb-12 border-b border-[var(--border-strong)]">
+          <div className="lg:col-span-7">
+            <h2 className="font-heading font-semibold text-[28px] sm:text-[32px] tracking-[-0.01em] text-[var(--text-primary)]">
               Built with High-Performance Backend Infrastructure.
             </h2>
-            <p className="text-[#71717A] dark:text-[#A1A1AA] text-base leading-relaxed">
-              Explore my backend ecosystem. Drag or hover over the 3D tech sphere to inspect language tools, databases, and cloud microservice engines, or click any skill card to filter projects.
+            <p className="mt-3 text-[15.5px] text-[var(--text-body)] leading-relaxed max-w-[58ch]">
+              Explore my backend ecosystem. Drag or hover over the 3D tech sphere to inspect language tools, databases, and cloud microservice engines, or click any skill to filter projects.
             </p>
 
-            {/* Active Filter Indicator */}
             {selectedSkill && (
-              <div className="inline-flex items-center gap-3 bg-[#09090B] dark:bg-[#09090B] text-[#FAFAFA] dark:text-[#FFFFFF] border border-[#09090B] dark:border-[#27272A] px-4 py-2.5 rounded-xl shadow-sm font-mono text-xs mt-2">
-                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+              <div className="inline-flex items-center gap-3 mt-5 px-4 py-2 bg-[var(--bg-card)] border border-[var(--border-strong)] font-mono text-xs text-[var(--text-primary)]">
+                <span className="w-2 h-2 bg-[var(--accent-emerald)]" aria-hidden="true" />
                 <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
                 <button
                   onClick={() => onSelectSkill(null)}
-                  className="ml-2 underline text-[#A1A1AA] dark:text-[#A1A1AA] hover:text-[#FFFFFF]"
+                  className="min-h-[44px] px-2 flex items-center underline underline-offset-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 >
                   Clear
                 </button>
@@ -100,22 +100,22 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
             )}
           </div>
 
-          {/* Interactive 3D Icon Cloud Widget */}
           <div className="lg:col-span-5 flex justify-center w-full">
             <IconCloudDemo />
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex flex-wrap gap-2 border-b border-[#E4E4E7] dark:border-[#27272A] pb-4">
+        {/* Category pills */}
+        <div className="flex flex-wrap gap-2 pt-10 pb-8" role="group" aria-label="Filter skills by category">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`font-heading font-medium text-xs sm:text-sm px-4 py-2 rounded-lg transition-all ${
+              aria-pressed={activeCategory === cat}
+              className={`inline-flex items-center font-mono text-xs px-3.5 min-h-[44px] border transition-colors ${
                 activeCategory === cat
-                  ? 'bg-[#09090B] dark:bg-[#FAFAFA] text-[#FAFAFA] dark:text-[#09090B] font-semibold shadow-sm'
-                  : 'bg-[#E4E4E7] dark:bg-[#27272A] text-[#71717A] dark:text-[#A1A1AA] hover:bg-[#D4D4D8] dark:hover:bg-[#3F3F46] hover:text-[#09090B] dark:hover:text-[#FAFAFA]'
+                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)] border-[var(--text-primary)]'
+                  : 'bg-transparent text-[var(--text-secondary)] border-[var(--border-strong)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]'
               }`}
             >
               {cat}
@@ -123,69 +123,44 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           ))}
         </div>
 
-        {/* Skills Grid - Clean Authentic Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Skills datasheet grid: shared hairlines, no cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border-color)] border border-[var(--border-color)]">
           {filteredSkills.map((skill, idx) => {
             const isSelected = selectedSkill === skill.name;
-            const brandColor = skill.brandColor || '#10B981';
-
             return (
               <motion.div
                 key={skill.name}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: idx * 0.04 }}
-                whileHover={{
-                  y: -5,
-                  scale: 1.02,
-                  boxShadow: `0 12px 30px -8px ${brandColor}40`
-                }}
+                transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.3) }}
+                role="button"
+                tabIndex={0}
                 onClick={() => handleSkillClick(skill.name)}
-                style={{
-                  '--hover-border-color': brandColor,
-                }}
-                className={`p-5 rounded-2xl cursor-pointer transition-all border flex flex-col justify-between space-y-4 group relative overflow-hidden ${
+                onKeyDown={(e) => handleSkillKey(e, skill.name)}
+                aria-pressed={isSelected}
+                className={`p-5 cursor-pointer transition-colors text-left focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--text-primary)] ${
                   isSelected
-                    ? 'border-[#10B981] bg-[#09090B] dark:bg-[#09090B] text-[#FAFAFA] shadow-xl ring-2 ring-[#10B981]'
-                    : 'bg-[#FFFFFF] dark:bg-[#09090B] border-[#E4E4E7] dark:border-[#27272A] hover:border-[var(--hover-border-color)] text-[#09090B] dark:text-[#FAFAFA] shadow-sm hover:shadow-lg'
+                    ? 'bg-[var(--text-primary)] text-[var(--bg-page)]'
+                    : 'bg-[var(--bg-page)] hover:bg-[var(--bg-card)]'
                 }`}
               >
-                {/* Subtle Ambient Brand Glow Accent */}
-                <div
-                  className="absolute -top-12 -right-12 w-24 h-24 rounded-full opacity-10 blur-xl pointer-events-none transition-opacity group-hover:opacity-30"
-                  style={{ backgroundColor: brandColor }}
-                />
-
-                <div className="space-y-4 relative z-10">
-                  {/* Top Row: Official SVG Logo & Level Badge */}
-                  <div className="flex items-start justify-between">
-                    <div
-                      style={{ backgroundColor: `${brandColor}15`, borderColor: `${brandColor}30` }}
-                      className="p-3.5 rounded-xl border transition-all"
-                    >
-                      <BrandLogo slug={skill.slug} color={brandColor} fallbackName={skill.name} />
-                    </div>
-
-                    <span
-                      style={{ color: isSelected ? '#10B981' : brandColor, backgroundColor: `${brandColor}15` }}
-                      className="font-mono text-[10px] uppercase font-bold px-2.5 py-1 rounded-md tracking-wider border border-current/20"
-                    >
-                      {skill.level}
-                    </span>
-                  </div>
-
-                  {/* Title & Category */}
-                  <div className="space-y-1">
-                    <h3 className={`font-heading font-bold text-base transition-colors ${isSelected ? 'text-[#FAFAFA]' : 'text-[#09090B] dark:text-[#FAFAFA] group-hover:text-current'}`}>
-                      {skill.name}
-                    </h3>
-                    <p className={`font-mono text-xs ${isSelected ? 'text-[#A1A1AA]' : 'text-[#71717A] dark:text-[#A1A1AA]'}`}>
-                      {skill.category}
-                    </p>
-                  </div>
+                <div className="flex items-start justify-between">
+                  <BrandLogo slug={skill.slug} color={isSelected ? 'var(--bg-page)' : skill.brandColor} fallbackName={skill.name} />
+                  <span className={`font-mono text-[10px] uppercase tracking-[0.06em] border px-2 py-0.5 ${
+                    isSelected
+                      ? 'border-[var(--bg-page)] text-[var(--bg-page)]'
+                      : 'border-[var(--border-strong)] text-[var(--text-secondary)]'
+                  }`}>
+                    {skill.level}
+                  </span>
                 </div>
-
+                <h3 className={`font-heading font-medium text-[15px] mt-4 ${isSelected ? 'text-[var(--bg-page)]' : 'text-[var(--text-primary)]'}`}>
+                  {skill.name}
+                </h3>
+                <p className={`font-mono text-[12px] mt-1 ${isSelected ? 'opacity-80' : 'text-[var(--text-secondary)]'}`}>
+                  {skill.category}
+                </p>
               </motion.div>
             );
           })}

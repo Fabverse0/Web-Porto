@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AboutSkills from './components/AboutSkills';
@@ -31,35 +32,36 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFA] dark:bg-[#09090B] text-[#09090B] dark:text-[#FAFAFA] transition-colors duration-300">
-      {/* Floating Navbar with Theme Toggle */}
-      <Navbar theme={theme} onToggleTheme={toggleTheme} />
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen flex flex-col bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300">
+        {/* Document header */}
+        <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
-      {/* Main Content Sections - Fast Scanning UX */}
-      <main className="flex-1">
-        <Hero />
-        <AboutSkills
-          selectedSkill={selectedSkill}
-          onSelectSkill={setSelectedSkill}
-        />
-        <Projects
-          selectedSkill={selectedSkill}
-          onOpenModal={setActiveModalProject}
-        />
-        <Experience />
-        <Contact />
-      </main>
+        {/* Main content */}
+        <main className="flex-1">
+          <Hero />
+          <AboutSkills
+            selectedSkill={selectedSkill}
+            onSelectSkill={setSelectedSkill}
+          />
+          <Projects
+            selectedSkill={selectedSkill}
+            onOpenModal={setActiveModalProject}
+          />
+          <Experience />
+          <Contact />
+        </main>
 
-      {/* Footer */}
-      <Footer />
+        <Footer />
 
-      {/* Interactive 3-Tab Project Modal */}
-      {activeModalProject && (
-        <ProjectModal
-          project={activeModalProject}
-          onClose={() => setActiveModalProject(null)}
-        />
-      )}
-    </div>
+        {/* Interactive project detail modal */}
+        {activeModalProject && (
+          <ProjectModal
+            project={activeModalProject}
+            onClose={() => setActiveModalProject(null)}
+          />
+        )}
+      </div>
+    </MotionConfig>
   );
 }

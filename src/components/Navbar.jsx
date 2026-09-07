@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 export default function Navbar({ theme, onToggleTheme }) {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const navLinks = [
     { name: 'About', href: '#about' },
@@ -26,52 +14,46 @@ export default function Navbar({ theme, onToggleTheme }) {
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-3 bg-[#FAFAFA]/90 dark:bg-[#09090B]/90 backdrop-blur-md border-b border-[#E4E4E7] dark:border-[#27272A]' : 'py-5 bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          
-          {/* Logo Brand */}
-          <a href="#about" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-[#09090B] dark:bg-[#18181B] text-[#FAFAFA] border border-[#09090B] dark:border-[#27272A] flex items-center justify-center font-mono font-bold text-lg shadow-sm group-hover:scale-105 transition-transform">
-              &lt;/&gt;
-            </div>
-            <div>
-              <span className="font-heading font-bold text-lg text-[#09090B] dark:text-[#FAFAFA] tracking-tight block leading-none">
-                Fab<span className="text-[#10B981]">.Dev</span>
-              </span>
-              <span className="font-mono text-[10px] text-[#71717A] dark:text-[#A1A1AA] uppercase tracking-wider block mt-1">
-                Backend • Node &amp; TS
-              </span>
-            </div>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-page)] border-b border-[var(--border-color)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[68px]">
+
+          {/* Brand: document header style */}
+          <a href="#about" className="flex flex-col justify-center group">
+            <span className="font-mono text-[15px] font-medium text-[var(--text-primary)] leading-none">
+              <span aria-hidden="true">&lt;/&gt;&nbsp;</span>Fab<span className="text-[var(--text-secondary)]">.Dev</span>
+            </span>
+            <span className="font-mono text-[10.5px] uppercase tracking-[0.08em] text-[var(--text-secondary)] block mt-1.5">
+              Backend / Node &amp; TS
+            </span>
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center gap-1" aria-label="Primary">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="font-heading font-medium text-xs lg:text-sm text-[#71717A] dark:text-[#A1A1AA] hover:text-[#09090B] dark:hover:text-[#FAFAFA] relative py-1 transition-all group"
+                className="font-mono text-[13px] text-[var(--text-body)] hover:text-[var(--text-primary)] px-3 py-2.5 transition-colors"
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#09090B] dark:bg-[#10B981] transition-all duration-200 group-hover:w-full"></span>
               </a>
             ))}
           </nav>
 
-          {/* Sliding Pill Theme Toggle */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Theme Toggle: reachable at every breakpoint >= md */}
+          <div className="hidden md:flex items-center">
             <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
           </div>
 
           {/* Mobile Menu & Theme Toggle */}
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg border border-[#E4E4E7] dark:border-[#27272A] bg-[#FFFFFF] dark:bg-[#18181B] text-[#09090B] dark:text-[#FAFAFA]"
+              className="w-11 h-11 flex items-center justify-center border border-[var(--border-strong)] text-[var(--text-primary)]"
               aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -79,15 +61,15 @@ export default function Navbar({ theme, onToggleTheme }) {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer: flat list */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FAFAFA] dark:bg-[#18181B] border-b border-[#E4E4E7] dark:border-[#27272A] px-4 pt-3 pb-6 space-y-3 shadow-lg">
+        <div className="md:hidden bg-[var(--bg-page)] border-b border-[var(--border-color)] px-4 pb-6 pt-2">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block font-heading font-medium text-base text-[#09090B] dark:text-[#FAFAFA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] px-3 py-2 rounded-md"
+              className="block font-mono text-sm text-[var(--text-primary)] border-t border-[var(--border-color)] px-1 py-3.5 first:border-t-0"
             >
               {link.name}
             </a>
