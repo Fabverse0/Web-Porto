@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 const IconCloudDemo = lazy(() => import('./ui/IconCloudDemo'));
 
+/* ── Brand logo from react-icon-cloud ── */
 function BrandLogo({ slug, color, fallbackName }) {
   const [svgPath, setSvgPath] = useState(null);
 
@@ -25,7 +26,7 @@ function BrandLogo({ slug, color, fallbackName }) {
       <svg
         role="img"
         viewBox="0 0 24 24"
-        className="w-6 h-6 fill-current"
+        className="skill-pill-icon"
         style={{ color: color || 'var(--text-primary)' }}
         aria-hidden="true"
       >
@@ -35,23 +36,90 @@ function BrandLogo({ slug, color, fallbackName }) {
   }
 
   return (
-    <div
+    <span
       style={{ color: color || 'var(--text-primary)' }}
-      className="w-6 h-6 flex items-center justify-center font-mono font-bold text-[10px]"
+      className="skill-pill-icon skill-pill-fallback"
       aria-hidden="true"
     >
       {fallbackName ? fallbackName.substring(0, 2).toUpperCase() : 'TC'}
+    </span>
+  );
+}
+
+/* ── Level dot indicator: ● expert, ◐ advanced, ○ intermediate ── */
+function LevelDot({ level }) {
+  const symbol = level === 'Expert' ? '●' : level === 'Advanced' ? '◐' : '○';
+  const cls = level === 'Expert' ? 'level-expert' : level === 'Advanced' ? 'level-advanced' : 'level-intermediate';
+  return (
+    <span className={`skill-level-dot ${cls}`} aria-label={level} title={level}>
+      {symbol}
+    </span>
+  );
+}
+
+/* ── Marquee strip ── */
+function SkillMarquee({ items }) {
+  const line = items.map((s) => s.name.toUpperCase()).join('   ·   ');
+  return (
+    <div className="skill-marquee" aria-hidden="true">
+      <div className="skill-marquee-track">
+        <span className="font-mono">{line}&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+        <span className="font-mono">{line}&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+        <span className="font-mono">{line}&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      </div>
     </div>
   );
 }
 
-export default function AboutSkills({ selectedSkill, onSelectSkill }) {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const categories = ['All', 'Languages', 'Databases', 'API & Messaging', 'Cloud & DevOps'];
+/* ── Category band ── */
+function CategoryBand({ category, skills, selectedSkill, onSkillClick, onSkillKey, delayBase }) {
+  return (
+    <motion.div
+      className="skill-band"
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.4, delay: delayBase, ease: [0.2, 0, 0, 1] }}
+    >
+      <div className="skill-band-header">
+        <span className="font-mono skill-band-label">{category}</span>
+        <span className="font-mono skill-band-count">{skills.length}</span>
+      </div>
+      <div className="skill-band-items">
+        {skills.map((skill, idx) => {
+          const isSelected = selectedSkill === skill.name;
+          return (
+            <motion.button
+              key={skill.name}
+              type="button"
+              role="button"
+              tabIndex={0}
+              onClick={() => onSkillClick(skill.name)}
+              onKeyDown={(e) => onSkillKey(e, skill.name)}
+              aria-pressed={isSelected}
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.28, delay: Math.min(idx * 0.035, 0.25), ease: [0.2, 0, 0, 1] }}
+              className={`skill-pill ${isSelected ? 'skill-pill--active' : ''}`}
+            >
+              <BrandLogo
+                slug={skill.slug}
+                color={isSelected ? 'var(--bg-page)' : skill.brandColor}
+                fallbackName={skill.name}
+              />
+              <span className="skill-pill-name">{skill.name}</span>
+              <LevelDot level={skill.level} />
+            </motion.button>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
 
-  const filteredSkills = activeCategory === 'All'
-    ? PORTFOLIO_DATA.skills
-    : PORTFOLIO_DATA.skills.filter(s => s.category === activeCategory);
+export default function AboutSkills({ selectedSkill, onSelectSkill }) {
+  const categories = ['Languages', 'Databases', 'API & Messaging', 'Cloud & DevOps'];
 
   const handleSkillClick = (skillName) => {
     if (selectedSkill === skillName) {
@@ -74,10 +142,13 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
   };
 
   return (
-    <section id="skills" className="py-20 sm:py-24 bg-[var(--bg-muted)] border-b border-[var(--border-color)] transition-colors duration-300">
+    <section
+      id="skills"
+      className="py-20 sm:py-24 bg-[var(--bg-muted)] border-b border-[var(--border-color)] transition-colors duration-300"
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Header with 3D icon cloud (kept, lazy-loaded) */}
+        {/* ── Header with 3D icon cloud (untouched) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pb-12 border-b border-[var(--border-strong)]">
           <div className="lg:col-span-7">
             <h2 className="font-heading font-semibold text-[28px] sm:text-[32px] tracking-[-0.01em] text-[var(--text-primary)]">
@@ -108,65 +179,22 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           </div>
         </div>
 
-        {/* Category pills */}
-        <div className="flex flex-wrap gap-2 pt-10 pb-8" role="group" aria-label="Filter skills by category">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              aria-pressed={activeCategory === cat}
-              className={`inline-flex items-center font-mono text-xs px-3.5 min-h-[44px] border transition-colors ${
-                activeCategory === cat
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)] border-[var(--text-primary)]'
-                  : 'bg-transparent text-[var(--text-secondary)] border-[var(--border-strong)] hover:border-[var(--text-primary)] hover:text-[var(--text-primary)]'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        {/* ── Marquee strip ── */}
+        <SkillMarquee items={PORTFOLIO_DATA.skills} />
 
-        {/* Skills datasheet grid: shared hairlines, no cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[var(--border-color)] border border-[var(--border-color)]">
-          {filteredSkills.map((skill, idx) => {
-            const isSelected = selectedSkill === skill.name;
-            return (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: Math.min(idx * 0.03, 0.3) }}
-                role="button"
-                tabIndex={0}
-                onClick={() => handleSkillClick(skill.name)}
-                onKeyDown={(e) => handleSkillKey(e, skill.name)}
-                aria-pressed={isSelected}
-                className={`p-5 cursor-pointer transition-colors text-left focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--text-primary)] ${
-                  isSelected
-                    ? 'bg-[var(--text-primary)] text-[var(--bg-page)]'
-                    : 'bg-[var(--bg-page)] hover:bg-[var(--bg-card)]'
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <BrandLogo slug={skill.slug} color={isSelected ? 'var(--bg-page)' : skill.brandColor} fallbackName={skill.name} />
-                  <span className={`font-mono text-[10px] uppercase tracking-[0.06em] border px-2 py-0.5 ${
-                    isSelected
-                      ? 'border-[var(--bg-page)] text-[var(--bg-page)]'
-                      : 'border-[var(--border-strong)] text-[var(--text-secondary)]'
-                  }`}>
-                    {skill.level}
-                  </span>
-                </div>
-                <h3 className={`font-heading font-medium text-[15px] mt-4 ${isSelected ? 'text-[var(--bg-page)]' : 'text-[var(--text-primary)]'}`}>
-                  {skill.name}
-                </h3>
-                <p className={`font-mono text-[12px] mt-1 ${isSelected ? 'opacity-80' : 'text-[var(--text-secondary)]'}`}>
-                  {skill.category}
-                </p>
-              </motion.div>
-            );
-          })}
+        {/* ── Category bands ── */}
+        <div className="skill-bands">
+          {categories.map((cat, i) => (
+            <CategoryBand
+              key={cat}
+              category={cat}
+              skills={PORTFOLIO_DATA.skills.filter((s) => s.category === cat)}
+              selectedSkill={selectedSkill}
+              onSkillClick={handleSkillClick}
+              onSkillKey={handleSkillKey}
+              delayBase={i * 0.06}
+            />
+          ))}
         </div>
 
       </div>

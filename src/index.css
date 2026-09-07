@@ -1,4 +1,4 @@
-@import "../assets/design-tokens.css";
+﻿@import "../assets/design-tokens.css";
 
 @tailwind base;
 @tailwind components;
@@ -597,4 +597,166 @@ code, pre, .font-mono { font-family: var(--font-mono); }
   .specsheet-backdrop { padding: 12px; }
   .specsheet-body { padding: 20px 20px 24px; }
   .specsheet-row { grid-template-columns: 110px 1fr; }
+}
+
+/* ============================================================
+   SKILL BANDS: editorial category layout (replaces rigid grid)
+   ============================================================ */
+
+/* ── Marquee strip ── */
+.skill-marquee {
+  overflow: hidden;
+  padding: 16px 0 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+.skill-marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: skill-marquee-scroll 40s linear infinite;
+}
+.skill-marquee:hover .skill-marquee-track {
+  animation-play-state: paused;
+}
+.skill-marquee-track span {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  opacity: 0.5;
+}
+@keyframes skill-marquee-scroll {
+  to { transform: translateX(-33.33%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skill-marquee-track { animation: none; }
+}
+
+/* ── Bands container ── */
+.skill-bands {
+  padding-top: 20px;
+}
+
+/* ── Category band ── */
+.skill-band {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.skill-band:last-child {
+  border-bottom: none;
+}
+.skill-band-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.skill-band-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.skill-band-count {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+/* ── Pill items flow ── */
+.skill-band-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ── Skill pill ── */
+.skill-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  padding: 7px 14px 7px 10px;
+  min-height: 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+.skill-pill:hover {
+  background: var(--bg-page);
+  border-color: var(--border-strong);
+}
+.skill-pill--active {
+  background: var(--text-primary);
+  color: var(--bg-page);
+  border-color: var(--text-primary);
+}
+.skill-pill--active:hover {
+  background: var(--text-primary);
+  color: var(--bg-page);
+  border-color: var(--text-primary);
+}
+
+/* ── Pill icon ── */
+.skill-pill-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+.skill-pill-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 9px;
+  line-height: 1;
+}
+
+/* ── Pill name ── */
+.skill-pill-name {
+  white-space: nowrap;
+}
+
+/* ── Level dot ── */
+.skill-level-dot {
+  font-size: 8px;
+  line-height: 1;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+.level-expert { color: var(--accent-emerald); }
+.level-advanced { color: var(--text-secondary); }
+.level-intermediate { opacity: 0.4; color: var(--text-secondary); }
+.skill-pill--active .level-expert,
+.skill-pill--active .level-advanced,
+.skill-pill--active .level-intermediate {
+  color: var(--bg-page);
+  opacity: 0.7;
+}
+
+/* ── Focus ── */
+.skill-pill:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 639px) {
+  .skill-pill {
+    font-size: 12.5px;
+    padding: 6px 11px 6px 8px;
+    min-height: 36px;
+  }
+  .skill-pill-icon {
+    width: 16px;
+    height: 16px;
+  }
+  .skill-band-items {
+    gap: 8px;
+  }
 }
