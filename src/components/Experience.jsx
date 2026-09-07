@@ -1,124 +1,232 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { Briefcase, GraduationCap, ChevronRight, ExternalLink, MapPin, Calendar, Stack } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-export default function Experience() {
-  const [activeTab, setActiveTab] = useState('experience');
+/* ── spring easing (expo-out, no bounce) ── */
+const SPRING = { type: 'spring', stiffness: 260, damping: 24 };
+const STAGGER_EASE = [0.22, 1, 0.36, 1];
+
+/* ── tiny mono label ── */
+function MonoLabel({ children, className = '' }) {
+  return (
+    <span className={`font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-secondary)] ${className}`}>
+      {children}
+    </span>
+  );
+}
+
+/* ── impact metric chip ── */
+function MetricChip({ label, value }) {
+  return (
+    <div className="metric-chip group/chip">
+      <span className="metric-chip__value">{value}</span>
+      <span className="metric-chip__label">{label}</span>
+    </div>
+  );
+}
+
+/* ── tech capsule (same language as AboutSkills v2) ── */
+function TechCapsule({ name }) {
+  return (
+    <span className="tech-capsule">{name}</span>
+  );
+}
+
+/* ── timeline dot with pulse ring ── */
+function TimelineDot({ active = false }) {
+  return (
+    <div className="timeline-dot-wrapper" aria-hidden="true">
+      <div className={`timeline-dot ${active ? 'timeline-dot--active' : ''}`} />
+      {active && <div className="timeline-dot__ring" />}
+    </div>
+  );
+}
+
+/* ── single entry row ── */
+function EntryRow({ entry, idx, variant = 'work' }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.25 });
+  const isWork = variant === 'work';
+  const metrics = entry.impactMetrics || [];
 
   return (
-    <section id="experience" className="py-20 sm:py-24 bg-[var(--bg-page)] border-b border-[var(--border-color)] transition-colors duration-300">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: Math.min(idx * 0.04, 0.2), ease: STAGGER_EASE }}
+      className="exp-entry"
+    >
+      {/* ── timeline spine ── */}
+      <div className="exp-entry__spine">
+        <TimelineDot active={inView} />
+        {idx < (isWork ? PORTFOLIO_DATA.experiences.length - 1 : PORTFOLIO_DATA.education.length - 1) && (
+          <div className="exp-entry__line" />
+        )}
+      </div>
 
-        {/* Section header + tabs */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-10 border-b border-[var(--border-strong)]">
-          <div className="max-w-xl">
-            <h2 className="font-heading font-semibold text-[28px] sm:text-[32px] tracking-[-0.01em] text-[var(--text-primary)]">
-              Engineering Experience &amp; Education.
+      {/* ── content column ── */}
+      <div className="exp-entry__body">
+        {/* period + location row */}
+        <div className="exp-entry__meta">
+          <div className="exp-entry__meta-left">
+            <Calendar size={13} className="exp-entry__icon" aria-hidden="true" />
+            <span className="font-mono text-[13px] text-[var(--text-primary)]">{entry.period}</span>
+          </div>
+          {entry.location && (
+            <div className="exp-entry__meta-right">
+              <MapPin size={12} className="exp-entry__icon" aria-hidden="true" />
+              <span className="font-mono text-[12px]">{entry.location}</span>
+            </div>
+          )}
+        </div>
+
+        {/* role / degree */}
+        <h3 className="exp-entry__title">
+          {isWork ? entry.role : entry.degree}
+        </h3>
+
+        {/* company / institution */}
+        <p className="exp-entry__org">
+          {isWork ? entry.company : entry.institution}
+        </p>
+
+        {/* description */}
+        <p className="exp-entry__desc">
+          {entry.description || entry.highlights}
+        </p>
+
+        {/* impact metrics (work only) */}
+        {metrics.length > 0 && (
+          <div className="exp-entry__metrics">
+            <MonoLabel>Impact</MonoLabel>
+            <div className="exp-entry__metrics-row">
+              {metrics.map((m, i) => (
+                <MetricChip key={i} label={m.label} value={m.value} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* architecture milestones (work only) */}
+        {entry.architectureMilestones && (
+          <ul className="exp-entry__milestones">
+            {entry.architectureMilestones.map((ms, i) => (
+              <motion.li
+                key={i}
+                initial={{ opacity: 0, x: -8 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.35, delay: Math.min(idx * 0.04 + i * 0.03, 0.3), ease: STAGGER_EASE }}
+                className="exp-entry__milestone-item"
+              >
+                <span className="exp-entry__milestone-bullet" aria-hidden="true" />
+                <span>{ms}</span>
+              </motion.li>
+            ))}
+          </ul>
+        )}
+
+        {/* tech stack capsules (work only) */}
+        {entry.techStack && (
+          <div className="exp-entry__stack">
+            <MonoLabel>Stack</MonoLabel>
+            <div className="exp-entry__stack-row">
+              {entry.techStack.map((t, i) => (
+                <TechCapsule key={i} name={t} />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── main component ── */
+export default function Experience() {
+  const [activeTab, setActiveTab] = useState('experience');
+  const sectionRef = useRef(null);
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
+
+  return (
+    <section
+      id="experience"
+      ref={sectionRef}
+      className="exp-section"
+    >
+      <div className="exp-inner">
+        {/* ── header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, ease: STAGGER_EASE }}
+          className="exp-header"
+        >
+          <div className="exp-header__text">
+            <MonoLabel className="exp-header__eyebrow">Career Path</MonoLabel>
+            <h2 className="exp-header__title">
+              Engineering Experience<br className="hidden sm:inline" />
+              <span className="exp-header__title-accent">&amp; Education</span>
             </h2>
-            <p className="mt-3 text-[15.5px] text-[var(--text-body)] leading-relaxed max-w-[58ch]">
-              Demonstrated track record of designing backend microservices, optimizing database performance, and collaborating in high-velocity tech teams.
+            <p className="exp-header__lede">
+              Demonstrated track record of designing backend microservices,
+              optimizing database performance, and collaborating in
+              high-velocity tech teams.
             </p>
           </div>
 
-          <div className="flex border border-[var(--border-strong)]" role="group" aria-label="Switch between work experience and education">
+          {/* ── tab switcher (organic pill, not boxy) ── */}
+          <div className="exp-tabs" role="group" aria-label="Switch between work experience and education">
             <button
               onClick={() => setActiveTab('experience')}
               aria-pressed={activeTab === 'experience'}
-              className={`font-mono text-[13px] px-4 py-2.5 transition-colors ${
-                activeTab === 'experience'
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)]'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)]'
-              }`}
+              className={`exp-tab ${activeTab === 'experience' ? 'exp-tab--active' : ''}`}
             >
-              Work Experience
+              <Briefcase size={14} aria-hidden="true" />
+              <span>Experience</span>
             </button>
             <button
               onClick={() => setActiveTab('education')}
               aria-pressed={activeTab === 'education'}
-              className={`font-mono text-[13px] px-4 py-2.5 border-l border-[var(--border-strong)] transition-colors ${
-                activeTab === 'education'
-                  ? 'bg-[var(--text-primary)] text-[var(--bg-page)]'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-muted)]'
-              }`}
+              className={`exp-tab ${activeTab === 'education' ? 'exp-tab--active' : ''}`}
             >
-              Education
+              <GraduationCap size={14} aria-hidden="true" />
+              <span>Education</span>
             </button>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Work experience rows */}
-        {activeTab === 'experience' && (
-          <div>
-            {PORTFOLIO_DATA.experiences.map((exp, idx) => (
-              <motion.article
-                key={idx}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: idx * 0.05 }}
-                className="py-10 border-b border-[var(--border-color)] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10"
-              >
-                {/* Meta column */}
-                <div className="lg:col-span-4">
-                  <p className="font-mono text-[13px] text-[var(--text-primary)]">{exp.period}</p>
-                  <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-2">{exp.company}</p>
-                  {exp.location && (
-                    <p className="font-mono text-[12.5px] text-[var(--text-secondary)]">{exp.location}</p>
-                  )}
-                </div>
-
-                {/* Content column */}
-                <div className="lg:col-span-8">
-                  <h3 className="font-heading font-medium text-[20px] text-[var(--text-primary)]">{exp.role}</h3>
-                  <p className="text-[15px] text-[var(--text-body)] leading-relaxed mt-3 max-w-[65ch]">{exp.description}</p>
-
-                  {exp.architectureMilestones && (
-                    <ul className="mt-5 space-y-2.5">
-                      {exp.architectureMilestones.map((ms, msIdx) => (
-                        <li key={msIdx} className="flex items-start gap-3 text-[14px] text-[var(--text-body)] leading-relaxed max-w-[70ch]">
-                          <span className="mt-[7px] w-1.5 h-1.5 bg-[var(--text-primary)] shrink-0" aria-hidden="true" />
-                          <span>{ms}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {exp.techStack && (
-                    <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-5">
-                      {exp.techStack.join(', ')}
-                    </p>
-                  )}
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        )}
-
-        {/* Education rows */}
-        {activeTab === 'education' && (
-          <div>
-            {PORTFOLIO_DATA.education.map((edu, idx) => (
-              <motion.article
-                key={idx}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: idx * 0.05 }}
-                className="py-10 border-b border-[var(--border-color)] grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10"
-              >
-                <div className="lg:col-span-4">
-                  <p className="font-mono text-[13px] text-[var(--text-primary)]">{edu.period}</p>
-                  <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-2">{edu.institution}</p>
-                </div>
-                <div className="lg:col-span-8">
-                  <h3 className="font-heading font-medium text-[20px] text-[var(--text-primary)]">{edu.degree}</h3>
-                  <p className="text-[15px] text-[var(--text-body)] leading-relaxed mt-3 max-w-[65ch]">{edu.highlights}</p>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        )}
-
+        {/* ── content ── */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'experience' ? (
+            <motion.div
+              key="experience"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: STAGGER_EASE }}
+              className="exp-timeline"
+            >
+              {PORTFOLIO_DATA.experiences.map((exp, idx) => (
+                <EntryRow key={idx} entry={exp} idx={idx} variant="work" />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="education"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: STAGGER_EASE }}
+              className="exp-timeline"
+            >
+              {PORTFOLIO_DATA.education.map((edu, idx) => (
+                <EntryRow key={idx} entry={edu} idx={idx} variant="edu" />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
