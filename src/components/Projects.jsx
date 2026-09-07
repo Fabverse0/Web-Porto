@@ -1,32 +1,164 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Github } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-/* Small building block: one step of a system pipeline. Circles, not boxes. */
-function PipelineStep({ step, index }) {
-  return (
-    <li className="relative flex items-start gap-4">
-      {/* step node */}
-      <span
-        className="relative z-10 flex-none w-10 h-10 rounded-full border border-[var(--border-strong)] bg-[var(--bg-page)] font-mono text-[12px] text-[var(--text-primary)] flex items-center justify-center transition-colors group-hover:border-[var(--text-primary)]"
-        title={step.desc || step.description || step.title}
-        aria-hidden="true"
-      >
-        {String(index + 1).padStart(2, '0')}
-      </span>
+/* Split a title into two short lines for SVG labels (no auto-wrap in <text>) */
+function splitLabel(title) {
+  const words = title.split(' ');
+  if (words.length <= 2) return [title];
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+}
 
-      <div className="pt-1.5 min-w-0">
-        <p className="font-medium text-[14px] text-[var(--text-primary)] leading-snug">
-          {step.title}
-        </p>
-        {step.layer && (
-          <p className="font-mono text-[11px] text-[var(--text-secondary)] mt-1">
-            {step.layer}
-          </p>
-        )}
-      </div>
-    </li>
+/* Bespoke SVG topology: nodes as circles on a wave, flowing data dot.
+   Real data in, honest diagram out - no fake screenshots, no invented metrics. */
+function TopologyDiagram({ steps }) {
+  const n = steps.length;
+  const [compact, setCompact] = useState(false);
+  const pathRef = useRef(null);
+  const dotRef = useRef(null);
+  const wrapRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return undefined;
+    const mq = window.matchMedia('(max-width: 639px)');
+    const update = () => setCompact(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  // Layout: desktop = horizontal wave, compact = vertical rail
+  const W = compact ? 300 : 640;
+  const H = compact ? n * 86 + 30 : 240;
+  const nodes = steps.map((s, i) => {
+    if (compact) {
+      return { x: 96, y: 56 + i * 86, title: s.title };
+    }
+    const x = n === 1 ? 320 : 60 + (i * (520 / (n - 1)));
+    const y = 120 + Math.sin((i * Math.PI) / (n - 1 || 1)) * 42;
+    return { x, y, title: s.title };
+  });
+  const r = compact ? 20 : 24;
+  const d = nodes.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+
+  // Travelling data dot (paused under reduced motion, starts when visible)
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof requestAnimationFrame !== 'function') return undefined;
+    if (typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const path = pathRef.current;
+    const dot = dotRef.current;
+    const wrap = wrapRef.current;
+    if (!path || !dot || !wrap) return undefined;
+    if (typeof path.getTotalLength !== 'function') return undefined;
+    const len = path.getTotalLength();
+    let raf;
+    const t0 = performance.now();
+    const loop = (now) => {
+      const t = ((now - t0) * 0.055) % len;
+      const p = path.getPointAtLength(t);
+      dot.setAttribute('cx', p.x);
+      dot.setAttribute('cy', p.y);
+      raf = requestAnimationFrame(loop);
+    };
+    if (typeof IntersectionObserver === 'undefined') {
+      raf = requestAnimationFrame(loop);
+      return () => { if (raf) cancelAnimationFrame(raf); };
+    }
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        raf = requestAnimationFrame(loop);
+      } else if (raf) {
+        cancelAnimationFrame(raf);
+      }
+    });
+    io.observe(wrap);
+    return () => {
+      io.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [compact, steps]);
+
+  return (
+    <div ref={wrapRef} className="relative">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full h-auto"
+        role="img"
+        aria-label={`System flow: ${steps.map(s => s.title).join(', ')}`}
+      >
+        {/* connecting path */}
+        <path
+          ref={pathRef}
+          d={d}
+          fill="none"
+          stroke="var(--border-strong)"
+          strokeWidth="1.5"
+        />
+        {/* travelling packet */}
+        <circle ref={dotRef} r="3" fill="var(--text-primary)" opacity="0.8" cx={nodes[0].x} cy={nodes[0].y} />
+
+        {nodes.map((p, i) => {
+          const lines = splitLabel(steps[i].title);
+          return (
+            <g key={i}>
+              <circle
+                className="topo-node"
+                cx={p.x}
+                cy={p.y}
+                r={r}
+                fill="var(--bg-page)"
+                stroke="var(--border-strong)"
+                strokeWidth="1.5"
+              />
+              <text
+                x={p.x}
+                y={p.y + 4}
+                textAnchor="middle"
+                fontSize={compact ? 11 : 12}
+                fill="var(--text-primary)"
+                style={{ fontFamily: 'var(--font-mono)' }}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </text>
+              {/* label */}
+              {compact ? (
+                <text
+                  x={p.x + r + 16}
+                  y={p.y - (lines.length === 2 ? 2 : 4)}
+                  textAnchor="start"
+                  fontSize={11}
+                  fill="var(--text-secondary)"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  {lines.map((ln, li) => (
+                    <tspan key={li} x={p.x + r + 16} dy={li === 0 ? 0 : 13}>
+                      {ln}
+                    </tspan>
+                  ))}
+                </text>
+              ) : (
+                <text
+                  x={p.x}
+                  y={p.y + r + 18}
+                  textAnchor="middle"
+                  fontSize={11}
+                  fill="var(--text-secondary)"
+                  style={{ fontFamily: 'var(--font-mono)' }}
+                >
+                  {lines.map((ln, li) => (
+                    <tspan key={li} x={p.x} dy={li === 0 ? 0 : 13}>
+                      {ln}
+                    </tspan>
+                  ))}
+                </text>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
   );
 }
 
@@ -48,14 +180,14 @@ export default function Projects({ selectedSkill, onOpenModal }) {
     <section id="projects" className="py-24 sm:py-28 bg-[var(--bg-page)] border-b border-[var(--border-color)] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Section header: typographic, no boxes */}
+        {/* Section header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 pb-14 border-b border-[var(--border-strong)]">
           <div className="max-w-2xl">
             <h2 className="font-heading font-semibold text-[30px] sm:text-[38px] tracking-[-0.015em] text-[var(--text-primary)] leading-tight">
               Production-Grade Systems &amp; High-Throughput APIs.
             </h2>
             <p className="mt-4 text-[16px] text-[var(--text-body)] leading-relaxed max-w-[56ch]">
-              Real-world backend systems, documented the way they run. Follow the flow of each architecture below.
+              Real-world backend systems, drawn the way they run. Follow each architecture below.
             </p>
           </div>
 
@@ -106,13 +238,6 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                     {project.shortDesc}
                   </p>
 
-                  {/* Real endpoint, no invented metrics */}
-                  {project.apiEndpoint && (
-                    <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-6">
-                      {project.apiEndpoint.method} {project.apiEndpoint.path}
-                    </p>
-                  )}
-
                   <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-8">
                     <a
                       href={project.githubUrl}
@@ -133,29 +258,18 @@ export default function Projects({ selectedSkill, onOpenModal }) {
                   </div>
                 </div>
 
-                {/* System pipeline: open topology with a travelling packet on hover */}
+                {/* System visual: bespoke topology diagram per project */}
                 <div className="lg:col-span-7 lg:pl-6">
-                  <div className="relative">
-                    {/* vertical rail */}
-                    <span
-                      className="absolute left-[19px] top-2 bottom-2 w-px bg-[var(--border-color)]"
-                      aria-hidden="true"
-                    />
-                    {/* packet that travels the rail while hovering the band */}
-                    <span
-                      className="packet absolute left-[16px] w-1.5 h-1.5 bg-[var(--text-primary)] opacity-70"
-                      aria-hidden="true"
-                    />
-                    <ol className="space-y-7 relative">
-                      {(project.architectureDiagram || []).map((step, i) => (
-                        <PipelineStep key={i} step={step} index={i} />
-                      ))}
-                    </ol>
-                  </div>
-                  <p className="font-mono text-[11px] text-[var(--text-secondary)] mt-6 lg:mt-8 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full border border-[var(--border-strong)]" aria-hidden="true" />
-                    Follow the flow, then open the full system specs.
-                  </p>
+                  <TopologyDiagram steps={project.architectureDiagram || []} />
+                  {/* console bar: real endpoint, no invented metrics */}
+                  {project.apiEndpoint && (
+                    <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[12px] text-[var(--text-secondary)]">
+                      <span className="text-[var(--text-primary)]">
+                        {project.apiEndpoint.method} {project.apiEndpoint.path}
+                      </span>
+                      <span>OpenAPI 3.0</span>
+                    </div>
+                  )}
                 </div>
               </motion.article>
             ))}
