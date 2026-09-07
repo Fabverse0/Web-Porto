@@ -1153,3 +1153,84 @@ code, pre, .font-mono { font-family: var(--font-mono); }
   .metric-chip { padding: 5px 10px 5px 8px; }
   .metric-chip__value { font-size: 13px; }
 }
+
+/* ============================================================
+   NAVBAR REDESIGN — glassmorphism + sliding indicator + scroll-aware compact
+   ============================================================ */
+
+/* ── Glassmorphism base ── */
+.navbar-glass {
+  background: var(--navbar-bg-rest);
+  border-bottom: 1px solid var(--border-color);
+  will-change: backdrop-filter, -webkit-backdrop-filter, padding-block;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.navbar-glass[data-scrolled] {
+  background: var(--navbar-bg-scrolled);
+}
+
+/* Light-mode glass bg colors */
+:root .navbar-glass {
+  --navbar-bg-rest: rgba(250, 250, 250, 0.72);
+  --navbar-bg-scrolled: rgba(250, 250, 250, 0.88);
+}
+
+/* Dark-mode glass bg colors */
+[data-theme="dark"] .navbar-glass {
+  --navbar-bg-rest: rgba(11, 11, 13, 0.72);
+  --navbar-bg-scrolled: rgba(11, 11, 13, 0.88);
+}
+
+/* ── Brand sub-label underline sweep on hover ── */
+.navbar-brand-sub {
+  position: relative;
+  display: inline-block;
+}
+.navbar-brand-sub::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent-emerald);
+  transition: width 0.25s ease;
+}
+.navbar-brand:hover .navbar-brand-sub::after {
+  width: 100%;
+}
+
+/* ── Nav link touch target ── */
+.navbar-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.navbar-link:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* ── Mobile burger ── */
+.navbar-burger {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.navbar-burger:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 2px;
+}
+
+/* ── Reduced motion: strip animations ── */
+@media (prefers-reduced-motion: reduce) {
+  .navbar-glass {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    will-change: auto;
+  }
+  .navbar-brand-sub::after {
+    transition: none;
+  }
+}
