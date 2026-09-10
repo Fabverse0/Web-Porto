@@ -1,31 +1,32 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Experience from '../components/Experience';
 
-describe('Experience', () => {
-  it('renders work experience entries with timeline', () => {
+describe('Experience — spec-sheet document', () => {
+  it('renders work experience entries as document rows', () => {
     render(<Experience />);
     expect(screen.getByText(/Engineering Experience/i)).toBeInTheDocument();
     expect(screen.getByText(/Backend Software Engineer/i)).toBeInTheDocument();
-    expect(screen.getByText(/99.99%/i)).toBeInTheDocument();
-    expect(screen.getByText('TypeScript')).toBeInTheDocument();
+    // stack label — two work entries share same label
+    expect(screen.getAllByText('Stack').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('TypeScript').length).toBeGreaterThanOrEqual(1);
+    // doc number 01 — appears for work and edu
+    expect(screen.getAllByText('01').length).toBeGreaterThanOrEqual(1);
   });
 
-  it('switches to education tab on click', async () => {
+  it('renders education stacked below work (no tabs)', () => {
     render(<Experience />);
-    const eduTab = screen.getByRole('button', { name: /education/i });
-    fireEvent.click(eduTab);
-    // AnimatePresence causes async transition — use findByText
-    expect(await screen.findByText(/Bachelor of Science/i)).toBeInTheDocument();
-    await waitFor(() => {
-      expect(screen.queryByText(/Backend Software Engineer/i)).not.toBeInTheDocument();
-    });
+    // both groups visible without click — use exact match for group heads to avoid header collision
+    expect(screen.getByText(/^Work Experience$/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/^Education$/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText(/Bachelor of Science/i)).toBeInTheDocument();
+    expect(screen.getByText(/Backend Software Engineer/i)).toBeInTheDocument();
   });
 
-  it('renders impact metric chips with label and value', () => {
+  it('does not render old metric chips or timeline dots', () => {
     render(<Experience />);
-    expect(screen.getByText('SLA Uptime')).toBeInTheDocument();
-    expect(screen.getByText('99.99%')).toBeInTheDocument();
-    expect(screen.getByText(/Latency Reduction/i)).toBeInTheDocument();
+    expect(screen.queryByText('SLA Uptime')).not.toBeInTheDocument();
+    // no pulse ring
+    expect(document.querySelector('.timeline-dot__ring')).toBeNull();
   });
 });

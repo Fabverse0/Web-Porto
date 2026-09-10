@@ -1,13 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { MapPin, Calendar } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-/* ── spring easing (expo-out, no bounce) ── */
-const SPRING = { type: 'spring', stiffness: 260, damping: 24 };
-const STAGGER_EASE = [0.22, 1, 0.36, 1];
+/* expo-out, no bounce — ref: DELIVERY study + Linear 150ms */
+const EASE = [0.22, 1, 0.36, 1];
 
-/* ── tiny mono label ── */
+/* ── mono label ── */
 function MonoLabel({ children, className = '' }) {
   return (
     <span className={`font-mono text-[11px] uppercase tracking-[0.08em] text-[var(--text-secondary)] ${className}`}>
@@ -16,124 +15,66 @@ function MonoLabel({ children, className = '' }) {
   );
 }
 
-/* ── impact metric chip ── */
-function MetricChip({ label, value }) {
-  return (
-    <div className="metric-chip group/chip">
-      <span className="metric-chip__value">{value}</span>
-      <span className="metric-chip__label">{label}</span>
-    </div>
-  );
-}
-
-/* ── tech capsule (same language as AboutSkills v2) ── */
+/* ── tech capsule hairline ── */
 function TechCapsule({ name }) {
-  return (
-    <span className="tech-capsule">{name}</span>
-  );
+  return <span className="tech-capsule">{name}</span>;
 }
 
-/* ── timeline dot with pulse ring ── */
-function TimelineDot({ active = false }) {
-  return (
-    <div className="timeline-dot-wrapper" aria-hidden="true">
-      <div className={`timeline-dot ${active ? 'timeline-dot--active' : ''}`} />
-      {active && <div className="timeline-dot__ring" />}
-    </div>
-  );
-}
-
-/* ── single entry row ── */
-function EntryRow({ entry, idx, variant = 'work' }) {
+/* ── doc entry: left meta (period + place + number) | right main ── */
+function DocEntry({ entry, idx, variant = 'work' }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.25 });
+  const inView = useInView(ref, { once: true, amount: 0.15 });
   const isWork = variant === 'work';
-  const metrics = entry.impactMetrics || [];
+  const num = String(idx + 1).padStart(2, '0');
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: Math.min(idx * 0.04, 0.2), ease: STAGGER_EASE }}
-      className="exp-entry"
+      initial={{ opacity: 0 }}
+      animate={inView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.4, delay: Math.min(idx * 0.06, 0.18), ease: EASE }}
+      className="exp-doc-entry"
     >
-      {/* ── timeline spine ── */}
-      <div className="exp-entry__spine">
-        <TimelineDot active={inView} />
-        {idx < (isWork ? PORTFOLIO_DATA.experiences.length - 1 : PORTFOLIO_DATA.education.length - 1) && (
-          <div className="exp-entry__line" />
+      {/* left meta — sticky on desktop (Brittany pattern) */}
+      <div className="exp-doc-meta">
+        <div className="exp-doc-period">
+          <Calendar size={12} className="exp-doc-meta-icon" aria-hidden="true" />
+          <span>{entry.period}</span>
+        </div>
+        {entry.location && (
+          <div className="exp-doc-location">
+            <MapPin size={11} className="exp-doc-meta-icon" aria-hidden="true" />
+            <span>{entry.location}</span>
+          </div>
         )}
+        <div className="exp-doc-number" aria-hidden="true">{num}</div>
       </div>
 
-      {/* ── content column ── */}
-      <div className="exp-entry__body">
-        {/* period + location row */}
-        <div className="exp-entry__meta">
-          <div className="exp-entry__meta-left">
-            <Calendar size={13} className="exp-entry__icon" aria-hidden="true" />
-            <span className="font-mono text-[13px] text-[var(--text-primary)]">{entry.period}</span>
-          </div>
-          {entry.location && (
-            <div className="exp-entry__meta-right">
-              <MapPin size={12} className="exp-entry__icon" aria-hidden="true" />
-              <span className="font-mono text-[12px]">{entry.location}</span>
-            </div>
-          )}
-        </div>
+      {/* right main */}
+      <div className="exp-doc-main">
+        <h3 className="exp-doc-title">{isWork ? entry.role : entry.degree}</h3>
+        <p className="exp-doc-org">{isWork ? entry.company : entry.institution}</p>
+        <p className="exp-doc-desc">{entry.description || entry.highlights}</p>
 
-        {/* role / degree */}
-        <h3 className="exp-entry__title">
-          {isWork ? entry.role : entry.degree}
-        </h3>
-
-        {/* company / institution */}
-        <p className="exp-entry__org">
-          {isWork ? entry.company : entry.institution}
-        </p>
-
-        {/* description */}
-        <p className="exp-entry__desc">
-          {entry.description || entry.highlights}
-        </p>
-
-        {/* impact metrics (work only) */}
-        {metrics.length > 0 && (
-          <div className="exp-entry__metrics">
-            <MonoLabel>Impact</MonoLabel>
-            <div className="exp-entry__metrics-row">
-              {metrics.map((m, i) => (
-                <MetricChip key={i} label={m.label} value={m.value} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* architecture milestones (work only) */}
+        {/* milestones — plain hairline bullets, no spring spam (ref: 21st hairline) */}
         {entry.architectureMilestones && (
-          <ul className="exp-entry__milestones">
+          <ul className="exp-doc-milestones">
             {entry.architectureMilestones.map((ms, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, x: -8 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.35, delay: Math.min(idx * 0.04 + i * 0.03, 0.3), ease: STAGGER_EASE }}
-                className="exp-entry__milestone-item"
-              >
-                <span className="exp-entry__milestone-bullet" aria-hidden="true" />
+              <li key={i} className="exp-doc-milestone">
+                <span className="exp-doc-bullet" aria-hidden="true" />
                 <span>{ms}</span>
-              </motion.li>
+              </li>
             ))}
           </ul>
         )}
 
-        {/* tech stack capsules (work only) */}
+        {/* stack — mono hairline capsules (Park 1px) */}
         {entry.techStack && (
-          <div className="exp-entry__stack">
+          <div className="exp-doc-stack">
             <MonoLabel>Stack</MonoLabel>
-            <div className="exp-entry__stack-row">
-              {entry.techStack.map((t, i) => (
-                <TechCapsule key={i} name={t} />
+            <div className="exp-doc-stack-row">
+              {entry.techStack.map((t) => (
+                <TechCapsule key={t} name={t} />
               ))}
             </div>
           </div>
@@ -143,90 +84,58 @@ function EntryRow({ entry, idx, variant = 'work' }) {
   );
 }
 
-/* ── main component ── */
+/* ── main ── */
 export default function Experience() {
-  const [activeTab, setActiveTab] = useState('experience');
   const sectionRef = useRef(null);
-  const sectionInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const sectionInView = useInView(sectionRef, { once: true, amount: 0.08 });
 
   return (
-    <section
-      id="experience"
-      ref={sectionRef}
-      className="exp-section"
-    >
+    <section id="experience" ref={sectionRef} className="exp-section">
       <div className="exp-inner">
-        {/* ── header ── */}
+        {/* header — no tabs, stacked doc (ref: Semplice no-template) */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={sectionInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, ease: STAGGER_EASE }}
+          initial={{ opacity: 0 }}
+          animate={sectionInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.45, ease: EASE }}
           className="exp-header"
         >
           <div className="exp-header__text">
             <MonoLabel className="exp-header__eyebrow">Career Path</MonoLabel>
             <h2 className="exp-header__title">
-              Engineering Experience<br className="hidden sm:inline" />
-              <span className="exp-header__title-accent">&amp; Education</span>
+              Engineering Experience
+              <span className="exp-header__title-accent"> &amp; Education</span>
             </h2>
             <p className="exp-header__lede">
-              Demonstrated track record of designing backend microservices,
-              optimizing database performance, and collaborating in
-              high-velocity tech teams.
+              Backend systems, database performance, and team delivery — documented as a spec sheet, not a timeline.
             </p>
-          </div>
-
-          {/* ── tab switcher (organic pill, not boxy) ── */}
-          <div className="exp-tabs" role="group" aria-label="Switch between work experience and education">
-            <button
-              onClick={() => setActiveTab('experience')}
-              aria-pressed={activeTab === 'experience'}
-              className={`exp-tab ${activeTab === 'experience' ? 'exp-tab--active' : ''}`}
-            >
-              <Briefcase size={14} aria-hidden="true" />
-              <span>Experience</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('education')}
-              aria-pressed={activeTab === 'education'}
-              className={`exp-tab ${activeTab === 'education' ? 'exp-tab--active' : ''}`}
-            >
-              <GraduationCap size={14} aria-hidden="true" />
-              <span>Education</span>
-            </button>
           </div>
         </motion.div>
 
-        {/* ── content ── */}
-        <AnimatePresence mode="wait">
-          {activeTab === 'experience' ? (
-            <motion.div
-              key="experience"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: STAGGER_EASE }}
-              className="exp-timeline"
-            >
-              {PORTFOLIO_DATA.experiences.map((exp, idx) => (
-                <EntryRow key={idx} entry={exp} idx={idx} variant="work" />
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="education"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3, ease: STAGGER_EASE }}
-              className="exp-timeline"
-            >
-              {PORTFOLIO_DATA.education.map((edu, idx) => (
-                <EntryRow key={idx} entry={edu} idx={idx} variant="edu" />
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* work group */}
+        <div className="exp-doc-group" aria-labelledby="exp-work-heading">
+          <div className="exp-doc-group-head">
+            <MonoLabel id="exp-work-heading">Work Experience</MonoLabel>
+            <span className="exp-doc-group-line" aria-hidden="true" />
+          </div>
+          <div className="exp-doc-list">
+            {PORTFOLIO_DATA.experiences.map((exp, idx) => (
+              <DocEntry key={exp.role + idx} entry={exp} idx={idx} variant="work" />
+            ))}
+          </div>
+        </div>
+
+        {/* education group */}
+        <div className="exp-doc-group" aria-labelledby="exp-edu-heading">
+          <div className="exp-doc-group-head">
+            <MonoLabel id="exp-edu-heading">Education</MonoLabel>
+            <span className="exp-doc-group-line" aria-hidden="true" />
+          </div>
+          <div className="exp-doc-list">
+            {PORTFOLIO_DATA.education.map((edu, idx) => (
+              <DocEntry key={edu.degree + idx} entry={edu} idx={idx} variant="edu" />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
