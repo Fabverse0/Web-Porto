@@ -1,32 +1,36 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Experience from '../components/Experience';
 
-describe('Experience — spec-sheet document', () => {
-  it('renders work experience entries as document rows', () => {
+describe('Experience — tabbed spec-sheet, education first', () => {
+  it('shows education by default, work hidden', () => {
     render(<Experience />);
     expect(screen.getByText(/Engineering Experience/i)).toBeInTheDocument();
-    expect(screen.getByText(/Backend Software Engineer/i)).toBeInTheDocument();
-    // stack label — two work entries share same label
-    expect(screen.getAllByText('Stack').length).toBeGreaterThanOrEqual(1);
-    expect(screen.getAllByText('TypeScript').length).toBeGreaterThanOrEqual(1);
-    // doc number 01 — appears for work and edu
-    expect(screen.getAllByText('01').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole('tab', { name: /Education/i })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByText(/Bachelor of Science/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Backend Software Engineer/i)).not.toBeInTheDocument();
   });
 
-  it('renders education stacked below work (no tabs)', () => {
+  it('switches to work panel on tab click', async () => {
     render(<Experience />);
-    // both groups visible without click — use exact match for group heads to avoid header collision
-    expect(screen.getByText(/^Work Experience$/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/^Education$/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/Bachelor of Science/i)).toBeInTheDocument();
-    expect(screen.getByText(/Backend Software Engineer/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /Work Experience/i }));
+    expect(await screen.findByText(/Backend Software Engineer/i)).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /Work Experience/i })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.queryByText(/Bachelor of Science/i)).not.toBeInTheDocument();
+  });
+
+  it('toggles entry details inside work panel', async () => {
+    render(<Experience />);
+    fireEvent.click(screen.getByRole('tab', { name: /Work Experience/i }));
+    const hideBtn = await screen.findByRole('button', { name: /Hide details/i });
+    fireEvent.click(hideBtn);
+    const viewBtns = await screen.findAllByRole('button', { name: /View details/i });
+    expect(viewBtns.length).toBeGreaterThanOrEqual(1);
   });
 
   it('does not render old metric chips or timeline dots', () => {
     render(<Experience />);
     expect(screen.queryByText('SLA Uptime')).not.toBeInTheDocument();
-    // no pulse ring
     expect(document.querySelector('.timeline-dot__ring')).toBeNull();
   });
 });
