@@ -18,7 +18,7 @@
   --primitive-color-emerald-700: #047857;
   --primitive-color-emerald-500: #10B981;
 
-  --primitive-font-heading: 'IBM Plex Sans', -apple-system, sans-serif;
-  --primitive-font-mono: 'IBM Plex Mono', monospace;
-  --primitive-font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+  --primitive-font-heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --primitive-font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --primitive-font-body: 'Space Grotesk', -apple-system, 'Segoe UI', sans-serif;
 }

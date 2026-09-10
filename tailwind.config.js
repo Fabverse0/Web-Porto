@@ -8,9 +8,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['"IBM Plex Sans"', 'sans-serif'],
+        display: ['"Fraunces"', 'Georgia', 'serif'],
+        heading: ['"Fraunces"', 'Georgia', 'serif'],
         mono: ['"IBM Plex Mono"', 'monospace'],
-        sans: ['"IBM Plex Sans"', 'sans-serif'],
+        sans: ['"Space Grotesk"', 'sans-serif'],
       },
       colors: {
         brand: {

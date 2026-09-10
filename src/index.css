@@ -24,7 +24,7 @@
   --text-tertiary: var(--primitive-color-zinc-500);
   --terminal-bg: var(--primitive-color-zinc-900);
   --terminal-text: var(--primitive-color-snow);
-  --accent-emerald: var(--primitive-color-emerald-700);
+  --accent-emerald: var(--primitive-color-zinc-900); /* mono: was emerald-700 */
   --btn-hover: var(--primitive-color-zinc-700);
 
   --font-heading: var(--primitive-font-heading);
@@ -45,7 +45,7 @@
   --text-tertiary: #A1A1AA;
   --terminal-bg: #000000;
   --terminal-text: #FAFAFA;
-  --accent-emerald: #34D399;
+  --accent-emerald: #FAFAFA; /* mono: was #34D399 */
   --btn-hover: #D4D4D8;
 }
 
@@ -905,7 +905,7 @@ code, pre, .font-mono { font-family: var(--font-mono); }
   color: var(--bg-page);
 }
 .exp-tab:focus-visible {
-  outline: 2px solid var(--accent-emerald, #10b981);
+  outline: 2px solid var(--accent-emerald, #09090B);
   outline-offset: 2px;
 }
 .exp-tab-count {

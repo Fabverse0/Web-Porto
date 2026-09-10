@@ -95,16 +95,16 @@ const icons: Record<SocialPlatform, React.ReactNode> = {
 
 const brandHoverColors: Record<SocialPlatform, string> = {
   github: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
-  linkedin: 'hover:border-[#0077B5] hover:text-[#0077B5]',
-  twitter: 'hover:border-[#1DA1F2] hover:text-[#1DA1F2]',
+  linkedin: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  twitter: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
   x: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
-  mail: 'hover:border-[#10B981] hover:text-[#10B981]',
-  email: 'hover:border-[#10B981] hover:text-[#10B981]',
-  discord: 'hover:border-[#5865F2] hover:text-[#5865F2]',
-  youtube: 'hover:border-[#FF0000] hover:text-[#FF0000]',
-  instagram: 'hover:border-[#E4405F] hover:text-[#E4405F]',
-  website: 'hover:border-[#2563EB] hover:text-[#2563EB]',
-  cv: 'hover:border-[#10B981] hover:text-[#10B981]',
+  mail: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  email: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  discord: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  youtube: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  instagram: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  website: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
+  cv: 'hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
 };
 
 const sizeClasses = {
@@ -144,7 +144,7 @@ export const SocialIcon = React.forwardRef<HTMLAnchorElement, SocialIconProps>(
         'bg-[#FFFFFF] dark:bg-[#18181B] text-[#71717A] dark:text-[#A1A1AA] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm hover:shadow-md ' +
         brandHoverColors[platform],
       ghost: 'bg-transparent text-[#71717A] dark:text-[#A1A1AA] hover:bg-[#F4F4F5] dark:hover:bg-[#27272A] ' + brandHoverColors[platform],
-      glow: 'bg-[#FFFFFF] dark:bg-[#18181B] text-[#71717A] dark:text-[#A1A1AA] border border-[#E4E4E7] dark:border-[#27272A] hover:shadow-[0_0_15px_rgba(16,185,129,0.35)] hover:border-[#10B981] hover:text-[#10B981]',
+      glow: 'bg-[#FFFFFF] dark:bg-[#18181B] text-[#71717A] dark:text-[#A1A1AA] border border-[#E4E4E7] dark:border-[#27272A] hover:shadow-[0_0_15px_rgba(0,0,0,0.25)] hover:border-[#09090B] dark:hover:border-[#FAFAFA] hover:text-[#09090B] dark:hover:text-[#FAFAFA]',
       brand: 'bg-[#FFFFFF] dark:bg-[#18181B] border border-[#E4E4E7] dark:border-[#27272A] shadow-sm ' + brandHoverColors[platform],
     };
 
@@ -160,7 +160,7 @@ export const SocialIcon = React.forwardRef<HTMLAnchorElement, SocialIconProps>(
         whileTap={{ scale: 0.94 }}
         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         className={cn(
-          'relative inline-flex items-center justify-center rounded-xl transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#10B981]',
+          'relative inline-flex items-center justify-center rounded-xl transition-all group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#09090B] dark:focus-visible:ring-[#FAFAFA]',
           sizeClasses[size],
           variantStyles[variant],
           className

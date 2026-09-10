@@ -108,7 +108,7 @@ function LogoCloud({ skills }) {
         >
           <BrandLogo
             slug={skill.slug}
-            color={skill.brandColor}
+            color="var(--text-secondary)"
             fallbackName={skill.name}
             size={28}
           />
@@ -152,7 +152,7 @@ function CategoryBand({ category, skills, selectedSkill, onSkillClick, onSkillKe
             >
               <BrandLogo
                 slug={skill.slug}
-                color={isSelected ? 'var(--bg-page)' : skill.brandColor}
+                color={isSelected ? 'var(--bg-page)' : 'var(--text-secondary)'}
                 fallbackName={skill.name}
                 size={16}
               />

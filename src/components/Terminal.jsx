@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Terminal as TerminalIcon, Copy, Check, CornerDownLeft, Sparkles } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
-function MatrixRainCanvas({ duration = 12000, color = '#10B981', onClose }) {
+function MatrixRainCanvas({ duration = 12000, color = '#FAFAFA', onClose }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ export default function Terminal() {
   const [inputVal, setInputVal] = useState('');
   const [copied, setCopied] = useState(false);
   const [matrixActive, setMatrixActive] = useState(false);
-  const [terminalTheme, setTerminalTheme] = useState('#10B981'); // Emerald default
+  const [terminalTheme, setTerminalTheme] = useState('#FAFAFA'); // Mono default
   const terminalBodyRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -174,7 +174,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
       newHistory.push({ type: 'output', text: benchmarkOutput });
     } else if (cmd.startsWith('theme')) {
       const themeName = cmd.replace('theme', '').trim();
-      let chosenColor = '#10B981';
+      let chosenColor = '#FAFAFA';
 
       if (themeName === 'cyber' || themeName === 'cyan') {
         chosenColor = '#06B6D4';
@@ -189,9 +189,9 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         setTerminalTheme(chosenColor);
         newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain switched to VIOLET PURPLE (#A855F7).' });
       } else {
-        chosenColor = '#10B981';
+        chosenColor = '#FAFAFA';
         setTerminalTheme(chosenColor);
-        newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain reset to EMERALD GREEN (#10B981). Available themes: cyber, amber, purple, emerald.' });
+        newHistory.push({ type: 'output', text: 'Terminal prompt & matrix rain reset to MONO WHITE (#FAFAFA). Available themes: cyber, amber, purple, emerald.' });
       }
       
       setMatrixActive(false);
@@ -245,7 +245,7 @@ Overall Status : ⚡ EXCELLENT (Production Ready SLA)`;
         <div className="flex items-center gap-2">
           <span className="terminal-dot bg-[#EF4444]"></span>
           <span className="terminal-dot bg-[#F59E0B]"></span>
-          <span className="terminal-dot bg-[#10B981]"></span>
+          <span className="terminal-dot bg-[#FAFAFA]"></span>
           <span className="text-[#A1A1AA] text-xs font-mono ml-2 hidden sm:inline">
             fabian@backend-srv: ~ (zsh)
           </span>

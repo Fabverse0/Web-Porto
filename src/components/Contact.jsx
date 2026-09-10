@@ -65,7 +65,7 @@ export default function Contact() {
           <div className="lg:col-span-5">
             <div className="bg-[#09090B] text-[#FAFAFA] border border-[#27272A] p-6 sm:p-8 space-y-6 h-full">
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#34D399] flex items-center gap-2">
+                <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#FAFAFA] flex items-center gap-2">
                   <MessageSquare className="w-3.5 h-3.5" aria-hidden="true" />
                   Primary Endpoint
                 </p>
@@ -81,7 +81,7 @@ export default function Contact() {
                   <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-[#A1A1AA]">Email Address</span>
                   <button
                     onClick={handleCopyEmail}
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#FAFAFA] hover:text-[#34D399] transition-colors min-h-[44px] px-1"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#FAFAFA] hover:underline transition-colors min-h-[44px] px-1"
                   >
                     {emailCopied ? <Check className="w-3.5 h-3.5" aria-hidden="true" /> : <Copy className="w-3.5 h-3.5" aria-hidden="true" />}
                     <span>{emailCopied ? 'Copied!' : 'Copy Email'}</span>
@@ -99,7 +99,7 @@ export default function Contact() {
                   <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-[#A1A1AA]">Terminal cURL Request</span>
                   <button
                     onClick={handleCopyCurl}
-                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#FAFAFA] hover:text-[#34D399] transition-colors min-h-[44px] px-1"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[#FAFAFA] hover:underline transition-colors min-h-[44px] px-1"
                   >
                     {curlCopied ? <Check className="w-3.5 h-3.5" aria-hidden="true" /> : <Copy className="w-3.5 h-3.5" aria-hidden="true" />}
                     <span>{curlCopied ? 'Copied!' : 'Copy cURL'}</span>
@@ -113,7 +113,7 @@ export default function Contact() {
 
               {/* Status line */}
               <div className="flex items-center gap-2.5 pt-1 font-mono text-xs">
-                <span className="w-2 h-2 bg-[#34D399]" aria-hidden="true" />
+                <span className="w-2 h-2 bg-[#FAFAFA]" aria-hidden="true" />
                 <span>STATUS: 200 OK / Typical Response Time &lt; 2 Hours</span>
               </div>
             </div>
