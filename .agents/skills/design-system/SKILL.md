@@ -1,244 +1,477 @@
 ---
 name: design-system
-description: Token architecture, component specifications, and slide generation. Three-layer tokens (primitive→semantic→component), CSS variables, spacing/typography scales, component specs, strategic slide creation. Use for design tokens, systematic design, brand-compliant presentations.
-argument-hint: "[component or token]"
-license: MIT
-metadata:
-  author: claudekit
-  version: "1.0.0"
+description: Validate design system tokens for WCAG AA/AAA contrast. Compute color token contrast, focus ring validation (WCAG 2.4.13), motion tokens, and spacing for touch targets across frameworks.
 ---
 
-# Design System
+# Design System Accessibility Skill
 
-Token architecture, component specifications, systematic design, slide generation.
+This skill provides reference data for design token contrast validation, focus ring compliance, and spacing audits. Used by `design-system-auditor.agent.md`.
 
-## When to Use
+---
 
-- Design token creation
-- Component state definitions
-- CSS variable systems
-- Spacing/typography scales
-- Design-to-code handoff
-- Tailwind theme configuration
-- **Slide/presentation generation**
+## WCAG Contrast Ratio - Computation Reference
 
-## Token Architecture
+### Step 1: Linearize sRGB Channel
 
-Load: `references/token-architecture.md`
+For each channel `C` in `[0, 255]`:
 
-### Three-Layer Structure
-
-```
-Primitive (raw values)
-       ↓
-Semantic (purpose aliases)
-       ↓
-Component (component-specific)
+```text
+c = C / 255
+c_lin = c / 12.92              if c <= 0.04045
+c_lin = ((c + 0.055) / 1.055)^2.4   otherwise
 ```
 
-**Example:**
-```css
-/* Primitive */
---color-blue-600: #2563EB;
+### Step 2: Relative Luminance
 
-/* Semantic */
---color-primary: var(--color-blue-600);
-
-/* Component */
---button-bg: var(--color-primary);
+```text
+L = 0.2126 * R_lin + 0.7152 * G_lin + 0.0722 * B_lin
 ```
 
-## Quick Start
+### Step 3: Contrast Ratio
 
-**Generate tokens:**
-```bash
-node scripts/generate-tokens.cjs --config tokens.json -o tokens.css
+```text
+ratio = (L_lighter + 0.05) / (L_darker + 0.05)
 ```
 
-**Validate usage:**
-```bash
-node scripts/validate-tokens.cjs --dir src/
+### Quick JavaScript Implementation
+
+```js
+function relativeLuminance(hex) {
+  const c = hex.replace('#', '').match(/.{2}/g)
+    .map(h => parseInt(h, 16) / 255)
+    .map(c => c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+
+function contrastRatio(hex1, hex2) {
+  const L1 = relativeLuminance(hex1);
+  const L2 = relativeLuminance(hex2);
+  const lighter = Math.max(L1, L2);
+  const darker = Math.min(L1, L2);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+// Example
+contrastRatio('#6B7280', '#FFFFFF'); // 5.74:1 - PASSES AA (was a common misconception)
+contrastRatio('#9CA3AF', '#FFFFFF'); // 2.85:1 - FAILS AA
 ```
 
-## References
+### HSL to Hex Conversion (for CSS variable tokens)
 
-| Topic | File |
-|-------|------|
-| Token Architecture | `references/token-architecture.md` |
-| Primitive Tokens | `references/primitive-tokens.md` |
-| Semantic Tokens | `references/semantic-tokens.md` |
-| Component Tokens | `references/component-tokens.md` |
-| Component Specs | `references/component-specs.md` |
-| States & Variants | `references/states-and-variants.md` |
-| Tailwind Integration | `references/tailwind-integration.md` |
+Many design systems store colors as HSL triplets (e.g., shadcn/ui, Radix):
 
-## Component Spec Pattern
+```js
+function hslToHex(h, s, l) {
+  s /= 100; l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+  };
+  return '#' + [f(0), f(8), f(4)]
+    .map(x => Math.round(x * 255).toString(16).padStart(2, '0'))
+    .join('');
+}
 
-| Property | Default | Hover | Active | Disabled |
-|----------|---------|-------|--------|----------|
-| Background | primary | primary-dark | primary-darker | muted |
-| Text | white | white | white | muted-fg |
-| Border | none | none | none | muted-border |
-| Shadow | sm | md | none | none |
-
-## Scripts
-
-| Script | Purpose |
-|--------|---------|
-| `generate-tokens.cjs` | Generate CSS from JSON token config |
-| `validate-tokens.cjs` | Check for hardcoded values in code |
-| `search-slides.py` | BM25 search + contextual recommendations |
-| `slide-token-validator.py` | Validate slide HTML for token compliance |
-| `fetch-background.py` | Fetch images from Pexels/Unsplash |
-
-## Templates
-
-| Template | Purpose |
-|----------|---------|
-| `design-tokens-starter.json` | Starter JSON with three-layer structure |
-
-## Integration
-
-**With brand:** Extract primitives from brand colors/typography
-**With ui-styling:** Component tokens → Tailwind config
-
-**Skill Dependencies:** brand, ui-styling
-**Primary Agents:** ui-ux-designer, frontend-developer
-
-## Slide System
-
-Brand-compliant presentations using design tokens + Chart.js + contextual decision system.
-
-### Source of Truth
-
-| File | Purpose |
-|------|---------|
-| `docs/brand-guidelines.md` | Brand identity, voice, colors |
-| `assets/design-tokens.json` | Token definitions (primitive→semantic→component) |
-| `assets/design-tokens.css` | CSS variables (import in slides) |
-| `assets/css/slide-animations.css` | CSS animation library |
-
-### Slide Search (BM25)
-
-```bash
-# Basic search (auto-detect domain)
-python scripts/search-slides.py "investor pitch"
-
-# Domain-specific search
-python scripts/search-slides.py "problem agitation" -d copy
-python scripts/search-slides.py "revenue growth" -d chart
-
-# Contextual search (Premium System)
-python scripts/search-slides.py "problem slide" --context --position 2 --total 9
-python scripts/search-slides.py "cta" --context --position 9 --prev-emotion frustration
+// shadcn/ui: --muted-foreground: 215.4 16.3% 46.9%
+hslToHex(215.4, 16.3, 46.9); // -> approximately #6B7280
 ```
 
-### Decision System CSVs
+---
 
-| File | Purpose |
-|------|---------|
-| `data/slide-strategies.csv` | 15 deck structures + emotion arcs + sparkline beats |
-| `data/slide-layouts.csv` | 25 layouts + component variants + animations |
-| `data/slide-layout-logic.csv` | Goal → Layout + break_pattern flag |
-| `data/slide-typography.csv` | Content type → Typography scale |
-| `data/slide-color-logic.csv` | Emotion → Color treatment |
-| `data/slide-backgrounds.csv` | Slide type → Image category (Pexels/Unsplash) |
-| `data/slide-copy.csv` | 25 copywriting formulas (PAS, AIDA, FAB) |
-| `data/slide-charts.csv` | 25 chart types with Chart.js config |
+## WCAG Contrast Thresholds
 
-### Contextual Decision Flow
+| Use Case | AA | AAA | Notes |
+|----------|-----|-----|-------|
+| Normal text (< 18pt / < 14pt bold) | 4.5:1 | 7:1 | Most body text |
+| Large text (>= 18pt / >= 14pt bold) | 3:1 | 4.5:1 | Headings, display text |
+| UI components (borders, icons) | 3:1 | - | Input borders, icon buttons |
+| Focus indicators (WCAG 2.4.13, 2.2) | 3:1 | - | Against adjacent colors |
+| Placeholder text | 4.5:1 | - | Counts as normal text |
+| Disabled state | Exempt | Exempt | Documented exemption |
+| Logo / brand | Exempt | Exempt | No requirement |
+| Decorative content | Exempt | Exempt | Must be marked decorative |
 
-```
-1. Parse goal/context
-        ↓
-2. Search slide-strategies.csv → Get strategy + emotion beats
-        ↓
-3. For each slide:
-   a. Query slide-layout-logic.csv → layout + break_pattern
-   b. Query slide-typography.csv → type scale
-   c. Query slide-color-logic.csv → color treatment
-   d. Query slide-backgrounds.csv → image if needed
-   e. Apply animation class from slide-animations.css
-        ↓
-4. Generate HTML with design tokens
-        ↓
-5. Validate with slide-token-validator.py
-```
+---
 
-### Pattern Breaking (Duarte Sparkline)
+## Framework Token Paths - Complete Reference
 
-Premium decks alternate between emotions for engagement:
-```
-"What Is" (frustration) ↔ "What Could Be" (hope)
-```
+### Tailwind CSS
 
-System calculates pattern breaks at 1/3 and 2/3 positions.
-
-### Slide Requirements
-
-**ALL slides MUST:**
-1. Import `assets/design-tokens.css` - single source of truth
-2. Use CSS variables: `var(--color-primary)`, `var(--slide-bg)`, etc.
-3. Use Chart.js for charts (NOT CSS-only bars)
-4. Include navigation (keyboard arrows, click, progress bar)
-5. Center align content
-6. Focus on persuasion/conversion
-
-### Chart.js Integration
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-<canvas id="revenueChart"></canvas>
-<script>
-new Chart(document.getElementById('revenueChart'), {
-    type: 'line',
-    data: {
-        labels: ['Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [{
-            data: [5, 12, 28, 45],
-            borderColor: '#FF6B6B',  // Use brand coral
-            backgroundColor: 'rgba(255, 107, 107, 0.1)',
-            fill: true,
-            tension: 0.4
-        }]
+```js
+// tailwind.config.js / tailwind.config.ts
+module.exports = {
+  theme: {
+    // Base colors (Tailwind default palette)
+    colors: {
+      // All color scales: slate, gray, zinc, neutral, stone, red, orange, amber,
+      // yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet,
+      // purple, fuchsia, pink, rose
+      // Each scale: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950
+    },
+    extend: {
+      colors: {
+        // Custom semantic colors - CHECK ALL PAIRS
+        brand: { primary: '#...', secondary: '#...' },
+        background: '#...',
+        foreground: '#...',
+        muted: '#...',
+        'muted-foreground': '#...',
+        accent: '#...',
+        'accent-foreground': '#...',
+        destructive: '#...',
+        'destructive-foreground': '#...',
+        card: '#...',
+        'card-foreground': '#...',
+        popover: '#...',
+        'popover-foreground': '#...',
+        border: '#...',    // UI component - check 3:1 against background
+        input: '#...',     // UI component - check 3:1 against background
+        ring: '#...',      // Focus ring - check 3:1 against background
+        primary: '#...',
+        'primary-foreground': '#...',
+        secondary: '#...',
+        'secondary-foreground': '#...',
+      },
+      ringColor: { DEFAULT: '...' },  // Focus state
+      ringWidth: { DEFAULT: '2px' },  // Must be >= 2px for WCAG 2.4.13
     }
-});
-</script>
+  }
+}
 ```
 
-### Token Compliance
+### shadcn/ui / Radix CSS Variables
 
 ```css
-/* CORRECT - uses token */
-background: var(--slide-bg);
-color: var(--color-primary);
-font-family: var(--typography-font-heading);
+/* globals.css - HSL triplets without hsl() wrapper */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;     /* HIGH RISK - check on --background */
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;               /* HIGH RISK - red on white */
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;               /* UI component - check 3:1 */
+  --input: 214.3 31.8% 91.4%;                /* UI component - check 3:1 */
+  --ring: 222.2 84% 4.9%;                    /* Focus ring - check 3:1 */
+}
 
-/* WRONG - hardcoded */
-background: #0D0D0D;
-color: #FF6B6B;
-font-family: 'Space Grotesk';
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  /* ... all dark mode variants */
+}
 ```
 
-### Reference Implementation
+### Material UI (MUI) v5+
 
-Working example with all features:
-```
-assets/designs/slides/claudekit-pitch-251223.html
+```js
+// Token paths in createTheme()
+palette: {
+  primary: {
+    main: '#1976d2',            // text-on-white: 4.56:1 
+    light: '#42a5f5',           // text-on-white: 2.86:1  (do not use as text color)
+    dark: '#1565c0',            // text-on-white: 5.91:1 
+    contrastText: '#fff',       // check on main
+  },
+  secondary: {
+    main: '#9c27b0',            // text-on-white: 4.56:1  (barely)
+    light: '#ba68c8',           // text-on-white: 2.55:1 
+    dark: '#7b1fa2',
+    contrastText: '#fff',
+  },
+  error: {
+    main: '#d32f2f',            // text-on-white: 5.08:1 
+    light: '#ef5350',           // text-on-white: 3.04:1 
+  },
+  warning: {
+    main: '#ed6c02',            // text-on-white: 2.94:1  COMMON FAILURE
+    light: '#ff9800',           // text-on-white: 2.02:1 
+    dark: '#e65100',            // text-on-white: 3.84:1  (still fails!)
+    contrastText: 'rgba(0, 0, 0, 0.87)',  // check on warning.main
+  },
+  info: {
+    main: '#0288d1',            // text-on-white: 4.54:1  (barely)
+    light: '#03a9f4',           // text-on-white: 2.88:1 
+  },
+  success: {
+    main: '#2e7d32',            // text-on-white: 7.24:1 
+    light: '#4caf50',           // text-on-white: 2.52:1 
+  },
+  text: {
+    primary: 'rgba(0,0,0,0.87)',   // -> ~#212121: 16.07:1 on white 
+    secondary: 'rgba(0,0,0,0.6)', // -> ~#666: 5.74:1 on white 
+    disabled: 'rgba(0,0,0,0.38)', // -> ~#9E9E9E: 2.34:1  (exempt when disabled)
+  },
+  background: { paper: '#fff', default: '#fafafa' },
+  action: {
+    active: 'rgba(0,0,0,0.54)',   // ~4.48:1  for small icons
+    disabled: 'rgba(0,0,0,0.26)', // exempt when disabled
+  }
+}
 ```
 
-### Command
+### Chakra UI v2/v3
+
+```js
+// Token paths in extendTheme()
+const theme = extendTheme({
+  colors: {
+    // Direct palette values
+    brand: { 50: '#f5f3ff', 500: '#7C3AED', 600: '#6D28D9', 700: '#5B21B6', 900: '#2E1065' },
+    gray: { 50: '#F9FAFB', 100: '#F3F4F6', 200: '#E5E7EB', 300: '#D1D5DB',
+            400: '#9CA3AF',  // text-on-white: 2.85:1 
+            500: '#6B7280',  // text-on-white: 4.48:1  (near-miss)
+            600: '#4B5563',  // text-on-white: 7.44:1 
+            700: '#374151', 800: '#1F2937', 900: '#111827' },
+  },
+  semanticTokens: {
+    colors: {
+      'chakra-body-text': { default: 'gray.800', _dark: 'whiteAlpha.900' },
+      'chakra-body-bg': { default: 'white', _dark: 'gray.800' },
+      'chakra-placeholder-color': { default: 'gray.400', _dark: 'whiteAlpha.400' },
+      // gray.400 on white = 2.85:1  - placeholder fails AA
+    }
+  },
+  components: {
+    Button: {
+      variants: {
+        solid: (props) => ({
+          bg: `${props.colorScheme}.500`,  // check colorScheme.500 on white
+          color: 'white',                  // white on colorScheme.500 - check 3:1
+        }),
+        ghost: (props) => ({
+          color: `${props.colorScheme}.600`,  // text-on-white variant
+        }),
+      }
+    }
+  }
+});
+```
+
+### Style Dictionary (W3C Design Tokens)
+
+```json
+{
+  "color": {
+    "text": {
+      "primary": { "$value": "#111827", "$type": "color" },
+      "secondary": { "$value": "#6B7280", "$type": "color" },   // 4.48:1 on white 
+      "muted": { "$value": "#9CA3AF", "$type": "color" },       // 2.85:1 on white 
+      "inverse": { "$value": "#FFFFFF", "$type": "color" },
+      "on-primary": { "$value": "#FFFFFF", "$type": "color" }
+    },
+    "background": {
+      "default": { "$value": "#FFFFFF", "$type": "color" },
+      "subtle": { "$value": "#F9FAFB", "$type": "color" },
+      "primary": { "$value": "#1D4ED8", "$type": "color" }
+    },
+    "status": {
+      "error": { "$value": "#DC2626", "$type": "color" },
+      "warning": { "$value": "#D97706", "$type": "color" },     // 3:1 on white  for normal text
+      "success": { "$value": "#16A34A", "$type": "color" },
+      "info": { "$value": "#2563EB", "$type": "color" }
+    },
+    "border": {
+      "default": { "$value": "#D1D5DB", "$type": "color" },     // 1.44:1 on white  UI component
+      "focus": { "$value": "#2563EB", "$type": "color" }        // focus ring
+    }
+  }
+}
+```
+
+---
+
+## High-Risk Token Pairs - Known Failures
+
+| Token pair | Common value | Ratio on white | Status | Notes |
+|-----------|-------------|----------------|--------|-------|
+| MUI `warning.main` | `#ed6c02` | 2.94:1 |  FAIL | Orange on white - always fails |
+| MUI `warning.light` | `#ff9800` | 2.02:1 |  FAIL | Light orange - critical failure |
+| Tailwind `amber-400` | `#FBBF24` | 1.73:1 |  FAIL | Never use amber-400 as text |
+| Tailwind `yellow-400` | `#FACC15` | 1.60:1 |  FAIL | Yellow always fails on white |
+| gray-400 (Tailwind) | `#9CA3AF` | 2.85:1 |  FAIL | Common placeholder color |
+| gray-500 (Tailwind) | `#6B7280` | 4.48:1 |  FAIL | Near-miss - very common |
+| Chakra `gray.400` | `#9CA3AF` | 2.85:1 |  FAIL | Chakra placeholder default |
+| MUI `text.disabled` | `rgba(0,0,0,0.38)` | ~2.34:1 |  (exempt) | Disabled = exempt per WCAG |
+| MUI `action.active` | `rgba(0,0,0,0.54)` | ~4.48:1 |  FAIL | Icon color on white |
+| shadcn `--muted-foreground` | `hsl(215.4 16.3% 46.9%)` | ~4.48:1 |  FAIL | Default shadcn theme |
+| shadcn `--destructive` | `hsl(0 84.2% 60.2%)` | ~3.13:1 |  FAIL | Red badge on white |
+| Style Dictionary `text.secondary` | `#6B7280` | 4.48:1 |  FAIL | Ubiquitous - always check |
+
+### Compliant Replacements
+
+| Failing token | Replacement | New ratio | Notes |
+|--------------|-------------|-----------|-------|
+| `#9CA3AF` (gray-400) | `#6B7280` (gray-500) | 4.48:1 | Still near-miss; use `#595959` for safety |
+| `#6B7280` (gray-500) | `#4B5563` (gray-600) | 7.44:1 | Safest option |
+| `#ed6c02` (MUI warning) | `#b45309` (amber-700) | 4.57:1 | Minimum pass |
+| `#ff9800` (MUI warning.light) | `#b45309` (amber-700) | 4.57:1 | |
+| `#FBBF24` (amber-400) | `#92400e` (amber-800) | 8.80:1 | Use as background, not text |
+| `#FACC15` (yellow-400) | `#713f12` (yellow-900) | 12.04:1 | Use as background, not text |
+| `hsl(0 84.2% 60.2%)` (shadcn destructive) | `#b91c1c` (red-700) | 5.56:1 | |
+
+---
+
+## Storybook addon-a11y Configuration
 
 ```bash
-/slides:create "10-slide investor pitch for ClaudeKit Marketing"
+npm install --save-dev @storybook/addon-a11y
 ```
 
-## Best Practices
+```js
+// .storybook/main.js
+module.exports = {
+  addons: ['@storybook/addon-a11y'],
+};
 
-1. Never use raw hex in components - always reference tokens
-2. Semantic layer enables theme switching (light/dark)
-3. Component tokens enable per-component customization
-4. Use HSL format for opacity control
-5. Document every token's purpose
-6. **Slides must import design-tokens.css and use var() exclusively**
+// .storybook/preview.js - global configuration
+export const parameters = {
+  a11y: {
+    config: {
+      rules: [
+        { id: 'color-contrast', enabled: true },
+        { id: 'button-name', enabled: true },
+        { id: 'image-alt', enabled: true },
+        { id: 'focus-visible', enabled: true },    // Requires axe-core 4.4+
+        { id: 'target-size', enabled: true },       // WCAG 2.5.5 / 2.5.8
+      ],
+    },
+    // Disable for specific stories (use sparingly)
+    disable: false,
+  },
+};
+
+// Per-story override
+export const MyStory = {
+  parameters: {
+    a11y: {
+      config: {
+        rules: [{ id: 'color-contrast', enabled: false }],  // Document WHY
+      }
+    }
+  }
+};
+```
+
+### Running Storybook a11y Checks in CI
+
+```bash
+# Install storybook test runner
+npm install --save-dev @storybook/test-runner
+
+# package.json scripts
+{
+  "scripts": {
+    "storybook:test": "test-storybook",
+    "storybook:test:a11y": "test-storybook --ci"
+  }
+}
+
+# Run in CI
+npx storybook dev --port 6006 &
+npx wait-on tcp:6006
+npx test-storybook --ci
+```
+
+---
+
+## WCAG 2.4.13 Focus Appearance Requirements (AAA, exceeds AA baseline)
+
+**WCAG 2.4.13 Focus Appearance (Level AAA in WCAG 2.2)** - exceeds the 2.4.7 Focus Visible (AA) baseline, but recommended as best practice:
+
+1. **Area:** Focus indicator encloses the component OR has a perimeter >= component's perimeter x 2px
+2. **Contrast change:** The focus indicator area must change contrast by >= 3:1 between focused and unfocused states
+3. **Not obscured:** The focus indicator must not be entirely hidden by author-created content
+
+### Minimum Compliant Focus Ring Implementation
+
+```css
+/* Minimum WCAG 2.4.13 compliant focus ring */
+:focus-visible {
+  outline: 2px solid #0054B3;      /* >= 2px width */
+  outline-offset: 2px;             /* Separates from component edge */
+  /* #0054B3 on #FFF = 8.28:1 -> passes 3:1 for UI components */
+}
+
+/* Dark mode variant */
+@media (prefers-color-scheme: dark) {
+  :focus-visible {
+    outline-color: #7CAFFF;        /* lighter blue on dark background */
+    /* #7CAFFF on #1E1E1E = 5.74:1  */
+  }
+}
+
+/* VIOLATION patterns to detect */
+:focus { outline: none; }                           /* Hard fail */
+:focus { outline: 0; }                              /* Hard fail */
+:focus-visible { box-shadow: none; outline: none; } /* Hard fail */
+button:focus { outline: none; }                     /* Hard fail */
+*:focus { outline-color: transparent; }             /* Hard fail */
+```
+
+### Focus Ring Token Validation Checklist
+
+| Check | Requirement | Tool |
+|-------|------------|------|
+| `outline-width` >= 2px | WCAG 2.4.13 area requirement | CSS audit |
+| Focus color contrast >= 3:1 | Against adjacent background | Contrast calculator |
+| Focus state differs from unfocused | Visible change required | Visual inspection |
+| No `outline: none` without replacement | N/A | grep / CSS audit |
+| Present in both light and dark modes | Consistent | Visual inspection |
+
+---
+
+## Design Token File Discovery Commands
+
+```bash
+# Find all token files in a project
+find . -type f \( \
+  -name "tokens.json" \
+  -o -name "design-tokens.json" \
+  -o -name "colors.json" \
+  -o -name "variables.css" \
+  -o -name "tokens.css" \
+  -o -name "_variables.scss" \
+  -o -name "theme.ts" \
+  -o -name "theme.js" \
+  -o -name "tailwind.config.*" \
+\) \
+-not -path "*/node_modules/*" \
+-not -path "*/.next/*" \
+-not -path "*/dist/*"
+
+# PowerShell equivalent
+Get-ChildItem -Recurse -File -Include tokens.json,design-tokens.json,colors.json,`
+  variables.css,tokens.css,_variables.scss,theme.ts,theme.js,tailwind.config.js,tailwind.config.ts `
+  | Where-Object { $_.FullName -notmatch 'node_modules|\.next|dist' }
+```
+
+---
+
+## Severity Classification
+
+| Finding | Severity |
+|---------|---------|
+| Text token below 3:1 | Critical |
+| Text token 3:1-4.49:1 (normal text) | Error |
+| Text token 4.5:1-6.99:1, AAA target | Warning |
+| UI component token below 3:1 | Error |
+| Focus ring missing completely | Critical |
+| Focus ring below 2px | Error |
+| Focus ring contrast below 3:1 | Error |
+| Touch target token below 24 x 24px (WCAG 2.5.8) | Error |
+| Touch target token below 44 x 44px (WCAG 2.5.5) | Warning |
+| No `prefers-reduced-motion` reset | Warning |
+| Placeholder color below 4.5:1 | Error |
+| Disabled token below 3:1 | Info (documented exemption, note for transparency) |
