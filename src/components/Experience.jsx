@@ -192,9 +192,19 @@ export default function Experience() {
                   onKeyDown={(e) => onTabKeyDown(e, idx)}
                   className={`exp-tab ${active ? 'exp-tab--active' : ''}`}
                 >
-                  <Icon size={14} aria-hidden="true" />
-                  <span>{tab.label}</span>
-                  <span className="exp-tab-count" aria-hidden="true">{counts[tab.id]}</span>
+                  {active && (
+                    <motion.span
+                      layoutId="exp-tab-thumb"
+                      aria-hidden="true"
+                      className="exp-tab-thumb"
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="exp-tab-inner">
+                    <Icon size={14} aria-hidden="true" />
+                    <span>{tab.label}</span>
+                    <span className="exp-tab-count" aria-hidden="true">{counts[tab.id]}</span>
+                  </span>
                 </button>
               );
             })}

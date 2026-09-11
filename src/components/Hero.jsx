@@ -62,6 +62,32 @@ function StatusLine() {
   );
 }
 
+/* Headline split-word reveal: flat translate+opacity only, no blur/gradient */
+function SplitHeadline({ text }) {
+  const reduce = useReducedMotion();
+  const cls =
+    'font-heading font-semibold text-[clamp(44px,8vw,96px)] leading-[1.05] tracking-[-0.022em] text-[var(--text-primary)] max-w-[13ch]';
+  if (reduce) return <h1 className={cls}>{text}</h1>;
+  const words = text.split(' ');
+  return (
+    <h1 className={cls} aria-label={text}>
+      {words.map((w, i) => (
+        <span key={i} aria-hidden="true" className="inline-block overflow-hidden align-bottom pb-[0.08em] -mb-[0.08em]">
+          <motion.span
+            className="inline-block"
+            initial={{ y: '110%' }}
+            animate={{ y: '0%' }}
+            transition={{ duration: 0.6, delay: 0.12 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {w}
+            {i < words.length - 1 ? ' ' : ''}
+          </motion.span>
+        </span>
+      ))}
+    </h1>
+  );
+}
+
 const focusStack = 'Distributed Systems & APIs';
 
 export default function Hero() {
@@ -113,14 +139,7 @@ export default function Hero() {
               Backend Engineer, Distributed Systems
             </motion.p>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.12 }}
-              className="font-heading font-semibold text-[clamp(44px,8vw,96px)] leading-[1.05] tracking-[-0.022em] text-[var(--text-primary)] max-w-[13ch]"
-            >
-              Muhammad Fabian Rizky
-            </motion.h1>
+            <SplitHeadline text="Muhammad Fabian Rizky" />
 
             <motion.p
               initial={{ opacity: 0, y: 14 }}

@@ -64,6 +64,17 @@ code, pre, .font-mono { font-family: var(--font-mono); }
 
 ::selection { background: var(--text-primary); color: var(--bg-page); }
 
+/* Grain overlay: fixed SVG tactile layer, static, content-safe */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 :focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
 
 /* ============================================================
@@ -873,6 +884,7 @@ code, pre, .font-mono { font-family: var(--font-mono); }
 }
 @media (min-width: 768px) { .exp-tabs { align-self: auto; } }
 .exp-tab {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -895,14 +907,27 @@ code, pre, .font-mono { font-family: var(--font-mono); }
   border-color: var(--border-strong);
 }
 .exp-tab--active {
-  background: var(--text-primary);
+  background: transparent;
   border-color: var(--text-primary);
   color: var(--bg-page);
 }
 .exp-tab--active:hover {
-  background: var(--text-primary);
+  background: transparent;
   border-color: var(--text-primary);
   color: var(--bg-page);
+}
+.exp-tab-thumb {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: var(--text-primary);
+}
+.exp-tab-inner {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 .exp-tab:focus-visible {
   outline: 2px solid var(--accent-emerald, #09090B);
