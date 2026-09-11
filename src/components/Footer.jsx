@@ -18,6 +18,15 @@ export default function Footer() {
 
   return (
     <footer className="bg-[var(--bg-page)] border-t border-[var(--border-strong)] transition-colors duration-300">
+      <div aria-hidden="true" className="marquee border-b border-[var(--border-color)] py-3">
+        <div className="marquee-track font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+          {[0, 1].map((copy) => (
+            <span key={copy} className="pr-8">
+              {PORTFOLIO_DATA.skills.map((s) => s.name).join('  //  ')}  //
+            </span>
+          ))}
+        </div>
+      </div>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div aria-hidden="true" className="select-none overflow-hidden border-b border-[var(--border-color)] py-6">
@@ -55,13 +64,21 @@ export default function Footer() {
           <span className="font-mono text-[12px] text-[var(--text-secondary)]">
             &copy; {new Date().getFullYear()} Fab.Dev (Muhammad Fabian Rizky). All rights reserved.
           </span>
-          <button
+          <div className="flex items-center gap-1">
+            <a
+              href="#/lab"
+              className="font-mono text-[12px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors px-3 py-2"
+            >
+              /lab
+            </a>
+            <button
             onClick={scrollToTop}
             className="inline-flex items-center gap-2 font-mono text-[12.5px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors px-3 py-2"
           >
             <span>Back to Top</span>
             <ArrowUp className="w-3.5 h-3.5" aria-hidden="true" />
           </button>
+          </div>
         </div>
 
       </div>

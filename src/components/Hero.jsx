@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowUpRight, Copy, Check } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 import { SocialIcon } from '@/components/ui/social-icon';
@@ -88,6 +88,80 @@ function SplitHeadline({ text }) {
   );
 }
 
+/* Scramble-in eyebrow: glyph noise resolves to text once on load */
+const GLYPHS = '█▓▒░<>/\\|01';
+function Scramble({ text }) {
+  const reduce = useReducedMotion();
+  const [out, setOut] = useState(text);
+
+  useEffect(() => {
+    if (reduce) {
+      setOut(text);
+      return;
+    }
+    let frame = 0;
+    const total = 26;
+    let raf = 0;
+    const tick = () => {
+      frame += 1;
+      const done = Math.floor((frame / total) * text.length);
+      let s = text.slice(0, done);
+      for (let i = done; i < text.length; i += 1) {
+        const c = text[i];
+        s += c === ' ' || c === ',' ? c : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      }
+      setOut(s);
+      if (frame < total) raf = requestAnimationFrame(tick);
+      else setOut(text);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [text, reduce]);
+
+  return (
+    <span aria-label={text}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">{out}</span>
+    </span>
+  );
+}
+
+/* Magnetic wrapper: CTA leans toward the pointer, springs back */
+function Magnetic({ children }) {
+  const reduce = useReducedMotion();
+  const [fine, setFine] = useState(false);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 300, damping: 20 });
+  const sy = useSpring(y, { stiffness: 300, damping: 20 });
+
+  useEffect(() => {
+    setFine(
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !reduce
+    );
+  }, [reduce]);
+
+  if (!fine) return <>{children}</>;
+  return (
+    <motion.span
+      style={{ x: sx, y: sy, display: 'inline-flex' }}
+      onPointerMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        x.set((e.clientX - (r.left + r.width / 2)) * 0.3);
+        y.set((e.clientY - (r.top + r.height / 2)) * 0.3);
+      }}
+      onPointerLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
 const focusStack = 'Distributed Systems & APIs';
 
 export default function Hero() {
@@ -136,7 +210,7 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.05 }}
               className="font-mono text-[13px] uppercase tracking-[0.08em] text-[var(--text-secondary)]"
             >
-              Backend Engineer, Distributed Systems
+              <Scramble text="Backend Engineer, Distributed Systems" />
             </motion.p>
 
             <SplitHeadline text="Muhammad Fabian Rizky" />
@@ -156,13 +230,15 @@ export default function Hero() {
               transition={{ duration: 0.55, delay: 0.26 }}
               className="flex flex-wrap items-center gap-4"
             >
-              <a
-                href={dev.resumeUrl}
-                className="inline-flex items-center gap-2 font-mono text-sm bg-[var(--text-primary)] text-[var(--bg-page)] h-12 px-6 border border-[var(--text-primary)] hover:opacity-90 transition-opacity"
-              >
-                View CV
-                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-              </a>
+              <Magnetic>
+                <a
+                  href={dev.resumeUrl}
+                  className="inline-flex items-center gap-2 font-mono text-sm bg-[var(--text-primary)] text-[var(--bg-page)] h-12 px-6 border border-[var(--text-primary)] hover:opacity-90 transition-opacity"
+                >
+                  View CV
+                  <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+                </a>
+              </Magnetic>
 
               <button
                 onClick={handleCopyEmail}

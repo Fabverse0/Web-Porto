@@ -8,11 +8,25 @@ import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Cursor from './components/Cursor';
+import Lab from './components/Lab';
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 24 });
   return <motion.div aria-hidden="true" className="scroll-progress" style={{ scaleX }} />;
+}
+
+function useHashRoute() {
+  const [hash, setHash] = useState(() => window.location.hash);
+  useEffect(() => {
+    const onChange = () => {
+      setHash(window.location.hash);
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
+  }, []);
+  return hash;
 }
 
 export default function App() {
@@ -36,6 +50,9 @@ export default function App() {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
+  const hash = useHashRoute();
+  const isLab = hash === '#/lab';
+
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen flex flex-col bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300">
@@ -45,18 +62,22 @@ export default function App() {
         <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
         {/* Main content */}
-        <main className="flex-1">
-          <Hero />
-          <AboutSkills
-            selectedSkill={selectedSkill}
-            onSelectSkill={setSelectedSkill}
-          />
-          <Projects
-            selectedSkill={selectedSkill}
-          />
-          <Experience />
-          <Contact />
-        </main>
+        {isLab ? (
+          <Lab />
+        ) : (
+          <main className="flex-1">
+            <Hero />
+            <AboutSkills
+              selectedSkill={selectedSkill}
+              onSelectSkill={setSelectedSkill}
+            />
+            <Projects
+              selectedSkill={selectedSkill}
+            />
+            <Experience />
+            <Contact />
+          </main>
+        )}
 
         <Footer />
       </div>
