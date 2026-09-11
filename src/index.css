@@ -944,6 +944,9 @@ body::after {
 }
 .exp-tab--active .exp-tab-count { border-color: currentColor; }
 
+/* press feedback: tactile scale, 75ms */
+.exp-tab:active, .exp-doc-toggle:active { transform: scale(0.97); transition: transform 75ms ease-out; }
+
 /* ── doc list ── */
 .exp-doc-group { margin-top: 2rem; }
 .exp-doc-list {
@@ -1123,6 +1126,7 @@ body::after {
 /* ── reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .exp-tab, .exp-doc-toggle, .tech-capsule { transition: none; }
+  .exp-tab:active, .exp-doc-toggle:active { transform: none; }
 }
 
 /* ── scroll progress + blend cursor + plate glare (mono) ── */
