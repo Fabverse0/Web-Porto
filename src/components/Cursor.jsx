@@ -11,7 +11,7 @@ export default function Cursor() {
     if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     setOn(true);
-    let x = -100, y = -100, rx = -100, ry = -100, raf = 0, hovering = false;
+    let x = -100, y = -100, rx = -100, ry = -100, raf = 0, running = true, hovering = false;
 
     const move = (e) => {
       x = e.clientX;
@@ -27,13 +27,26 @@ export default function Cursor() {
       rx += (x - rx) * 0.16;
       ry += (y - ry) * 0.16;
       if (ringRef.current) ringRef.current.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
-      raf = requestAnimationFrame(loop);
+      if (running) raf = requestAnimationFrame(loop);
+    };
+
+    /* Pause rAF when tab hidden — no wasted frames */
+    const onVis = () => {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
+      } else if (!running) {
+        running = true;
+        raf = requestAnimationFrame(loop);
+      }
     };
 
     window.addEventListener('pointermove', move, { passive: true });
+    document.addEventListener('visibilitychange', onVis);
     raf = requestAnimationFrame(loop);
     return () => {
       window.removeEventListener('pointermove', move);
+      document.removeEventListener('visibilitychange', onVis);
       cancelAnimationFrame(raf);
     };
   }, []);
