@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Github } from 'lucide-react';
 import ProjectSpecSheet from './ProjectSpecSheet';
 
-import coverMuseum from '../../assets/covers/project-museum.jpg';
-import coverStationery from '../../assets/covers/project-stationery.jpg';
-import coverCoffee from '../../assets/covers/project-coffee.jpg';
-import coverMedia from '../../assets/covers/project-media.jpg';
+import coverMuseum from '../../assets/covers/project-museum.webp';
+import coverStationery from '../../assets/covers/project-stationery.webp';
+import coverCoffee from '../../assets/covers/project-coffee.webp';
+import coverMedia from '../../assets/covers/project-media.webp';
 
 /* ---------------------------------------------------------------
    PLATE ENTRIES — VISUAL PLACEHOLDERS by explicit request.
