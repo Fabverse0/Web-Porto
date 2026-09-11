@@ -150,6 +150,12 @@
       "skillPath": ".agents/skills/impeccable/SKILL.md",
       "computedHash": "1b96cd06a2ddbd26bc57b6601d56c0c75f8d0acb1f7c870d307bbfb9e0373bc6"
     },
+    "lighthouse": {
+      "source": "adwilkinson/claude-code-tools",
+      "sourceType": "github",
+      "skillPath": "skills/lighthouse/SKILL.md",
+      "computedHash": "2d9ff71baa882ed37e37cf9181f11cc0d75650f1c41afeb7e1739575a9b47fda"
+    },
     "lighthouse-scanner": {
       "source": "Community-Access/accessibility-agents",
       "sourceType": "github",
@@ -180,6 +186,12 @@
       "skillPath": ".github/skills/office-remediation/SKILL.md",
       "computedHash": "20dec258f8092ec3b0fb6ea536a31e7058da1f8dbfbedd6a3a54c9d1d2fd41a6"
     },
+    "playwright": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "playwright/SKILL.md",
+      "computedHash": "0c13e411cbd3d887d9a85b9b193f48178ee4ecc2fb729a81f499826b8fbe8a2b"
+    },
     "playwright-testing": {
       "source": "Community-Access/accessibility-agents",
       "sourceType": "github",
@@ -191,6 +203,12 @@
       "sourceType": "github",
       "skillPath": "skills/engineering/prototype/SKILL.md",
       "computedHash": "08c1a6d45a79180f795368e0bbf9820df9017d9ad2f5e4f858315d57ad357606"
+    },
+    "react-testing": {
+      "source": "affaan-m/ecc",
+      "sourceType": "github",
+      "skillPath": "skills/react-testing/SKILL.md",
+      "computedHash": "59bd15f26f018d6629557108f936ab691af887508ae71b9d339855e49e337012"
     },
     "receiving-code-review": {
       "source": "obra/superpowers",
@@ -442,6 +460,12 @@
       "skillPath": "skills/composition-patterns/SKILL.md",
       "computedHash": "10eb4ec94577b79ae98c63ce3e7f35f8a6a06436a4011bff083b397de6960eeb"
     },
+    "vercel-optimize": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/vercel-optimize/SKILL.md",
+      "computedHash": "fb87d3a135fef30748f772200a9f161f780b5a16830e8e70a3a126195cb16963"
+    },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
@@ -483,6 +507,12 @@
       "sourceType": "github",
       "skillPath": ".github/skills/web-severity-scoring/SKILL.md",
       "computedHash": "ad88fb3b3652068375a733bb981925c16703bd613c51d54334650c55e933f541"
+    },
+    "webapp-testing": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/webapp-testing/SKILL.md",
+      "computedHash": "3f14af7f5690695209c22fbf8c8d133769a86d64892602c09bb13f135e14e857"
     },
     "writing-for-agents": {
       "source": "mattpocock/skills",
