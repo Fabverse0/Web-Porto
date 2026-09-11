@@ -20,6 +20,12 @@ export default function Footer() {
     <footer className="bg-[var(--bg-page)] border-t border-[var(--border-strong)] transition-colors duration-300">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        <div aria-hidden="true" className="select-none overflow-hidden border-b border-[var(--border-color)] py-6">
+          <div className="font-heading font-semibold text-[clamp(56px,12vw,150px)] leading-[0.95] tracking-[-0.03em] text-[var(--text-primary)] whitespace-nowrap">
+            FAB.DEV
+          </div>
+        </div>
+
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-8">
           <div>
             <span className="font-mono text-[14px] text-[var(--text-primary)]">
