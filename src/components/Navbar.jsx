@@ -10,6 +10,10 @@ export default function Navbar({ theme, onToggleTheme }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
   const [scrolled, setScrolled] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
+  const lastY = useRef(0);
+  const mobileOpenRef = useRef(false);
+  mobileOpenRef.current = mobileMenuOpen;
   const [hoveredLink, setHoveredLink] = useState(null);
   const prefersReducedMotion = useReducedMotion();
 
@@ -18,6 +22,15 @@ export default function Navbar({ theme, onToggleTheme }) {
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setScrolled(latest > 24);
+    /* Hide-on-scroll-down / show-on-scroll-up; off saat menu mobile terbuka */
+    if (prefersReducedMotion || mobileOpenRef.current) {
+      setNavHidden(false);
+    } else if (latest > 140 && latest > lastY.current + 4) {
+      setNavHidden(true);
+    } else if (latest < lastY.current - 4) {
+      setNavHidden(false);
+    }
+    lastY.current = latest;
   });
 
   /* ── IntersectionObserver to track active section ────── */
@@ -116,6 +129,7 @@ export default function Navbar({ theme, onToggleTheme }) {
       className="navbar-glass fixed top-0 left-0 right-0 z-50"
       initial={false}
       animate={{
+        y: navHidden ? '-110%' : '0%',
         backdropFilter: scrolled ? 'blur(16px)' : 'blur(8px)',
         WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'blur(8px)',
         paddingBlock: scrolled ? '8px' : '14px',
