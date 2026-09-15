@@ -16,66 +16,68 @@ function BrandLogo({ slug, color, fallbackName, size = 18 }) {
           if (isMounted && res && res.simpleIcons && res.simpleIcons[slug]) {
             setSvgPath(res.simpleIcons[slug].path);
           }
-        }).catch(() => {});
+        })
+        .catch(() => {});
     }
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
-  if (svgPath) {
+  if (!svgPath) {
     return (
-      <svg
-        role="img"
-        viewBox="0 0 24 24"
-        className="skill-icon"
-        style={{ color: color || 'var(--text-primary)', width: size, height: size }}
+      <span
+        className="skill-mark-fallback"
         aria-hidden="true"
+        style={{ width: size, height: size }}
       >
-        <path d={svgPath} />
-      </svg>
+        {(fallbackName || '?').charAt(0).toUpperCase()}
+      </span>
     );
   }
 
   return (
-    <span
-      style={{ color: color || 'var(--text-primary)', width: size, height: size }}
-      className="skill-icon skill-icon-fallback"
+    <svg
+      role="img"
       aria-hidden="true"
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      style={{ flexShrink: 0 }}
     >
-      {fallbackName ? fallbackName.substring(0, 2).toUpperCase() : 'TC'}
+      <path d={svgPath} fill={color || 'currentColor'} />
+    </svg>
+  );
+}
+
+/* ── Level meter: hairline gauge with measured fill ── */
+function LevelMeter({ level, percentage }) {
+  const p = typeof percentage === 'number' ? Math.max(0, Math.min(100, percentage)) : 0;
+  return (
+    <span className="skill-meter" aria-hidden="true">
+      <span className="skill-meter-fill" style={{ width: `${p}%` }} data-level={level} />
     </span>
   );
 }
 
-/* ── Level ring: thin arc instead of dot ── */
-function LevelArc({ level, size = 16 }) {
-  /* Three arc states: full (expert), 2/3 (advanced), 1/3 (intermediate) */
-  const pct = level === 'Expert' ? 100 : level === 'Advanced' ? 66 : 33;
-  const r = 5.5;
-  const c = 2 * Math.PI * r;
-  const offset = c - (pct / 100) * c;
-  const id = `arc-${level.toLowerCase()}`;
-
+/* ── Stat line: counts derived from data ── */
+function SkillStatLine({ skills }) {
+  const domains = new Set(skills.map((s) => s.category)).size;
+  const experts = skills.filter((s) => s.level === 'Expert').length;
+  const top = Math.max(...skills.map((s) => s.percentage || 0));
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 14 14"
-      className="level-arc"
-      aria-label={level}
-      title={level}
+    <p
+      className="skill-stat-line"
+      aria-label={`${skills.length} tools across ${domains} domains, ${experts} at expert level, peak depth ${top} percent`}
     >
-      <circle cx="7" cy="7" r={r} fill="none" stroke="var(--border-strong)" strokeWidth="1.5" />
-      <circle
-        cx="7" cy="7" r={r}
-        fill="none"
-        stroke={level === 'Expert' ? 'var(--accent-emerald)' : 'var(--text-secondary)'}
-        strokeWidth="1.5"
-        strokeDasharray={c}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        transform="rotate(-90 7 7)"
-      />
-    </svg>
+      <span><strong>{String(skills.length).padStart(2, '0')}</strong> TOOLS</span>
+      <span aria-hidden="true" className="skill-stat-sep">/</span>
+      <span><strong>{String(domains).padStart(2, '0')}</strong> DOMAINS</span>
+      <span aria-hidden="true" className="skill-stat-sep">/</span>
+      <span><strong>{String(experts).padStart(2, '0')}</strong> EXPERT</span>
+      <span aria-hidden="true" className="skill-stat-sep">/</span>
+      <span><strong>{String(top).padStart(2, '0')}</strong> PEAK</span>
+    </p>
   );
 }
 
@@ -93,71 +95,75 @@ function SkillMarquee() {
   );
 }
 
+/* ── Domain row: editorial monolith — Fraunces giant index + doc rows ── */
+function DomainRow({ index, category, skills, selectedSkill, onSkillClick }) {
+  const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'][index] || String(index + 1);
+  const best = skills.reduce((a, s) => ((s.percentage || 0) > (a.percentage || 0) ? s : a), skills[0]);
 
-/* ── Stat line: angka dihitung dari data, bukan hardcode ── */
-function SkillStatLine({ skills }) {
-  const domains = new Set(skills.map((s) => s.category)).size;
-  const experts = skills.filter((s) => s.level === 'Expert').length;
   return (
-    <p
-      className="skill-stat-line"
-      aria-label={`${skills.length} tools across ${domains} domains, ${experts} at expert level`}
-    >
-      <span>{String(skills.length).padStart(2, '0')} TOOLS</span>
-      <span aria-hidden="true">/</span>
-      <span>{String(domains).padStart(2, '0')} DOMAINS</span>
-      <span aria-hidden="true">/</span>
-      <span>{String(experts).padStart(2, '0')} EXPERT</span>
-    </p>
-  );
-}
-/* ── Category band with capsule pills ── */
-function CategoryBand({ category, skills, selectedSkill, onSkillClick, onSkillKey, delayBase }) {
-  return (
-    <motion.div
-      className="skill-band"
-      initial={{ opacity: 0, y: 12 }}
+    <motion.article
+      className={'skill-domain' + (selectedSkill ? ' skill-domain--dim' : '')}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.45, delay: delayBase, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, amount: 0.12 }}
+      transition={{ duration: 0.55, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
     >
-      <span className="skill-band-label">{category}</span>
-      <div className="skill-band-pills">
-        {skills.map((skill, idx) => {
+      <header className="skill-domain-head">
+        <span className="skill-domain-no" aria-hidden="true">{roman}</span>
+        <h3 className="skill-domain-title">{category}</h3>
+        <span className="skill-domain-meta" aria-hidden="true">
+          {String(skills.length).padStart(2, '0')} ENTRIES — PEAK {best ? best.percentage : 0}%
+        </span>
+      </header>
+
+      <ul className="skill-doclist">
+        {skills.map((skill) => {
           const isSelected = selectedSkill === skill.name;
+          const dimmed = selectedSkill && !isSelected;
           return (
-            <motion.button
-              key={skill.name}
-              type="button"
-              role="button"
-              tabIndex={0}
-              onClick={() => onSkillClick(skill.name)}
-              onKeyDown={(e) => onSkillKey(e, skill.name)}
-              aria-pressed={isSelected}
-              aria-label={`${skill.name} — ${skill.level}`}
-              initial={{ opacity: 0, y: 5 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.25, delay: Math.min(idx * 0.03, 0.2), ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -1 }}
-              whileTap={{ scale: 0.97 }}
-              className={`skill-capsule ${isSelected ? 'skill-capsule--active' : ''}`}
-            >
-              {skill.level === 'Expert' && (
-                <BrandLogo
-                  slug={skill.slug}
-                  color={isSelected ? 'var(--bg-page)' : skill.brandColor}
-                  fallbackName={skill.name}
-                  size={16}
-                />
-              )}
-              <span className="skill-capsule-name">{skill.name}</span>
-              <LevelArc level={skill.level} size={14} />
-            </motion.button>
+            <li key={skill.name}>
+              <motion.button
+                type="button"
+                tabIndex={0}
+                onClick={() => onSkillClick(skill.name)}
+                aria-pressed={isSelected}
+                aria-label={`${skill.name} — ${skill.level}, ${skill.percentage} percent. Filter projects.`}
+                className={
+                  'skill-doc' +
+                  (isSelected ? ' is-selected' : '') +
+                  (dimmed ? ' is-dimmed' : '')
+                }
+                whileTap={{ scale: 0.995 }}
+              >
+                <span className="skill-doc-brand" aria-hidden="true">
+                  {skill.level === 'Expert' && (
+                    <BrandLogo
+                      slug={skill.slug}
+                      color={isSelected ? 'var(--bg-page)' : skill.brandColor}
+                      fallbackName={skill.name}
+                      size={18}
+                    />
+                  )}
+                </span>
+
+                <span className="skill-doc-name">{skill.name}</span>
+
+                <span className="skill-doc-level" data-level={skill.level}>
+                  {skill.level}
+                </span>
+
+                <LevelMeter level={skill.level} percentage={skill.percentage} />
+
+                <span className="skill-doc-pct" aria-hidden="true">
+                  {skill.percentage}
+                  <em>%</em>
+                </span>
+              </motion.button>
+            </li>
           );
         })}
-      </div>
-    </motion.div>
+      </ul>
+    </motion.article>
   );
 }
 
@@ -174,13 +180,6 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         projectsElem.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
       }
-    }
-  };
-
-  const handleSkillKey = (e, skillName) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleSkillClick(skillName);
     }
   };
 
@@ -225,23 +224,22 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
         {/* ── Stat line: derived counts ── */}
         <SkillStatLine skills={PORTFOLIO_DATA.skills} />
 
-        {/* ── Marquee strip ── */}
-        <SkillMarquee />
-
-        {/* ── Category bands ── */}
-        <div className="skill-bands">
+        {/* ── Domain monolith rows ── */}
+        <div className="skill-domains">
           {categories.map((cat, i) => (
-            <CategoryBand
+            <DomainRow
               key={cat}
+              index={i}
               category={cat}
               skills={PORTFOLIO_DATA.skills.filter((s) => s.category === cat)}
               selectedSkill={selectedSkill}
               onSkillClick={handleSkillClick}
-              onSkillKey={handleSkillKey}
-              delayBase={i * 0.05}
             />
           ))}
         </div>
+
+        {/* ── Marquee: editorial meta line ── */}
+        <SkillMarquee />
 
       </div>
     </section>

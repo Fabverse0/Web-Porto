@@ -690,118 +690,43 @@ body::after {
 }
 
 /* ── Bands container ── */
-.skill-bands {
-  padding-top: 16px;
-}
+
 
 /* ── Category band ── */
-.skill-band {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 10px;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border-color);
-}
-.skill-band:last-child {
-  border-bottom: none;
-}
-.skill-band-label {
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  font-family: var(--font-mono, monospace);
-  min-width: 100px;
-  flex-shrink: 0;
-  padding-top: 7px;
-}
+
+
+
 
 /* ── Capsule pills flow ── */
-.skill-band-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+
 
 /* ── Skill capsule (rounded pill, no hard border) ── */
-.skill-capsule {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--font-body);
-  font-size: 13px;
-  padding: 5px 12px 5px 8px;
-  min-height: 36px;
-  border-radius: 999px;
-  background: var(--bg-card);
-  border: 1px solid transparent;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-}
-.skill-capsule:hover {
-  background: var(--bg-page);
-  background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -1px -1px;
-  border-color: #C67C4E;
-}
-.skill-capsule--active {
-  background: var(--text-primary);
-  color: var(--bg-page);
-  border-color: var(--text-primary);
-}
-.skill-capsule--active:hover {
-  background: var(--text-primary);
-  color: var(--bg-page);
-  border-color: var(--text-primary);
-}
+
+
+
+
 
 /* ── Capsule name ── */
-.skill-capsule-name {
-  white-space: nowrap;
-  line-height: 1;
-}
+
 
 /* ── Focus ── */
-.skill-capsule:focus-visible {
-  outline: 2px solid var(--text-primary);
-  outline-offset: 2px;
-}
+
 
 /* ── Active state: invert level arc ── */
-.skill-capsule--active .level-arc circle {
-  stroke: var(--bg-page);
-}
-.skill-capsule--active .level-arc circle:nth-child(2) {
-  stroke: var(--bg-page);
-  opacity: 0.6;
-}
+
+
 
 /* ── Mobile ── */
 @media (max-width: 639px) {
-  .skill-capsule {
-    font-size: 12px;
-    padding: 4px 10px 4px 7px;
-    min-height: 32px;
-    gap: 5px;
-  }
-  .skill-band-pills {
-    gap: 6px;
-  }
   
-  .skill-band-label {
-    min-width: 80px;
-    font-size: 9px;
-  }
+  
+  
+  
 }
 
 /* ── Desktop wider ── */
 @media (min-width: 1024px) {
-  .skill-band-label {
-    min-width: 130px;
-  }
+  
 }
 
 
@@ -1257,4 +1182,201 @@ body::after {
   .navbar-brand-sub::after {
     transition: none;
   }
+}
+
+/* ============================================================
+   SKILLS V3 — DOMAIN MONOLITH
+   Editorial index: Fraunces giant domain headings, doc rows with
+   hairline meters, hover reveals. Replaces capsule pills.
+   Structure from hairlines; no shadows; mono labels.
+   ============================================================ */
+
+/* ── stat line: derived counts ── */
+.skill-stat-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 16px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin: 34px 0 8px;
+}
+.skill-stat-line strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.skill-stat-sep { color: var(--border-strong); }
+
+/* ── domain rows ── */
+.skill-domains { margin-top: 26px; }
+.skill-domain {
+  padding: 34px 0 30px;
+  border-bottom: 1px solid var(--border-color);
+  transition: opacity 0.3s ease;
+}
+.skill-domain:first-child { border-top: none; }
+.skill-domain--dim .skill-doc:not(.is-selected) { opacity: 0.35; }
+
+.skill-domain-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.skill-domain-no {
+  font-family: var(--font-heading);
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--border-strong);
+  letter-spacing: -0.02em;
+  min-width: 58px;
+}
+.skill-domain-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: clamp(30px, 4.5vw, 44px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+.skill-domain-meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ── doc rows ── */
+.skill-doclist { list-style: none; margin: 0; padding: 0; }
+.skill-doclist li + li .skill-doc { border-top: 1px solid var(--border-color); }
+
+.skill-doc {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 96px minmax(90px, 220px) 48px;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 48px;
+  padding: 9px 2px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-body);
+  transition: color 0.2s ease, opacity 0.3s ease, background-color 0.2s ease;
+  font-family: inherit;
+}
+.skill-doc:hover { color: var(--text-primary); background: var(--bg-card); }
+.skill-doc:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+.skill-doc.is-selected {
+  background: var(--text-primary);
+  color: var(--bg-page);
+}
+.skill-doc.is-dimmed { opacity: 0.4; }
+
+.skill-doc-brand {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 18px;
+}
+.skill-mark-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+}
+
+.skill-doc-name {
+  font-family: var(--font-body);
+  font-size: 15.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.skill-doc.is-selected .skill-doc-name { color: var(--bg-page); }
+
+.skill-doc-level {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: right;
+}
+.skill-doc.is-selected .skill-doc-level { color: var(--bg-page); opacity: 0.75; }
+
+/* hairline meter with measured fill */
+.skill-meter {
+  position: relative;
+  display: block;
+  height: 3px;
+  background: var(--border-color);
+  overflow: hidden;
+}
+.skill-meter-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--text-secondary);
+  transform-origin: left center;
+}
+.skill-doc:hover .skill-meter-fill,
+.skill-doc.is-selected .skill-meter-fill { background: var(--text-primary); }
+.skill-doc.is-selected .skill-meter-fill { background: var(--bg-page); }
+.skill-meter-fill[data-level="Expert"] { background: var(--text-primary); }
+.skill-doc.is-selected .skill-meter-fill[data-level="Expert"] { background: var(--bg-page); }
+
+/* percentage reveal on hover */
+.skill-doc-pct {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-align: right;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  font-variant-numeric: tabular-nums;
+}
+.skill-doc-pct em { font-style: normal; font-size: 9px; color: var(--border-strong); }
+.skill-doc:hover .skill-doc-pct,
+.skill-doc.is-selected .skill-doc-pct { opacity: 1; transform: none; }
+.skill-doc.is-selected .skill-doc-pct { color: var(--bg-page); }
+
+/* ── mobile ── */
+@media (max-width: 640px) {
+  .skill-doc {
+    grid-template-columns: 20px minmax(0, 1fr) 76px;
+    grid-template-areas:
+      "brand name level"
+      "meter meter meter";
+    row-gap: 8px;
+  }
+  .skill-doc-brand { grid-area: brand; }
+  .skill-doc-name { grid-area: name; }
+  .skill-doc-level { grid-area: level; }
+  .skill-meter { grid-area: meter; }
+  .skill-doc-pct { display: none; }
+  .skill-domain-no { font-size: 32px; min-width: 42px; }
+  .skill-domain-title { font-size: 26px; }
+  .skill-domain-meta { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-domain, .skill-meter-fill { transition: none; }
 }
