@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import AboutSkills from '../components/AboutSkills';
 
-describe('AboutSkills Component (capsule redesign v2)', () => {
+describe('AboutSkills Component (spec roster redesign)', () => {
   it('should render section title and skill category bands', () => {
     const handleSelectSkill = vi.fn();
     render(<AboutSkills selectedSkill={null} onSelectSkill={handleSelectSkill} />);
@@ -13,20 +13,28 @@ describe('AboutSkills Component (capsule redesign v2)', () => {
     expect(screen.getByText('Databases')).toBeInTheDocument();
   });
 
-  it('should render logo cloud with brand icons and capsule pills', () => {
+  it('should render derived stat line and expose pill name+level to AT', () => {
     const handleSelectSkill = vi.fn();
     render(<AboutSkills selectedSkill={null} onSelectSkill={handleSelectSkill} />);
 
-    /* TypeScript appears in both logo cloud label and capsule pill */
-    const tsInstances = screen.getAllByText('TypeScript');
-    expect(tsInstances.length).toBeGreaterThanOrEqual(2);
+    /* stat line dihitung dari data: 17 skills, 4 kategori, 7 expert */
+    expect(
+      screen.getByLabelText(/17 tools across 4 domains, 7 at expert level/i)
+    ).toBeInTheDocument();
+
+    /* logo cloud strip sudah dihapus - tidak ada lagi elemen .skill-logo-cloud */
+    const cloudNodes = document.querySelectorAll('.skill-logo-cloud');
+    expect(cloudNodes.length).toBe(0);
+
+    /* pill expert mengekspos nama + level ke screen reader */
+    const tsPill = screen.getByRole('button', { name: /TypeScript — Expert/i });
+    expect(tsPill).toHaveAttribute('aria-pressed', 'false');
   });
 
   it('should invoke onSelectSkill when a capsule pill is clicked', () => {
     const handleSelectSkill = vi.fn();
     render(<AboutSkills selectedSkill={null} onSelectSkill={handleSelectSkill} />);
 
-    /* Find a capsule pill (role=button) containing TypeScript */
     const tsPills = screen.getAllByRole('button').filter(
       (btn) => btn.textContent.includes('TypeScript')
     );

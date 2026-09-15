@@ -621,30 +621,7 @@ body::after {
    SKILL BANDS v2: capsule pills + logo cloud + level arcs
    ============================================================ */
 
-/* ── Cinematic logo cloud ── */
-.skill-logo-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 28px 20px;
-  padding: 28px 0 20px;
-  border-bottom: 1px solid var(--border-color);
-}
-.skill-logo-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.skill-logo-label {
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  opacity: 0.7;
-  font-family: var(--font-mono, monospace);
-  white-space: nowrap;
-}
+/* ── Cinematic logo cloud ── */
 
 /* ── Shared icon ── */
 .skill-icon {
@@ -668,7 +645,22 @@ body::after {
 }
 
 /* ── Marquee strip ── */
-.skill-marquee {
+
+/* ── stat line: derived counts, mono uppercase ── */
+.skill-stat-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 14px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 28px;
+}.skill-marquee {
   overflow: hidden;
   padding: 12px 0 6px;
   border-bottom: 1px solid var(--border-color);
@@ -694,7 +686,7 @@ body::after {
 }
 @media (prefers-reduced-motion: reduce) {
   .skill-marquee-track { animation: none; }
-  .skill-logo-cloud .skill-logo-item { opacity: 1; transform: none; }
+  
 }
 
 /* ── Bands container ── */
@@ -798,10 +790,7 @@ body::after {
   .skill-band-pills {
     gap: 6px;
   }
-  .skill-logo-cloud {
-    gap: 20px 14px;
-    padding: 20px 0 14px;
-  }
+  
   .skill-band-label {
     min-width: 80px;
     font-size: 9px;
@@ -1147,6 +1136,7 @@ body::after {
   pointer-events: none;
   z-index: 90;
   mix-blend-mode: difference;
+  transition: width 0.2s ease, height 0.2s ease, border-radius 0.2s ease, opacity 0.18s ease;
 }
 .cursor-dot { width: 6px; height: 6px; background: #fff; border-radius: 50%; }
 .cursor-ring {
@@ -1154,9 +1144,22 @@ body::after {
   height: 28px;
   border: 1px solid #fff;
   border-radius: 50%;
-  transition: width 0.2s ease, height 0.2s ease;
 }
 .cursor-ring.is-hover { width: 46px; height: 46px; }
+/* text: dot collapses to an I-beam, ring steps aside */
+.cursor-dot.is-text { width: 2px; height: 20px; border-radius: 0; }
+.cursor-ring.is-text { opacity: 0; }
+/* drag: wide pill signals a draggable surface */
+.cursor-ring.is-drag { width: 56px; height: 28px; border-radius: 999px; }
+/* pressed: tactile shrink via box size (NOT transform - scale would
+   multiply the inline translate and throw the dot off-position) */
+.cursor-dot.is-down:not(.is-text) { width: 4px; height: 4px; }
+/* media: difference blend vanishes on mid/bright photos - switch to normal */
+.cursor-dot.is-media, .cursor-ring.is-media { mix-blend-mode: normal; }
+.cursor-dot.is-media { background: #fff; box-shadow: 0 0 0 1px rgba(9, 9, 11, 0.5); }
+.cursor-ring.is-media { border-color: #fff; box-shadow: 0 0 0 1px rgba(9, 9, 11, 0.4); }
+/* pointer left the window */
+.cursor-dot.is-hidden, .cursor-ring.is-hidden { opacity: 0; }
 @media (hover: none), (pointer: coarse) {
   .cursor-dot, .cursor-ring { display: none; }
 }
@@ -1172,7 +1175,7 @@ body::after {
 .plate:hover .plate-media::after { transform: translateX(70%); }
 @media (prefers-reduced-motion: reduce) {
   .plate-media::after { display: none; }
-  .cursor-ring { transition: none; }
+  .cursor-dot, .cursor-ring { transition: none; }
 }
 
 /* ============================================================

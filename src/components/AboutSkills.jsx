@@ -79,9 +79,9 @@ function LevelArc({ level, size = 16 }) {
   );
 }
 
-/* ── Marquee strip ── */
-function SkillMarquee({ items }) {
-  const line = items.map((s) => s.name).join('  ·  ');
+/* ── Marquee strip: editorial meta line (informasi non-duplikat) ── */
+function SkillMarquee() {
+  const line = 'JAKARTA, ID · REMOTE FRIENDLY · OPEN FOR FULL-TIME & FREELANCE · TYPICAL RESPONSE < 2 HRS';
   return (
     <div className="skill-marquee" aria-hidden="true">
       <div className="skill-marquee-track">
@@ -93,32 +93,24 @@ function SkillMarquee({ items }) {
   );
 }
 
-/* ── Logo cloud: cinematic stagger-fade of brand icons ── */
-function LogoCloud({ skills }) {
+
+/* ── Stat line: angka dihitung dari data, bukan hardcode ── */
+function SkillStatLine({ skills }) {
+  const domains = new Set(skills.map((s) => s.category)).size;
+  const experts = skills.filter((s) => s.level === 'Expert').length;
   return (
-    <div className="skill-logo-cloud" role="group" aria-label="Technology icons">
-      {skills.map((skill, i) => (
-        <motion.div
-          key={skill.name}
-          className="skill-logo-item"
-          initial={{ opacity: 0, scale: 0.8 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.35, delay: i * 0.04, ease: [0.2, 0, 0, 1] }}
-        >
-          <BrandLogo
-            slug={skill.slug}
-            color={skill.brandColor}
-            fallbackName={skill.name}
-            size={28}
-          />
-          <span className="skill-logo-label">{skill.name}</span>
-        </motion.div>
-      ))}
-    </div>
+    <p
+      className="skill-stat-line"
+      aria-label={`${skills.length} tools across ${domains} domains, ${experts} at expert level`}
+    >
+      <span>{String(skills.length).padStart(2, '0')} TOOLS</span>
+      <span aria-hidden="true">/</span>
+      <span>{String(domains).padStart(2, '0')} DOMAINS</span>
+      <span aria-hidden="true">/</span>
+      <span>{String(experts).padStart(2, '0')} EXPERT</span>
+    </p>
   );
 }
-
 /* ── Category band with capsule pills ── */
 function CategoryBand({ category, skills, selectedSkill, onSkillClick, onSkillKey, delayBase }) {
   return (
@@ -142,6 +134,7 @@ function CategoryBand({ category, skills, selectedSkill, onSkillClick, onSkillKe
               onClick={() => onSkillClick(skill.name)}
               onKeyDown={(e) => onSkillKey(e, skill.name)}
               aria-pressed={isSelected}
+              aria-label={`${skill.name} — ${skill.level}`}
               initial={{ opacity: 0, y: 5 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -150,12 +143,14 @@ function CategoryBand({ category, skills, selectedSkill, onSkillClick, onSkillKe
               whileTap={{ scale: 0.97 }}
               className={`skill-capsule ${isSelected ? 'skill-capsule--active' : ''}`}
             >
-              <BrandLogo
-                slug={skill.slug}
-                color={isSelected ? 'var(--bg-page)' : skill.brandColor}
-                fallbackName={skill.name}
-                size={16}
-              />
+              {skill.level === 'Expert' && (
+                <BrandLogo
+                  slug={skill.slug}
+                  color={isSelected ? 'var(--bg-page)' : skill.brandColor}
+                  fallbackName={skill.name}
+                  size={16}
+                />
+              )}
               <span className="skill-capsule-name">{skill.name}</span>
               <LevelArc level={skill.level} size={14} />
             </motion.button>
@@ -220,18 +215,18 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
             )}
           </div>
 
-          <div className="lg:col-span-5 flex justify-center w-full">
+          <div className="lg:col-span-5 flex justify-center w-full" data-cursor="drag">
             <Suspense fallback={<div className="h-[280px] w-full max-w-lg" aria-hidden="true" />}>
               <IconCloudDemo />
             </Suspense>
           </div>
         </div>
 
-        {/* ── Cinematic logo cloud ── */}
-        <LogoCloud skills={PORTFOLIO_DATA.skills} />
+        {/* ── Stat line: derived counts ── */}
+        <SkillStatLine skills={PORTFOLIO_DATA.skills} />
 
         {/* ── Marquee strip ── */}
-        <SkillMarquee items={PORTFOLIO_DATA.skills} />
+        <SkillMarquee />
 
         {/* ── Category bands ── */}
         <div className="skill-bands">
