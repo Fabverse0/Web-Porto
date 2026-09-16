@@ -200,7 +200,7 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
 
             {selectedSkill && (
               <div className="inline-flex items-center gap-3 mt-5 px-4 py-2 bg-[var(--bg-card)] border border-[var(--border-strong)] font-mono text-xs text-[var(--text-primary)]">
-                <span className="w-2 h-2 bg-[var(--accent-emerald)]" aria-hidden="true" />
+                <span className="w-2 h-2 bg-[var(--accent-signal)]" aria-hidden="true" />
                 <span>Filtering Projects by: <strong>{selectedSkill}</strong></span>
                 <button
                   onClick={() => onSelectSkill(null)}

@@ -246,8 +246,8 @@ export default function Hero() {
               >
                 {emailCopied ? (
                   <>
-                    <Check className="w-4 h-4 text-[var(--accent-emerald)]" aria-hidden="true" />
-                    <span className="text-[var(--accent-emerald)]">Email copied</span>
+                    <Check className="w-4 h-4 text-[var(--accent-signal)]" aria-hidden="true" />
+                    <span className="text-[var(--accent-signal)]">Email copied</span>
                   </>
                 ) : (
                   <>
@@ -291,7 +291,7 @@ export default function Hero() {
                 <dd className="text-[15px] text-[var(--text-primary)] leading-snug">
                   {row.mark && (
                     <span
-                      className="inline-block w-2 h-2 mr-2 -mt-0.5 bg-[var(--accent-emerald)]"
+                      className="inline-block w-2 h-2 mr-2 -mt-0.5 bg-[var(--accent-signal)]"
                       aria-hidden="true"
                     />
                   )}

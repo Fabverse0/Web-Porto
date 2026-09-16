@@ -127,7 +127,7 @@ export default function Contact() {
           <div className="lg:col-span-7">
             {formSubmitted ? (
               <div className="h-full min-h-[320px] border border-[var(--border-strong)] bg-[var(--bg-card)] p-10 text-center flex flex-col items-center justify-center" role="status">
-                <span className="w-10 h-10 bg-[var(--accent-emerald)] flex items-center justify-center" aria-hidden="true">
+                <span className="w-10 h-10 bg-[var(--accent-signal)] flex items-center justify-center" aria-hidden="true">
                   <Check className="w-5 h-5 text-[var(--bg-page)]" />
                 </span>
                 <h3 className="font-heading font-medium text-xl text-[var(--text-primary)] mt-5">201 Created. Message Received!</h3>

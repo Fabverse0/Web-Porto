@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { MotionConfig, motion, useScroll, useSpring } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -8,7 +8,7 @@ import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Cursor from './components/Cursor';
-import Lab from './components/Lab';
+const Lab = lazy(() => import('./components/Lab'));
 
 function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -63,7 +63,9 @@ export default function App() {
 
         {/* Main content */}
         {isLab ? (
-          <Lab />
+          <Suspense fallback={<div className="min-h-[60vh]" aria-busy="true" />}>
+            <Lab />
+          </Suspense>
         ) : (
           <main className="flex-1">
             <Hero />

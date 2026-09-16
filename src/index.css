@@ -24,7 +24,7 @@
   --text-tertiary: var(--primitive-color-zinc-500);
   --terminal-bg: var(--primitive-color-zinc-900);
   --terminal-text: var(--primitive-color-snow);
-  --accent-emerald: var(--primitive-color-zinc-900); /* mono: was emerald-700 */
+  --accent-signal: var(--primitive-color-zinc-900); /* mono: was emerald-700 */
   --btn-hover: var(--primitive-color-zinc-700);
 
   --font-heading: var(--primitive-font-heading);
@@ -45,7 +45,7 @@
   --text-tertiary: #A1A1AA;
   --terminal-bg: #000000;
   --terminal-text: #FAFAFA;
-  --accent-emerald: #FAFAFA; /* mono: was #34D399 */
+  --accent-signal: #FAFAFA; /* mono: was #34D399 */
   --btn-hover: #D4D4D8;
 }
 
@@ -114,7 +114,7 @@ body::after {
   position: absolute;
   width: 3px;
   height: 3px;
-  background: var(--accent-emerald);
+  background: var(--accent-signal);
   opacity: 0.9;
 }
 
@@ -186,7 +186,7 @@ body::after {
   display: inline-block;
   width: 8px;
   height: 16px;
-  background-color: var(--accent-emerald);
+  background-color: var(--accent-signal);
   margin-left: 4px;
   animation: blink 1s step-end infinite;
   vertical-align: middle;
@@ -204,7 +204,7 @@ body::after {
   background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
   background-size: 24px 24px;
   background-position: -1px -1px; }
-::-webkit-scrollbar-thumb { background: var(--accent-emerald); border-radius: 0; }
+::-webkit-scrollbar-thumb { background: var(--accent-signal); border-radius: 0; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
 /* ============================================================
@@ -402,8 +402,8 @@ body::after {
   transition: border-color 180ms ease, color 180ms ease;
 }
 .plate-cta:hover {
-  border-color: var(--accent-emerald);
-  color: var(--accent-emerald);
+  border-color: var(--accent-signal);
+  color: var(--accent-signal);
 }
 .plate-gh {
   display: inline-flex;
@@ -776,7 +776,7 @@ body::after {
   margin: 0;
 }
 @media (max-width: 639px) { .exp-header__title { font-size: 26px; } }
-.exp-header__title-accent { color: var(--accent-emerald, var(--text-secondary)); }
+.exp-header__title-accent { color: var(--accent-signal, var(--text-secondary)); }
 .exp-header__lede {
   margin-top: 0.75rem;
   font-size: 15.5px;
@@ -845,7 +845,7 @@ body::after {
   gap: 8px;
 }
 .exp-tab:focus-visible {
-  outline: 2px solid var(--accent-emerald, #09090B);
+  outline: 2px solid var(--accent-signal, #09090B);
   outline-offset: 2px;
 }
 .exp-tab-count {
@@ -955,7 +955,7 @@ body::after {
 .exp-doc-bullet {
   width: 6px;
   height: 6px;
-  background: var(--accent-emerald);
+  background: var(--accent-signal);
   flex-shrink: 0;
   margin-top: 8px;
 }
@@ -1142,7 +1142,7 @@ body::after {
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--accent-emerald);
+  background: var(--accent-signal);
   transition: width 0.25s ease;
 }
 .navbar-brand:hover .navbar-brand-sub::after {
