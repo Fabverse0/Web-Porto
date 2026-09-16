@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Send, Copy, Check, ArrowUpRight } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
@@ -79,6 +79,41 @@ function ChannelRow({ label, value, href, external, onCopy, copied, copyable, sc
   );
 }
 
+/* ── Ink-fill magnetic submit ── */
+function InkFillSubmit({ children }) {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const x = useSpring(mx, { stiffness: 260, damping: 30 });
+  const y = useSpring(my, { stiffness: 260, damping: 30 });
+  const reduce = prefersReducedMotion();
+
+  const onMove = (e) => {
+    if (reduce) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - r.left - r.width / 2) * 0.10);
+    my.set((e.clientY - r.top - r.height / 2) * 0.16);
+  };
+  const onLeave = () => { mx.set(0); my.set(0); };
+
+  return (
+    <motion.button
+      type="submit"
+      className="contact-submit"
+      style={{ x, y }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      whileTap={{ scale: 0.98 }}
+    >
+      <span className="submit-fill" aria-hidden="true" />
+      <span className="submit-content">
+        {children}
+        <Send size={15} aria-hidden="true" className="contact-submit-icon" />
+        <kbd className="submit-kbd" aria-hidden="true">CTRL ⏎</kbd>
+      </span>
+    </motion.button>
+  );
+}
+
 /* ── Live curl: mirrors form state; on submit prints staged response ── */
 function curlFromState(dev, { name, email, message }) {
   return [
@@ -113,8 +148,7 @@ function CurlConsole({ dev, formData, formSubmitted }) {
     if (formSubmitted) {
       nodes.forEach((n) => {
         n.classList.remove('cur-visible');
-        // force reflow so animation restarts
-        void n.offsetWidth;
+        void n.offsetWidth; // restart animation
         n.classList.add('cur-visible');
       });
     }
@@ -138,8 +172,17 @@ function CurlConsole({ dev, formData, formSubmitted }) {
       ) : (
         <pre className="font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap">
           <span className="cur-cmd">{live}</span>
+          <span className="cur-caret" aria-hidden="true"></span>
         </pre>
       )}
+
+      <div className="cur-statusline" aria-hidden="true">
+        <span>NORMAL</span>
+        <span>UTF-8</span>
+        <span>LF</span>
+        <span>3 FIELDS</span>
+        <span>{formSubmitted ? 'EXIT 0' : 'NO ERRORS'}</span>
+      </div>
     </div>
   );
 }
@@ -184,6 +227,13 @@ export default function Contact() {
       setFormData({ name: '', email: '', message: '' });
     }, 4200);
   };
+
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleSubmit(e);
+  };
+
+  const msgLen = formData.message.length;
+  const msgCount = String(msgLen).padStart(3, '0') + ' / 500';
 
   const inputClasses = 'w-full py-3.5 bg-transparent border-0 font-sans text-[15px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:ring-0';
 
@@ -236,7 +286,7 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* ── Compose (form) + console (terminal) — one system ── */}
+        {/* ── Compose (press-sheet) + console (terminal) ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-12 pt-14 mt-14">
 
           <div className="lg:col-span-7">
@@ -265,18 +315,25 @@ export default function Contact() {
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit}
-                  className="contact-request"
+                  onKeyDown={onKeyDown}
+                  className="request-doc"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.25, ease: EASE }}
                 >
+                  <span className="doc-crop doc-crop--tl" aria-hidden="true" />
+                  <span className="doc-crop doc-crop--tr" aria-hidden="true" />
+                  <span className="doc-crop doc-crop--bl" aria-hidden="true" />
+                  <span className="doc-crop doc-crop--br" aria-hidden="true" />
+
                   <div className="contact-request-head" aria-hidden="true">
                     <span>POST /CONTACT</span>
                     <span>HTTP/2 · APPLICATION/JSON</span>
                   </div>
 
                   <div className="req-field">
+                    <span className="req-idx" aria-hidden="true">01</span>
                     <label htmlFor="contact-name" className="req-key">name:</label>
                     <input
                       id="contact-name" name="name" type="text" required
@@ -285,9 +342,11 @@ export default function Contact() {
                       placeholder='"John Doe"'
                       className={inputClasses}
                     />
+                    <span className="req-note" aria-hidden="true">STRING · REQUIRED</span>
                   </div>
 
                   <div className="req-field">
+                    <span className="req-idx" aria-hidden="true">02</span>
                     <label htmlFor="contact-email" className="req-key">email:</label>
                     <input
                       id="contact-email" name="email" type="email" required
@@ -296,28 +355,26 @@ export default function Contact() {
                       placeholder='"john@company.com"'
                       className={inputClasses}
                     />
+                    <span className="req-note" aria-hidden="true">RFC 5322 · REQUIRED</span>
                   </div>
 
                   <div className="req-field req-field--area">
+                    <span className="req-idx" aria-hidden="true">03</span>
                     <label htmlFor="contact-message" className="req-key">message:</label>
                     <textarea
-                      id="contact-message" name="message" required rows={4}
+                      id="contact-message" name="message" required rows={4} maxLength={500}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder='"Hi Fabian, I would like to discuss a backend engineering opportunity..."'
                       className={`${inputClasses} resize-none`}
                     ></textarea>
+                    <span className="req-note req-count" aria-live="off">{msgCount}</span>
                   </div>
 
                   <div className="req-submit-row">
-                    <motion.button
-                      type="submit"
-                      className="contact-submit"
-                      whileTap={{ scale: 0.985 }}
-                    >
+                    <InkFillSubmit>
                       <span>Send HTTP POST Request</span>
-                      <Send size={15} aria-hidden="true" className="contact-submit-icon" />
-                    </motion.button>
+                    </InkFillSubmit>
                     <span className="req-meta" aria-hidden="true">
                       APPLICATION/JSON · EXPECT 201 · SLA 2HRS
                     </span>
