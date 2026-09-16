@@ -17,11 +17,48 @@ function TechCapsule({ name }) {
   return <span className="tech-capsule">{name}</span>;
 }
 
+/* ── tenure: parsed years from "YYYY - YYYY|Present", fills a hairline meter ── */
+function parseTenure(period) {
+  const m = String(period || '').match(/(\d{4})\s*[-\u2013]\s*(\d{4}|Present)/i);
+  if (!m) return null;
+  const start = parseInt(m[1], 10);
+  const end = /present/i.test(m[2]) ? new Date().getFullYear() : parseInt(m[2], 10);
+  const years = Math.max(0, end - start);
+  return { start, end, years };
+}
+
+function TenureMeter({ period }) {
+  const t = parseTenure(period);
+  if (!t || t.years <= 0) return null;
+  const p = Math.min(100, (t.years / 5) * 100); // 5yr = full scale
+  return (
+    <span
+      className="exp-tenure"
+      aria-label={`${t.years} year${t.years > 1 ? 's' : ''} tenure`}
+    >
+      <span className="exp-tenure-track" aria-hidden="true">
+        <motion.span
+          className="exp-tenure-fill"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+          style={{ width: `${p}%` }}
+        />
+      </span>
+      <span className="exp-tenure-label" aria-hidden="true">
+        {t.years} {t.years > 1 ? 'YRS' : 'YR'}
+      </span>
+    </span>
+  );
+}
+
 function DocEntry({ entry, idx, variant = 'work', expanded, onToggle }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.12 });
   const isWork = variant === 'work';
   const num = String(idx + 1).padStart(2, '0');
+  const isCurrent = /present/i.test(String(entry.period || ''));
   const hasDetail =
     (entry.architectureMilestones && entry.architectureMilestones.length > 0) ||
     (entry.techStack && entry.techStack.length > 0);
@@ -32,7 +69,7 @@ function DocEntry({ entry, idx, variant = 'work', expanded, onToggle }) {
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : {}}
       transition={{ duration: 0.4, delay: Math.min(idx * 0.05, 0.15), ease: EASE }}
-      className="exp-doc-entry"
+      className={'exp-doc-entry' + (isCurrent ? ' exp-doc-entry--current' : '')}
     >
       <div className="exp-doc-meta">
         <div className="exp-doc-period">
@@ -45,11 +82,20 @@ function DocEntry({ entry, idx, variant = 'work', expanded, onToggle }) {
             <span>{entry.location}</span>
           </div>
         )}
+        <TenureMeter period={entry.period} />
         <div className="exp-doc-number" aria-hidden="true">{num}</div>
       </div>
 
       <div className="exp-doc-main">
-        <h3 className="exp-doc-title">{isWork ? entry.role : entry.degree}</h3>
+        <h3 className="exp-doc-title">
+          {isWork ? entry.role : entry.degree}
+          {isCurrent && (
+            <span className="exp-now" aria-hidden="true">
+              <span className="exp-now-dot" />
+              NOW
+            </span>
+          )}
+        </h3>
         <p className="exp-doc-org">{isWork ? entry.company : entry.institution}</p>
         <p className="exp-doc-desc">{entry.description || entry.highlights}</p>
 
@@ -84,10 +130,16 @@ function DocEntry({ entry, idx, variant = 'work', expanded, onToggle }) {
                 {entry.architectureMilestones && entry.architectureMilestones.length > 0 && (
                   <ul className="exp-doc-milestones">
                     {entry.architectureMilestones.map((ms, i) => (
-                      <li key={i} className="exp-doc-milestone">
+                      <motion.li
+                        key={i}
+                        className="exp-doc-milestone"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: 0.08 + i * 0.06, ease: EASE }}
+                      >
                         <span className="exp-doc-bullet" aria-hidden="true" />
                         <span>{ms}</span>
-                      </li>
+                      </motion.li>
                     ))}
                   </ul>
                 )}
@@ -95,8 +147,16 @@ function DocEntry({ entry, idx, variant = 'work', expanded, onToggle }) {
                   <div className="exp-doc-stack">
                     <MonoLabel>Stack</MonoLabel>
                     <div className="exp-doc-stack-row">
-                      {entry.techStack.map((t) => (
-                        <TechCapsule key={t} name={t} />
+                      {entry.techStack.map((t, i) => (
+                        <motion.span
+                          key={t}
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.25, delay: 0.15 + i * 0.04, ease: EASE }}
+                          style={{ display: 'inline-flex' }}
+                        >
+                          <TechCapsule name={t} />
+                        </motion.span>
                       ))}
                     </div>
                   </div>
@@ -170,7 +230,7 @@ export default function Experience() {
               <span className="exp-header__title-accent"> &amp; Education</span>
             </h2>
             <p className="exp-header__lede">
-              Backend systems, database performance, and team delivery — documented as a spec sheet, not a timeline.
+              Backend systems, database performance, and team delivery - documented as a spec sheet, not a timeline.
             </p>
           </div>
 

@@ -1380,3 +1380,75 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .skill-domain, .skill-meter-fill { transition: none; }
 }
+
+/* ── experience polish: NOW badge + tenure meter ── */
+.exp-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+  vertical-align: middle;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--text-primary);
+  border: 1px solid var(--text-primary);
+  padding: 3px 8px;
+  border-radius: 999px;
+  transform: translateY(-2px);
+}
+.exp-now-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  animation: exp-now-pulse 2.2s ease-in-out infinite;
+}
+@keyframes exp-now-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+.exp-tenure {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 140px;
+}
+.exp-tenure-track {
+  position: relative;
+  display: block;
+  flex: 1;
+  height: 3px;
+  background: var(--border-color);
+  overflow: hidden;
+}
+.exp-tenure-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  background: var(--text-primary);
+  transform-origin: left center;
+}
+.exp-tenure-label {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.exp-doc-entry--current .exp-doc-number {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .exp-tenure { max-width: 110px; margin-top: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exp-now-dot { animation: none; }
+  .exp-tenure-fill { transition: none; }
+}
