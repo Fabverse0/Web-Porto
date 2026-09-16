@@ -117,7 +117,7 @@ export default function Contact() {
                 <span>STATUS: 200 OK / Typical Response Time &lt; 2 Hours</span>
               </div>
               <div className="flex items-center gap-2.5 font-mono text-xs">
-                <span className="w-2 h-2 bg-[#FAFAFA] animate-pulse" aria-hidden="true" />
+                <span className="w-2 h-2 bg-[#FAFAFA]" aria-hidden="true" />
                 <span>AVAILABLE — {new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()} / 1 SLOT</span>
               </div>
             </div>
