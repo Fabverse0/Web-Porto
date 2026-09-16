@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Copy, Check, ArrowUpRight } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
@@ -60,7 +60,6 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [copiedKey, setCopiedKey] = useState(null);
-  const headlineRef = useRef(null);
 
   const dev = PORTFOLIO_DATA.developer;
 
@@ -87,14 +86,15 @@ export default function Contact() {
     }, 4000);
   };
 
-  const inputClasses = 'w-full px-0 py-3 bg-transparent border-0 border-b border-[var(--border-strong)] rounded-none font-sans text-[15px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:border-[var(--text-primary)] transition-colors';
+  /* form input: no own borders - the request row carries the hairline */
+  const inputClasses = 'w-full py-3.5 bg-transparent border-0 font-sans text-[15px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:ring-0';
 
   return (
     <section id="contact" className="contact-section">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* ── Giant headline + availability ledger ── */}
-        <div className="contact-head" ref={headlineRef}>
+        <div className="contact-head">
           <p className="contact-eyebrow">
             <span className="contact-eyebrow-dot" aria-hidden="true" />
             OPEN FOR WORK — {new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()}
@@ -136,10 +136,10 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* ── The form + curl, split ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-10 pt-14 mt-14 border-t border-[var(--border-color)]">
+        {/* ── Request document + terminal, split ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-12 pt-14 mt-14">
 
-          {/* Form: editorial underline inputs */}
+          {/* Form as a request document: keys left, values right */}
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
               {formSubmitted ? (
@@ -149,7 +149,7 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  className="min-h-[320px] flex flex-col items-start justify-center" role="status"
+                  className="min-h-[360px] flex flex-col items-start justify-center" role="status"
                 >
                   <span className="contact-sent-mark" aria-hidden="true">
                     <Check size={22} strokeWidth={2} />
@@ -166,81 +166,93 @@ export default function Contact() {
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit}
-                  className="space-y-8"
+                  className="contact-request"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.25, ease: EASE }}
                 >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-8">
-                    <div className="space-y-1">
-                      <label htmlFor="contact-name" className="contact-field-label">01 / Your Name</label>
-                      <input
-                        id="contact-name" name="name" type="text" required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="John Doe"
-                        className={inputClasses}
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label htmlFor="contact-email" className="contact-field-label">02 / Your Email</label>
-                      <input
-                        id="contact-email" name="email" type="email" required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="john@company.com"
-                        className={inputClasses}
-                      />
-                    </div>
+                  <div className="contact-request-head" aria-hidden="true">
+                    <span>POST /CONTACT</span>
+                    <span>HTTP/2 · APPLICATION/JSON</span>
                   </div>
 
-                  <div className="space-y-1">
-                    <label htmlFor="contact-message" className="contact-field-label">03 / Message</label>
+                  <div className="req-field">
+                    <label htmlFor="contact-name" className="req-key">name:</label>
+                    <input
+                      id="contact-name" name="name" type="text" required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder='"John Doe"'
+                      className={inputClasses}
+                    />
+                  </div>
+
+                  <div className="req-field">
+                    <label htmlFor="contact-email" className="req-key">email:</label>
+                    <input
+                      id="contact-email" name="email" type="email" required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder='"john@company.com"'
+                      className={inputClasses}
+                    />
+                  </div>
+
+                  <div className="req-field req-field--area">
+                    <label htmlFor="contact-message" className="req-key">message:</label>
                     <textarea
-                      id="contact-message" name="message" required rows={5}
+                      id="contact-message" name="message" required rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Hi Fabian, I'd like to discuss a backend engineering opportunity..."
+                      placeholder='"Hi Fabian, I would like to discuss a backend engineering opportunity..."'
                       className={`${inputClasses} resize-none`}
                     ></textarea>
                   </div>
 
-                  <motion.button
-                    type="submit"
-                    className="contact-submit"
-                    whileTap={{ scale: 0.985 }}
-                  >
-                    <span>Send HTTP POST Request</span>
-                    <Send size={15} aria-hidden="true" className="contact-submit-icon" />
-                  </motion.button>
+                  <div className="req-submit-row">
+                    <motion.button
+                      type="submit"
+                      className="contact-submit"
+                      whileTap={{ scale: 0.985 }}
+                    >
+                      <span>Send HTTP POST Request</span>
+                      <Send size={15} aria-hidden="true" className="contact-submit-icon" />
+                    </motion.button>
+                    <span className="req-meta" aria-hidden="true">
+                      APPLICATION/JSON · EXPECT 201 · SLA 2HRS
+                    </span>
+                  </div>
                 </motion.form>
               )}
             </AnimatePresence>
           </div>
 
-          {/* cURL side panel: stays as the nerd flex, but tighter */}
+          {/* cURL: the one ink terminal of this section */}
           <aside className="lg:col-span-5">
-            <p className="contact-field-label">ALTERNATE PROTOCOL</p>
-            <p className="text-[13px] text-[var(--text-body)] leading-relaxed mt-3 mb-4">
-              For humans with a terminal open — copy, paste, hit enter.
-            </p>
+            <div className="contact-curl-head">
+              <span className="contact-curl-title">ALTERNATE PROTOCOL</span>
+              <span className="contact-curl-sub">FOR HUMANS WITH A TERMINAL OPEN.</span>
+            </div>
             <div className="contact-curl">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--text-tertiary)]">POST /CONTACT</span>
+                <span className="font-mono text-[10px] tracking-[0.14em] text-[#A1A1AA]">POST /CONTACT</span>
                 <button
                   onClick={() => handleCopy('curl', curlContactCmd)}
-                  className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors min-h-[36px] px-1"
+                  className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#FAFAFA] hover:underline transition-colors min-h-[36px] px-1"
                 >
                   {copiedKey === 'curl' ? <Check size={13} aria-hidden="true" /> : <Copy size={13} aria-hidden="true" />}
                   <span>{copiedKey === 'curl' ? 'COPIED' : 'COPY'}</span>
                 </button>
               </div>
-              <pre className="font-mono text-[11px] leading-relaxed text-[var(--text-secondary)] overflow-x-auto whitespace-pre-wrap">{curlContactCmd}</pre>
+              <pre className="font-mono text-[11px] leading-relaxed text-[#A1A1AA] overflow-x-auto whitespace-pre-wrap">{curlContactCmd}</pre>
               <span className="sr-only" role="status" aria-live="polite">
                 {copiedKey === 'curl' ? 'cURL command copied to clipboard' : ''}
               </span>
             </div>
+            <p className="contact-curl-note" aria-hidden="true">
+              SAME ENDPOINT, SAME PAYLOAD — PICK YOUR CLIENT.
+            </p>
           </aside>
 
         </div>
