@@ -136,14 +136,12 @@ function DomainRow({ index, category, skills, selectedSkill, onSkillClick }) {
                 whileTap={{ scale: 0.995 }}
               >
                 <span className="skill-doc-brand" aria-hidden="true">
-                  {skill.level === 'Expert' && (
-                    <BrandLogo
-                      slug={skill.slug}
-                      color={isSelected ? 'var(--bg-page)' : skill.brandColor}
-                      fallbackName={skill.name}
-                      size={18}
-                    />
-                  )}
+                  <BrandLogo
+                    slug={skill.slug}
+                    color={isSelected ? 'var(--bg-page)' : skill.brandColor}
+                    fallbackName={skill.name}
+                    size={18}
+                  />
                 </span>
 
                 <span className="skill-doc-name">{skill.name}</span>
