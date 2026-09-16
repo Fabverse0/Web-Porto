@@ -81,19 +81,6 @@ function SkillStatLine({ skills }) {
   );
 }
 
-/* ── Marquee strip: editorial meta line (informasi non-duplikat) ── */
-function SkillMarquee() {
-  const line = 'JAKARTA, ID · REMOTE FRIENDLY · OPEN FOR FULL-TIME & FREELANCE · TYPICAL RESPONSE < 2 HRS';
-  return (
-    <div className="skill-marquee" aria-hidden="true">
-      <div className="skill-marquee-track">
-        <span>{line}&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-        <span>{line}&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-        <span>{line}&nbsp;&nbsp;·&nbsp;&nbsp;</span>
-      </div>
-    </div>
-  );
-}
 
 /* ── Domain row: editorial monolith — Fraunces giant index + doc rows ── */
 function DomainRow({ index, category, skills, selectedSkill, onSkillClick }) {
@@ -236,8 +223,6 @@ export default function AboutSkills({ selectedSkill, onSelectSkill }) {
           ))}
         </div>
 
-        {/* ── Marquee: editorial meta line ── */}
-        <SkillMarquee />
 
       </div>
     </section>

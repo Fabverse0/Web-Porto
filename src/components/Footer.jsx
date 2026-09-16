@@ -22,7 +22,7 @@ export default function Footer() {
         <div className="marquee-track font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-secondary)]">
           {[0, 1].map((copy) => (
             <span key={copy} className="pr-8">
-              {PORTFOLIO_DATA.skills.map((s) => s.name).join('  //  ')}  //
+              JAKARTA, ID · REMOTE FRIENDLY · OPEN FOR FULL-TIME &amp; FREELANCE · TYPICAL RESPONSE &lt; 2 HRS ·&nbsp;
             </span>
           ))}
         </div>
