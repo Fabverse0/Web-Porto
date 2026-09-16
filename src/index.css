@@ -1381,34 +1381,7 @@ body::after {
   .skill-domain, .skill-meter-fill { transition: none; }
 }
 
-/* ── experience polish: NOW badge + tenure meter ── */
-.exp-now {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 12px;
-  vertical-align: middle;
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 9.5px;
-  letter-spacing: 0.14em;
-  color: var(--text-primary);
-  border: 1px solid var(--text-primary);
-  padding: 3px 8px;
-  border-radius: 999px;
-  transform: translateY(-2px);
-}
-.exp-now-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--text-primary);
-  animation: exp-now-pulse 2.2s ease-in-out infinite;
-}
-@keyframes exp-now-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.8); }
-}
-
+/* ── experience polish: tenure meter + marginalia current mark ── */
 .exp-tenure {
   display: flex;
   align-items: center;
@@ -1449,6 +1422,17 @@ body::after {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .exp-now-dot { animation: none; }
   .exp-tenure-fill { transition: none; }
+}
+
+/* current entry: marginalia mark — solid number + short ink rule
+   (state via document structure, not a status chip) */
+.exp-doc-entry--current .exp-doc-number { color: var(--text-primary); }
+.exp-doc-entry--current .exp-doc-number::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-primary);
+  margin-top: 8px;
 }

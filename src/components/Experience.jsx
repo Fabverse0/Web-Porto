@@ -89,12 +89,6 @@ function DocEntry({ entry, idx, variant = 'work', expanded, onToggle }) {
       <div className="exp-doc-main">
         <h3 className="exp-doc-title">
           {isWork ? entry.role : entry.degree}
-          {isCurrent && (
-            <span className="exp-now" aria-hidden="true">
-              <span className="exp-now-dot" />
-              NOW
-            </span>
-          )}
         </h3>
         <p className="exp-doc-org">{isWork ? entry.company : entry.institution}</p>
         <p className="exp-doc-desc">{entry.description || entry.highlights}</p>
