@@ -1624,3 +1624,23 @@ body::after {
   .req-field { grid-template-columns: 1fr; }
   .req-key { padding-top: 14px; padding-bottom: 2px; }
 }
+
+/* ── contact v5: live preview console + response stagger ── */
+.contact-curl[data-live="true"] .cur-cmd { color: #E4E4E7; }
+.contact-curl-resp .cur-line {
+  opacity: 0;
+  transform: translateY(3px);
+}
+.contact-curl-resp .cur-line.cur-visible {
+  animation: curLineIn 0.32s ease forwards;
+}
+@keyframes curLineIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.cur-status { color: #FAFAFA; font-weight: 500; }
+.cur-ok { color: #E4E4E7; }
+.cur-dim { color: #71717A; }
+.cur-cmd { color: #A1A1AA; }
+@media (prefers-reduced-motion: reduce) {
+  .contact-curl-resp .cur-line { opacity: 1; transform: none; animation: none; }
+}

@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Copy, Check, ArrowUpRight } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 const EASE = [0.22, 1, 0.36, 1];
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/\\_=#$%';
+
+function prefersReducedMotion() {
+  return typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 
 /* ── Giant interactive heading: per-letter lift on hover ── */
 function MagneticHeadline({ text }) {
-  const reduce = typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) {
-    return <span className="contact-headline">{text}</span>;
-  }
+  const reduce = prefersReducedMotion();
+  if (reduce) return <span className="contact-headline">{text}</span>;
   return (
     <span className="contact-headline" aria-label={text}>
       {text.split('').map((ch, i) => (
@@ -28,12 +31,32 @@ function MagneticHeadline({ text }) {
   );
 }
 
-/* ── Channel row: full-width link with arrow slide ── */
-function ChannelRow({ label, value, href, external, onCopy, copied, copyable }) {
+/* ── Channel row: scramble decode on hover (skips email row) ── */
+function ChannelRow({ label, value, href, external, onCopy, copied, copyable, scrambleEnabled }) {
+  const valRef = useRef(null);
+  const reduce = prefersReducedMotion();
+
+  const scramble = () => {
+    if (reduce || !scrambleEnabled || !valRef.current) return;
+    const el = valRef.current;
+    const original = value;
+    let frame = 0;
+    const total = 12;
+    const id = setInterval(() => {
+      frame += 1;
+      if (frame >= total) { el.textContent = original; clearInterval(id); return; }
+      const reveal = Math.floor((frame / total) * original.length);
+      el.textContent = original.split('').map((ch, i) => {
+        if (i < reveal || ch === ' ' || ch === '.' || ch === '/' || ch === '@') return ch;
+        return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+      }).join('');
+    }, 28);
+  };
+
   const inner = (
     <>
       <span className="contact-row-label">{label}</span>
-      <span className="contact-row-value">{value}</span>
+      <span className="contact-row-value" ref={valRef}>{value}</span>
       <span className="contact-row-action">
         {copyable ? (
           copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />
@@ -50,9 +73,89 @@ function ChannelRow({ label, value, href, external, onCopy, copied, copyable }) 
       <span className="sr-only" role="status" aria-live="polite">{copied ? 'Copied to clipboard' : ''}</span>
     </button>
   ) : (
-    <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined} className={cls}>
+    <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined} className={cls} onMouseEnter={scramble}>
       {inner}
     </a>
+  );
+}
+
+/* ── Live curl: mirrors form state; on submit prints staged response ── */
+function curlFromState(dev, { name, email, message }) {
+  return [
+    'curl -X POST https://formsubmit.co/' + dev.email + ' \\',
+    '  -H "Content-Type: application/json" \\',
+    '  -d \'{"name": "' + (name || '…') + '", "email": "' + (email || '…') + '",',
+    '      "message": "' + (message || '…') + '"}\'',
+  ].join('\n');
+}
+
+function CurlConsole({ dev, formData, formSubmitted }) {
+  const bodyRef = useRef(null);
+  const live = curlFromState(dev, formData);
+
+  const lines = useMemo(() => ([
+    { t: '$ curl -X POST https://formsubmit.co/' + dev.email + ' \\', cls: 'cur-cmd', d: 0 },
+    { t: '  -H "Content-Type: application/json" \\', cls: 'cur-cmd', d: 260 },
+    { t: '  -d \'{"name": "' + formData.name + '", "email": "' + formData.email + '",', cls: 'cur-cmd', d: 520 },
+    { t: '      "message": "' + formData.message + '"}\'', cls: 'cur-cmd', d: 780 },
+    { t: '', d: 1050 },
+    { t: 'HTTP/2 201', cls: 'cur-status', d: 1250 },
+    { t: 'x-served-by: fabian.primary', cls: 'cur-dim', d: 1450 },
+    { t: 'location: /inbox/scheduled?response<2hrs', cls: 'cur-dim', d: 1650 },
+    { t: '', d: 1850 },
+    { t: 'message accepted — you will hear back shortly.', cls: 'cur-ok', d: 2050 },
+  ]), [dev.email, formData.name, formData.email, formData.message]);
+
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    const nodes = el.querySelectorAll('[data-line]');
+    if (formSubmitted) {
+      nodes.forEach((n) => {
+        n.classList.remove('cur-visible');
+        // force reflow so animation restarts
+        void n.offsetWidth;
+        n.classList.add('cur-visible');
+      });
+    }
+  }, [formSubmitted]);
+
+  return (
+    <div className="contact-curl" data-live={String(!formSubmitted)}>
+      <div className="flex items-center justify-between mb-3">
+        <span className="font-mono text-[10px] tracking-[0.14em] text-[#A1A1AA]">
+          {formSubmitted ? 'RESPONSE — 201' : 'POST /CONTACT — LIVE PREVIEW'}
+        </span>
+        <CopyButton text={formSubmitted ? lines.map((l) => l.t).join('\n') : live} />
+      </div>
+
+      {formSubmitted ? (
+        <pre ref={bodyRef} className="font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap contact-curl-resp" aria-live="polite">
+          {lines.map((l, i) => (
+            <span key={i} data-line className={'cur-line ' + l.cls}>{l.t || '\u00A0'}</span>
+          ))}
+        </pre>
+      ) : (
+        <pre className="font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap">
+          <span className="cur-cmd">{live}</span>
+        </pre>
+      )}
+    </div>
+  );
+}
+
+function CopyButton({ text }) {
+  const [copied, setCopied] = useState(false);
+  const onCopy = async () => {
+    try { await navigator.clipboard.writeText(text); } catch (e) { /* no-op */ }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <button onClick={onCopy} className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#FAFAFA] hover:underline transition-colors min-h-[36px] px-1">
+      {copied ? <Check size={13} aria-hidden="true" /> : <Copy size={13} aria-hidden="true" />}
+      <span>{copied ? 'COPIED' : 'COPY'}</span>
+    </button>
   );
 }
 
@@ -73,27 +176,22 @@ export default function Contact() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
-  const curlContactCmd = `curl -X POST https://formsubmit.co/${dev.email} \\
-  -H "Content-Type: application/json" \\
-  -d '{"name": "Recruiter", "email": "hr@tech.co", "message": "Let us talk backend!"}'`;
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormSubmitted(true);
     setTimeout(() => {
       setFormSubmitted(false);
       setFormData({ name: '', email: '', message: '' });
-    }, 4000);
+    }, 4200);
   };
 
-  /* form input: no own borders - the request row carries the hairline */
   const inputClasses = 'w-full py-3.5 bg-transparent border-0 font-sans text-[15px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:ring-0';
 
   return (
     <section id="contact" className="contact-section">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* ── Giant headline + availability ledger ── */}
+        {/* ── Giant headline + availability ── */}
         <div className="contact-head">
           <p className="contact-eyebrow">
             <span className="contact-eyebrow-dot" aria-hidden="true" />
@@ -122,12 +220,14 @@ export default function Contact() {
             value="github.com/Fabverse0"
             href={dev.github}
             external
+            scrambleEnabled
           />
           <ChannelRow
             label="03 / LINKEDIN"
             value="in/fabianrizky"
             href={dev.linkedin}
             external
+            scrambleEnabled
           />
           <div className="contact-channels-foot" aria-hidden="true">
             <span>STATUS: 200 OK</span>
@@ -136,10 +236,9 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* ── Request document + terminal, split ── */}
+        {/* ── Compose (form) + console (terminal) — one system ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-14 gap-y-12 pt-14 mt-14">
 
-          {/* Form as a request document: keys left, values right */}
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
               {formSubmitted ? (
@@ -228,28 +327,12 @@ export default function Contact() {
             </AnimatePresence>
           </div>
 
-          {/* cURL: the one ink terminal of this section */}
           <aside className="lg:col-span-5">
             <div className="contact-curl-head">
               <span className="contact-curl-title">ALTERNATE PROTOCOL</span>
-              <span className="contact-curl-sub">FOR HUMANS WITH A TERMINAL OPEN.</span>
+              <span className="contact-curl-sub">LIVE PREVIEW — TYPE ON THE LEFT, WATCH IT COMPILE.</span>
             </div>
-            <div className="contact-curl">
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-mono text-[10px] tracking-[0.14em] text-[#A1A1AA]">POST /CONTACT</span>
-                <button
-                  onClick={() => handleCopy('curl', curlContactCmd)}
-                  className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#FAFAFA] hover:underline transition-colors min-h-[36px] px-1"
-                >
-                  {copiedKey === 'curl' ? <Check size={13} aria-hidden="true" /> : <Copy size={13} aria-hidden="true" />}
-                  <span>{copiedKey === 'curl' ? 'COPIED' : 'COPY'}</span>
-                </button>
-              </div>
-              <pre className="font-mono text-[11px] leading-relaxed text-[#A1A1AA] overflow-x-auto whitespace-pre-wrap">{curlContactCmd}</pre>
-              <span className="sr-only" role="status" aria-live="polite">
-                {copiedKey === 'curl' ? 'cURL command copied to clipboard' : ''}
-              </span>
-            </div>
+            <CurlConsole dev={dev} formData={formData} formSubmitted={formSubmitted} />
             <p className="contact-curl-note" aria-hidden="true">
               SAME ENDPOINT, SAME PAYLOAD — PICK YOUR CLIENT.
             </p>
