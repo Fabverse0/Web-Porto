@@ -1753,3 +1753,30 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .req-field { transition: none; }
 }
+
+/* ── contact v7.2: the sheet survives submission ──
+   The success card replaces the form, so it must carry the same surface:
+   otherwise the deliberate sheet dissolves into bare page background (and in
+   light mode page/card are one step apart, which is exactly the "flat white"
+   the polish above was fixing). */
+.request-doc--sent {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+}
+.contact-sent-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--text-primary);
+  color: var(--text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-row,
+  .contact-row-action,
+  .contact-submit-icon {
+    transition: none;
+  }
+}

@@ -295,7 +295,7 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  className="min-h-[360px] flex flex-col items-start justify-center" role="status"
+                  className="request-doc request-doc--sent min-h-[360px] flex flex-col items-start justify-center" role="status"
                 >
                   <span className="contact-sent-mark" aria-hidden="true">
                     <Check size={22} strokeWidth={2} />
