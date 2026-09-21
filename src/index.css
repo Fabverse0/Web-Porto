@@ -1760,6 +1760,7 @@ body::after {
 
 @media (max-width: 640px) {
   .request-doc { padding: 20px 16px 22px; margin: -20px -16px -22px; }
+  .req-count { grid-column: auto; }
   .req-field { grid-template-columns: 1fr; }
   .req-idx { display: none; }
   .req-key { padding-top: 14px; padding-bottom: 2px; }
@@ -1768,4 +1769,11 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   .submit-fill { transition: none; }
   .cur-caret { animation: none; }
+}
+
+/* ── contact v6.1: tablet overflow fix ──
+   641-1023px: container sm:px-6 = 24px < default negative margin 28px
+   -> 8px horizontal overflow. Match margin to padding in that range. */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .request-doc { margin: -26px -24px -30px; padding: 26px 24px 30px; }
 }
