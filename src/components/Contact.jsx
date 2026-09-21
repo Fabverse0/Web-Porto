@@ -137,7 +137,7 @@ function CurlConsole({ dev, formData, formSubmitted }) {
     { t: 'sending...', cls: 'cur-status', d: 1250 },
     { t: '', d: 1850 },
     { t: 'delivered to ' + dev.email, cls: 'cur-ok', d: 2050 },
-    { t: 'ok — expect a reply within two hours.', cls: 'cur-ok', d: 2450 },
+    { t: 'ok. expect a reply within two hours.', cls: 'cur-ok', d: 2450 },
   ]), [dev.email, formData.name, formData.email, formData.message]);
 
   useEffect(() => {
@@ -376,7 +376,7 @@ export default function Contact() {
             </div>
             <CurlConsole dev={dev} formData={formData} formSubmitted={formSubmitted} />
             <p className="contact-curl-note" aria-hidden="true">
-              ONE MESSAGE, ONE MAILBOX — FORM OR COMMAND.
+              ONE MESSAGE, ONE MAILBOX. FORM OR COMMAND.
             </p>
           </aside>
 

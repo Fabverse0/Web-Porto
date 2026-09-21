@@ -15,6 +15,7 @@
   --bg-page: var(--primitive-color-snow);
   --bg-card: var(--primitive-color-white);
   --bg-muted: var(--primitive-color-zinc-100);
+  --bg-active: var(--primitive-color-zinc-100);
   --border-color: var(--primitive-color-zinc-200);
   --border-strong: var(--primitive-color-zinc-300);
   --border-hover: #09090B;
@@ -36,6 +37,7 @@
   --bg-page: #0B0B0D;
   --bg-card: #131316;
   --bg-muted: #1B1B1F;
+  --bg-active: #1B1B1F;
   --border-color: #26262B;
   --border-strong: #323238;
   --border-hover: #FAFAFA;
@@ -1598,12 +1600,15 @@ body::after {
 
 /* ── contact v6: press-sheet + ink-fill + terminal chrome ── */
 .request-doc {
+  --doc-x: 28px;
+  --doc-top: 26px;
+  --doc-bottom: 30px;
   position: relative;
   background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
   background-size: 22px 22px;
   background-position: 0 0;
-  padding: 26px 28px 30px;
-  margin: -26px -28px -30px;
+  padding: var(--doc-top) var(--doc-x) var(--doc-bottom);
+  margin: calc(var(--doc-top) * -1) calc(var(--doc-x) * -1) calc(var(--doc-bottom) * -1);
 }
 .doc-crop {
   position: absolute;
@@ -1618,7 +1623,7 @@ body::after {
 .doc-crop--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
 .doc-crop--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
 
-.req-field { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: baseline; border-bottom: 1px solid var(--border-color); background: var(--bg-page); }
+.req-field { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: baseline; border-bottom: 1px solid var(--border-color); background: transparent; }
 .req-field:focus-within { background: var(--bg-card); }
 .req-field--area { align-items: start; }
 .req-key {
@@ -1627,9 +1632,9 @@ body::after {
   color: var(--text-secondary);
   padding-top: 15px;
 }
-.req-key::after { content: '*'; margin-left: 5px; color: var(--text-tertiary); }
+.req-key::after { content: '*'; margin-left: 4px; color: var(--accent-signal); font-weight: 700; }
 .req-field--area .req-key { padding-top: 17px; }
-.req-count { position: static; grid-column: 2; justify-self: end; padding: 4px 0 8px; font-variant-numeric: tabular-nums; }
+.req-count { position: static; grid-column: 2; justify-self: end; padding: 2px 7px; margin: 0 0 10px; border: 1px solid var(--border-color); background: var(--bg-card); font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; letter-spacing: 0.1em; font-variant-numeric: tabular-nums; color: var(--text-tertiary); }
 
 /* ink-fill submit */
 .contact-submit {
@@ -1684,7 +1689,7 @@ body::after {
 @keyframes curCaret { to { visibility: hidden; } }
 
 @media (max-width: 640px) {
-  .request-doc { padding: 20px 16px 22px; margin: -20px -16px -22px; }
+  .request-doc { --doc-x: 16px; --doc-top: 20px; --doc-bottom: 22px; }
   .req-count { grid-column: auto; }
   .req-field { grid-template-columns: 1fr; }
   .req-key { padding-top: 14px; padding-bottom: 2px; }
@@ -1699,5 +1704,52 @@ body::after {
    641-1023px: container sm:px-6 = 24px < default negative margin 28px
    -> 8px horizontal overflow. Match margin to padding in that range. */
 @media (min-width: 640px) and (max-width: 1023.98px) {
-  .request-doc { margin: -26px -24px -30px; padding: 26px 24px 30px; }
+  .request-doc { --doc-x: 24px; }
+}
+/* ── contact v7: press-sheet surface polish ──
+   Diagnosis: field rows were painted var(--bg-page), which erased the 22px paper
+   grid, and the sheet had no frame while light-mode page/card sit 1 step apart, so
+   the whole form collapsed into one flat plane. Fix: frame the sheet, let the paper
+   show through, and give each row a readable idle/hover/focus/filled state.
+   Identity unchanged: hairlines only (no shadows), monochrome ink, dark + light. */
+.request-doc {
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  background-image: radial-gradient(var(--border-strong) 1px, transparent 1px);
+}
+.request-doc::before {
+  content: "";
+  display: block;
+  height: 5px;
+  margin: calc(var(--doc-top) * -1) calc(var(--doc-x) * -1) 22px;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.req-field {
+  background: transparent;
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.req-field:hover:not(:focus-within) { background: var(--bg-card); }
+.req-field:focus-within {
+  background: var(--bg-active);
+  border-bottom-color: var(--border-hover);
+  box-shadow: inset 2px 0 0 var(--accent-signal), inset 0 -1px 0 0 var(--accent-signal);
+}
+.req-field:focus-within .req-key { color: var(--text-primary); }
+.req-field:has(input:not(:placeholder-shown), textarea:not(:placeholder-shown)) .req-key {
+  color: var(--text-primary);
+}
+.req-field:has(+ .req-submit-row) { border-bottom-color: transparent; }
+
+.req-key { color: var(--text-body); font-weight: 500; letter-spacing: 0.02em; }
+
+.req-submit-row {
+  margin-top: 2px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .req-field { transition: none; }
 }
