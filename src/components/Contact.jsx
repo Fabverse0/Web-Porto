@@ -190,7 +190,7 @@ function CurlConsole({ dev, formData, formSubmitted }) {
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
   const onCopy = async () => {
-    try { await navigator.clipboard.writeText(text); } catch (e) { /* no-op */ }
+    try { await navigator.clipboard.writeText(text); } catch (e) { return; }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -206,15 +206,16 @@ export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [copiedKey, setCopiedKey] = useState(null);
+  const formRef = useRef(null);
 
   const dev = PORTFOLIO_DATA.developer;
 
   const copyToClipboard = async (text) => {
-    try { await navigator.clipboard.writeText(text); } catch (e) { /* no-op */ }
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; }
   };
 
   const handleCopy = async (key, text) => {
-    await copyToClipboard(text);
+    if (!(await copyToClipboard(text))) return;
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
   };
@@ -229,7 +230,16 @@ export default function Contact() {
   };
 
   const onKeyDown = (e) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleSubmit(e);
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      // Route through native constraint validation: empty/invalid forms
+      // must never reach the 201 state.
+      e.preventDefault();
+      const form = formRef.current;
+      if (!form) return;
+      if (typeof form.requestSubmit === 'function') form.requestSubmit();
+      else if (form.checkValidity()) form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true }));
+      else form.reportValidity?.();
+    }
   };
 
   const msgLen = formData.message.length;
@@ -314,6 +324,7 @@ export default function Contact() {
               ) : (
                 <motion.form
                   key="form"
+                  ref={formRef}
                   onSubmit={handleSubmit}
                   onKeyDown={onKeyDown}
                   className="request-doc"
