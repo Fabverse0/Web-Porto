@@ -25,7 +25,30 @@ describe('Contact', () => {
   it('shows eyebrow, headline, and channel ledger', () => {
     render(<Contact />);
     expect(screen.getByText(/OPEN FOR WORK/i)).toBeInTheDocument();
-    expect(screen.getByText(/01 \/ EMAIL/i)).toBeInTheDocument();
+    expect(screen.getByText('EMAIL')).toBeInTheDocument();
+  });
+
+  it('keeps decorative chrome out of the section', () => {
+    const { container } = render(<Contact />);
+    ['contact-channels-foot', 'contact-request-head', 'cur-statusline', 'contact-curl-title']
+      .forEach((cls) => expect(container.querySelector('.' + cls)).toBeNull());
+    expect(container.querySelector('.req-idx')).toBeNull();
+    expect(screen.queryByText(/REQUIRED|SLA 2HRS|RFC 5322|EXPECT 201|TYPE ON THE LEFT|ALTERNATE PROTOCOL|STATUS: 200|formsubmit\.co|Content-Type|HTTP\/2|curl -X POST|SAME ENDPOINT|POST \/CONTACT/i)).toBeNull();
+  });
+
+  it('shows the character counter only after typing', () => {
+    render(<Contact />);
+    expect(screen.queryByText(/\/ 500/)).toBeNull();
+    fireEvent.change(screen.getByLabelText('message:'), { target: { value: 'halo' } });
+    expect(screen.getByText('4 / 500')).toBeInTheDocument();
+  });
+
+  it('mirrors the form as a plain-language outbox command', () => {
+    render(<Contact />);
+    fireEvent.change(screen.getByLabelText('name:'), { target: { value: 'Sarah Chen' } });
+    expect(screen.getByText(/send --to/)).toBeInTheDocument();
+    expect(screen.getByText(/--name\s+"Sarah Chen"/)).toBeInTheDocument();
+    expect(screen.queryByText(/https:\/\/|Content-Type|curl/i)).toBeNull();
   });
 
   it('does not submit an empty form via Ctrl+Enter (constraint validation)', () => {

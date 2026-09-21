@@ -114,31 +114,30 @@ function InkFillSubmit({ children }) {
   );
 }
 
-/* ── Live curl: mirrors form state; on submit prints staged response ── */
-function curlFromState(dev, { name, email, message }) {
+/* ── Live outbox: mirrors form state; on submit prints staged delivery ── */
+function messageFromState(dev, { name, email, message }) {
   return [
-    'curl -X POST https://formsubmit.co/' + dev.email + ' \\',
-    '  -H "Content-Type: application/json" \\',
-    '  -d \'{"name": "' + (name || '…') + '", "email": "' + (email || '…') + '",',
-    '      "message": "' + (message || '…') + '"}\'',
+    '$ send --to ' + dev.email,
+    '  --name    "' + (name || '…') + '"',
+    '  --email   "' + (email || '…') + '"',
+    '  --message "' + (message || '…') + '"',
   ].join('\n');
 }
 
 function CurlConsole({ dev, formData, formSubmitted }) {
   const bodyRef = useRef(null);
-  const live = curlFromState(dev, formData);
+  const live = messageFromState(dev, formData);
 
   const lines = useMemo(() => ([
-    { t: '$ curl -X POST https://formsubmit.co/' + dev.email + ' \\', cls: 'cur-cmd', d: 0 },
-    { t: '  -H "Content-Type: application/json" \\', cls: 'cur-cmd', d: 260 },
-    { t: '  -d \'{"name": "' + formData.name + '", "email": "' + formData.email + '",', cls: 'cur-cmd', d: 520 },
-    { t: '      "message": "' + formData.message + '"}\'', cls: 'cur-cmd', d: 780 },
+    { t: '$ send --to ' + dev.email, cls: 'cur-cmd', d: 0 },
+    { t: '  --name    "' + formData.name + '"', cls: 'cur-cmd', d: 260 },
+    { t: '  --email   "' + formData.email + '"', cls: 'cur-cmd', d: 520 },
+    { t: '  --message "' + formData.message + '"', cls: 'cur-cmd', d: 780 },
     { t: '', d: 1050 },
-    { t: 'HTTP/2 201', cls: 'cur-status', d: 1250 },
-    { t: 'x-served-by: fabian.primary', cls: 'cur-dim', d: 1450 },
-    { t: 'location: /inbox/scheduled?response<2hrs', cls: 'cur-dim', d: 1650 },
+    { t: 'sending...', cls: 'cur-status', d: 1250 },
     { t: '', d: 1850 },
-    { t: 'message accepted — you will hear back shortly.', cls: 'cur-ok', d: 2050 },
+    { t: 'delivered to ' + dev.email, cls: 'cur-ok', d: 2050 },
+    { t: 'ok — expect a reply within two hours.', cls: 'cur-ok', d: 2450 },
   ]), [dev.email, formData.name, formData.email, formData.message]);
 
   useEffect(() => {
@@ -158,7 +157,7 @@ function CurlConsole({ dev, formData, formSubmitted }) {
     <div className="contact-curl" data-live={String(!formSubmitted)}>
       <div className="flex items-center justify-between mb-3">
         <span className="font-mono text-[10px] tracking-[0.14em] text-[#A1A1AA]">
-          {formSubmitted ? 'RESPONSE — 201' : 'POST /CONTACT — LIVE PREVIEW'}
+          OUTBOX
         </span>
         <CopyButton text={formSubmitted ? lines.map((l) => l.t).join('\n') : live} />
       </div>
@@ -176,13 +175,6 @@ function CurlConsole({ dev, formData, formSubmitted }) {
         </pre>
       )}
 
-      <div className="cur-statusline" aria-hidden="true">
-        <span>NORMAL</span>
-        <span>UTF-8</span>
-        <span>LF</span>
-        <span>3 FIELDS</span>
-        <span>{formSubmitted ? 'EXIT 0' : 'NO ERRORS'}</span>
-      </div>
     </div>
   );
 }
@@ -243,7 +235,7 @@ export default function Contact() {
   };
 
   const msgLen = formData.message.length;
-  const msgCount = String(msgLen).padStart(3, '0') + ' / 500';
+  const msgCount = msgLen + ' / 500';
 
   const inputClasses = 'w-full py-3.5 bg-transparent border-0 font-sans text-[15px] text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-none focus:ring-0';
 
@@ -255,7 +247,7 @@ export default function Contact() {
         <div className="contact-head">
           <p className="contact-eyebrow">
             <span className="contact-eyebrow-dot" aria-hidden="true" />
-            OPEN FOR WORK — {new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()}
+            OPEN FOR WORK
           </p>
           <h2 className="contact-heading">
             <MagneticHeadline text="Let's talk." />
@@ -269,31 +261,26 @@ export default function Contact() {
         {/* ── Channel ledger ── */}
         <div className="contact-channels">
           <ChannelRow
-            label="01 / EMAIL"
+            label="EMAIL"
             value={dev.email}
             copyable
             copied={copiedKey === 'email'}
             onCopy={() => handleCopy('email', dev.email)}
           />
           <ChannelRow
-            label="02 / GITHUB"
+            label="GITHUB"
             value="github.com/Fabverse0"
             href={dev.github}
             external
             scrambleEnabled
           />
           <ChannelRow
-            label="03 / LINKEDIN"
+            label="LINKEDIN"
             value="in/fabianrizky"
             href={dev.linkedin}
             external
             scrambleEnabled
           />
-          <div className="contact-channels-foot" aria-hidden="true">
-            <span>STATUS: 200 OK</span>
-            <span>TYPICAL RESPONSE &lt; 2 HRS</span>
-            <span>JAKARTA, ID / REMOTE</span>
-          </div>
         </div>
 
         {/* ── Compose (press-sheet) + console (terminal) ── */}
@@ -317,8 +304,7 @@ export default function Contact() {
                     201 Created.
                   </h3>
                   <p className="font-mono text-xs text-[var(--text-secondary)] mt-3 leading-relaxed">
-                    PAYLOAD RECEIVED — RESPONSE SCHEDULED WITHIN 2 HRS.
-                    THANK YOU{formData.name ? `, ${formData.name.toUpperCase()}` : ''}.
+                    {`THANK YOU${formData.name ? `, ${formData.name.toUpperCase()}` : ''} · REPLY WITHIN 2 HRS.`}
                   </p>
                 </motion.div>
               ) : (
@@ -338,13 +324,7 @@ export default function Contact() {
                   <span className="doc-crop doc-crop--bl" aria-hidden="true" />
                   <span className="doc-crop doc-crop--br" aria-hidden="true" />
 
-                  <div className="contact-request-head" aria-hidden="true">
-                    <span>POST /CONTACT</span>
-                    <span>HTTP/2 · APPLICATION/JSON</span>
-                  </div>
-
                   <div className="req-field">
-                    <span className="req-idx" aria-hidden="true">01</span>
                     <label htmlFor="contact-name" className="req-key">name:</label>
                     <input
                       id="contact-name" name="name" type="text" required
@@ -353,11 +333,9 @@ export default function Contact() {
                       placeholder='"John Doe"'
                       className={inputClasses}
                     />
-                    <span className="req-note" aria-hidden="true">STRING · REQUIRED</span>
                   </div>
 
                   <div className="req-field">
-                    <span className="req-idx" aria-hidden="true">02</span>
                     <label htmlFor="contact-email" className="req-key">email:</label>
                     <input
                       id="contact-email" name="email" type="email" required
@@ -366,11 +344,9 @@ export default function Contact() {
                       placeholder='"john@company.com"'
                       className={inputClasses}
                     />
-                    <span className="req-note" aria-hidden="true">RFC 5322 · REQUIRED</span>
                   </div>
 
                   <div className="req-field req-field--area">
-                    <span className="req-idx" aria-hidden="true">03</span>
                     <label htmlFor="contact-message" className="req-key">message:</label>
                     <textarea
                       id="contact-message" name="message" required rows={4} maxLength={500}
@@ -379,16 +355,15 @@ export default function Contact() {
                       placeholder='"Hi Fabian, I would like to discuss a backend engineering opportunity..."'
                       className={`${inputClasses} resize-none`}
                     ></textarea>
-                    <span className="req-note req-count" aria-live="off">{msgCount}</span>
+                    {msgLen > 0 && (
+                      <span className="req-count" aria-live="off">{msgCount}</span>
+                    )}
                   </div>
 
                   <div className="req-submit-row">
                     <InkFillSubmit>
-                      <span>Send HTTP POST Request</span>
+                      <span>Send message</span>
                     </InkFillSubmit>
-                    <span className="req-meta" aria-hidden="true">
-                      APPLICATION/JSON · EXPECT 201 · SLA 2HRS
-                    </span>
                   </div>
                 </motion.form>
               )}
@@ -397,12 +372,11 @@ export default function Contact() {
 
           <aside className="lg:col-span-5">
             <div className="contact-curl-head">
-              <span className="contact-curl-title">ALTERNATE PROTOCOL</span>
-              <span className="contact-curl-sub">LIVE PREVIEW — TYPE ON THE LEFT, WATCH IT COMPILE.</span>
+              <span className="contact-curl-sub">Mirrors your message as you type.</span>
             </div>
             <CurlConsole dev={dev} formData={formData} formSubmitted={formSubmitted} />
             <p className="contact-curl-note" aria-hidden="true">
-              SAME ENDPOINT, SAME PAYLOAD — PICK YOUR CLIENT.
+              ONE MESSAGE, ONE MAILBOX — FORM OR COMMAND.
             </p>
           </aside>
 

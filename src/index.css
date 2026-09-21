@@ -182,20 +182,6 @@ body::after {
 }
 .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-.cursor-blink {
-  display: inline-block;
-  width: 8px;
-  height: 16px;
-  background-color: var(--accent-signal);
-  margin-left: 4px;
-  animation: blink 1s step-end infinite;
-  vertical-align: middle;
-}
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .cursor-blink { animation: none; }
-}
-
 /* ============================================================
    Scrollbar
    ============================================================ */
@@ -621,7 +607,7 @@ body::after {
    SKILL BANDS v2: capsule pills + logo cloud + level arcs
    ============================================================ */
 
-/* ── Cinematic logo cloud ── */
+/* ── Cinematic logo cloud ── */
 
 /* ── Shared icon ── */
 .skill-icon {
@@ -1534,30 +1520,9 @@ body::after {
 .contact-row:hover .contact-row-action { transform: translate(2px, -2px); color: var(--text-primary); }
 .contact-row.is-copied { color: var(--text-primary); }
 .contact-row.is-copied .contact-row-action { color: var(--text-primary); transform: none; }
-.contact-channels-foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  padding-top: 16px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: var(--text-tertiary);
-}
 
 /* ── form: request document (backend-authentic) ── */
 .contact-request { border-top: 1px solid var(--border-color); }
-.contact-request-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 2px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--text-tertiary);
-  border-bottom: 1px solid var(--border-color);
-}
 .req-field {
   display: grid;
   grid-template-columns: 88px minmax(0, 1fr);
@@ -1580,12 +1545,6 @@ body::after {
   flex-wrap: wrap;
   padding-top: 26px;
 }
-.req-meta {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  color: var(--text-tertiary);
-}
 
 /* ── curl: the one ink terminal of the section ── */
 .contact-curl-head {
@@ -1593,13 +1552,6 @@ body::after {
   flex-direction: column;
   gap: 4px;
   margin-bottom: 12px;
-}
-.contact-curl-title {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
 }
 .contact-curl-sub {
   font-size: 13px;
@@ -1639,7 +1591,6 @@ body::after {
 }
 .cur-status { color: #FAFAFA; font-weight: 500; }
 .cur-ok { color: #E4E4E7; }
-.cur-dim { color: #71717A; }
 .cur-cmd { color: #A1A1AA; }
 @media (prefers-reduced-motion: reduce) {
   .contact-curl-resp .cur-line { opacity: 1; transform: none; animation: none; }
@@ -1667,32 +1618,18 @@ body::after {
 .doc-crop--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
 .doc-crop--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
 
-.req-field { position: relative; display: grid; grid-template-columns: 30px 88px minmax(0, 1fr); align-items: baseline; border-bottom: 1px solid var(--border-color); background: var(--bg-page); }
+.req-field { position: relative; display: grid; grid-template-columns: 88px minmax(0, 1fr); align-items: baseline; border-bottom: 1px solid var(--border-color); background: var(--bg-page); }
 .req-field:focus-within { background: var(--bg-card); }
 .req-field--area { align-items: start; }
-.req-idx {
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 10px;
-  color: var(--text-tertiary);
-  padding-top: 17px;
-}
 .req-key {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 13px;
   color: var(--text-secondary);
   padding-top: 15px;
 }
+.req-key::after { content: '*'; margin-left: 5px; color: var(--text-tertiary); }
 .req-field--area .req-key { padding-top: 17px; }
-.req-note {
-  position: absolute;
-  right: 0;
-  top: -16px;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: var(--text-tertiary);
-}
-.req-count { position: static; grid-column: 3; justify-self: end; padding: 4px 0 8px; font-variant-numeric: tabular-nums; }
+.req-count { position: static; grid-column: 2; justify-self: end; padding: 4px 0 8px; font-variant-numeric: tabular-nums; }
 
 /* ink-fill submit */
 .contact-submit {
@@ -1745,24 +1682,11 @@ body::after {
   animation: curCaret 1.1s steps(2, start) infinite;
 }
 @keyframes curCaret { to { visibility: hidden; } }
-.cur-statusline {
-  display: flex;
-  gap: 16px;
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid #27272A;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: #71717A;
-}
-.cur-statusline span:first-child { color: #FAFAFA; }
 
 @media (max-width: 640px) {
   .request-doc { padding: 20px 16px 22px; margin: -20px -16px -22px; }
   .req-count { grid-column: auto; }
   .req-field { grid-template-columns: 1fr; }
-  .req-idx { display: none; }
   .req-key { padding-top: 14px; padding-bottom: 2px; }
   .submit-kbd { display: none; }
 }

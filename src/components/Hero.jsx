@@ -37,31 +37,6 @@ function useSpecGridPointer() {
   return { handleGridMove, handleGridLeave };
 }
 
-/* Status line: typed once on load, then blinks (reduced-motion safe) */
-function StatusLine() {
-  const dev = PORTFOLIO_DATA.developer;
-  const reduce = useReducedMotion();
-  const text = 'systems: ' + (dev.status || 'operational').toLowerCase() + ' / ping ' + (dev.pingMs || 12) + 'ms';
-  const [shown, setShown] = useState(reduce ? text.length : 0);
-
-  useEffect(() => {
-    if (reduce) return;
-    if (shown >= text.length) return;
-    const t = setTimeout(() => setShown(shown + 1), 42);
-    return () => clearTimeout(t);
-  }, [shown, text, reduce]);
-
-  return (
-    <p className="font-mono text-[12.5px] text-[var(--text-secondary)] mt-6">
-      <span className="sr-only">{text}</span><span aria-hidden="true">
-        {'> '}
-        {text.slice(0, shown)}
-        <span className="cursor-blink" />
-      </span>
-    </p>
-  );
-}
-
 /* Headline split-word reveal: flat translate+opacity only, no blur/gradient */
 function SplitHeadline({ text }) {
   const reduce = useReducedMotion();
@@ -267,8 +242,6 @@ export default function Hero() {
                 {emailCopied ? 'Email copied to clipboard' : ''}
               </span>
             </motion.div>
-
-            <StatusLine />
           </div>
 
           {/* Right: specification table (data object as visual anchor) */}

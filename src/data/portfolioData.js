@@ -7,8 +7,6 @@ export const PORTFOLIO_DATA = {
     bio: "I am Fabian, a 3rd-semester informatics student at UPN \"Veteran\" Jakarta with a strong interest in backend development and system design. I am always eager to learn, solve problems, and contribute to real-world development projects.",
     email: "mfabian.rizky@gmail.com",
     location: "Jakarta, Indonesia / Remote",
-    status: "OPERATIONAL",
-    pingMs: 12,
     github: "https://github.com/Fabverse0",
     linkedin: "https://www.linkedin.com/in/fabianrizky",
     instagram: "https://www.instagram.com/fabianverse_?igsh=bjQyMzAxcmI4emY3",
