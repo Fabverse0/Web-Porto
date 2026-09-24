@@ -33,7 +33,7 @@ export const PORTFOLIO_DATA = {
     { name: "MongoDB", category: "Databases", icon: "Database", level: "Advanced", percentage: 86, brandColor: "#47A248", slug: "mongodb", featured: false },
     { name: "Apache Kafka", category: "API & Messaging", icon: "Layers", level: "Advanced", percentage: 84, brandColor: "#E0234E", slug: "apachekafka", featured: true },
     { name: "RabbitMQ", category: "API & Messaging", icon: "MessageSquare", level: "Advanced", percentage: 82, brandColor: "#FF6600", slug: "rabbitmq", featured: false },
-    { name: "gRPC & Protocol Buffers", category: "API & Messaging", icon: "Cpu", level: "Intermediate", percentage: 76, brandColor: "#2DA6B0", slug: "grpc", featured: false },
+    { name: "gRPC & Protocol Buffers", category: "API & Messaging", icon: "Cpu", level: "Intermediate", percentage: 76, brandColor: "#2DA6B0", featured: false },
     { name: "Docker & Containerization", category: "Cloud & DevOps", icon: "Box", level: "Expert", percentage: 92, brandColor: "#2496ED", slug: "docker", featured: true },
     { name: "Kubernetes (k8s)", category: "Cloud & DevOps", icon: "Cloud", level: "Intermediate", percentage: 78, brandColor: "#326CE5", slug: "kubernetes", featured: false },
     { name: "AWS (S3, EC2, Lambda)", category: "Cloud & DevOps", icon: "CloudRain", level: "Advanced", percentage: 85, brandColor: "#FF9900", slug: "amazonwebservices", featured: true },
