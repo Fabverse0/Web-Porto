@@ -755,6 +755,9 @@ body::after {
 @media (min-width: 768px) {
   .exp-header {
     flex-direction: row;
+    /* the tab bar cannot shrink (flex-shrink: 0), so let it drop to its own
+       line instead of pushing the page wider than the viewport */
+    flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
   }
@@ -1029,6 +1032,11 @@ body::after {
   }
   .exp-doc-number { display: none; }
   .exp-doc-title { font-size: 18px; }
+}
+
+/* ── very narrow: stack the tabs — two columns cannot fit the labels ── */
+@media (max-width: 400px) {
+  .exp-tabs { grid-template-columns: 1fr; }
 }
 
 /* ── reduced motion ── */
