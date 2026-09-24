@@ -31,8 +31,8 @@ function MagneticHeadline({ text }) {
   );
 }
 
-/* ── Channel row: scramble decode on hover (skips email row) ── */
-function ChannelRow({ label, value, href, external, onCopy, copied, copyable, scrambleEnabled }) {
+/* ── Channel row: scramble decode on hover, every row ── */
+function ChannelRow({ label, value, href, external, onCopy, copied, copyable }) {
   const valRef = useRef(null);
   const scrambleTimer = useRef(null);
   const reduce = prefersReducedMotion();
@@ -43,7 +43,7 @@ function ChannelRow({ label, value, href, external, onCopy, copied, copyable, sc
   }, []);
 
   const scramble = () => {
-    if (reduce || !scrambleEnabled || !valRef.current) return;
+    if (reduce || !valRef.current) return;
     const el = valRef.current;
     const original = value;
     if (scrambleTimer.current) clearInterval(scrambleTimer.current);
@@ -80,7 +80,7 @@ function ChannelRow({ label, value, href, external, onCopy, copied, copyable, sc
   );
   const cls = 'contact-row' + (copied ? ' is-copied' : '');
   return copyable ? (
-    <button type="button" onClick={onCopy} className={cls} aria-label={`${label}: ${value}. ${copied ? 'Copied' : 'Copy to clipboard'}`}>
+    <button type="button" onClick={onCopy} onMouseEnter={scramble} className={cls} aria-label={`${label}: ${value}. ${copied ? 'Copied' : 'Copy to clipboard'}`}>
       {inner}
       <span className="sr-only" role="status" aria-live="polite">{copied ? 'Copied to clipboard' : ''}</span>
     </button>
@@ -284,14 +284,12 @@ export default function Contact() {
             value="github.com/Fabverse0"
             href={dev.github}
             external
-            scrambleEnabled
           />
           <ChannelRow
             label="LINKEDIN"
             value="in/fabianrizky"
             href={dev.linkedin}
             external
-            scrambleEnabled
           />
         </div>
 

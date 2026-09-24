@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Contact from '../components/Contact';
+import { PORTFOLIO_DATA } from '../data/portfolioData';
 
 // jsdom lacks matchMedia; prefersReducedMotion() and framer-motion need it.
 if (!window.matchMedia) {
@@ -49,6 +50,18 @@ describe('Contact', () => {
     expect(screen.getByText(/send --to/)).toBeInTheDocument();
     expect(screen.getByText(/--name\s+"Sarah Chen"/)).toBeInTheDocument();
     expect(screen.queryByText(/https:\/\/|Content-Type|curl/i)).toBeNull();
+  });
+
+  it('scrambles the email value on hover, like the other channel rows', async () => {
+    const { container } = render(<Contact />);
+    const emailRow = container.querySelectorAll('.contact-row')[0];
+    const valueEl = emailRow.querySelector('.contact-row-value');
+    const email = PORTFOLIO_DATA.developer.email;
+    expect(emailRow.tagName).toBe('BUTTON');
+    expect(valueEl.textContent).toBe(email);
+    fireEvent.mouseEnter(emailRow);
+    await waitFor(() => expect(valueEl.textContent).not.toBe(email));
+    await waitFor(() => expect(valueEl.textContent).toBe(email), { timeout: 2000 });
   });
 
   it('does not submit an empty form via Ctrl+Enter (constraint validation)', () => {
