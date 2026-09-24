@@ -37,25 +37,48 @@ function useSpecGridPointer() {
   return { handleGridMove, handleGridLeave };
 }
 
-/* Headline split-word reveal: flat translate+opacity only, no blur/gradient */
+/* Headline: staggered word reveal on load, then per-character lift on hover
+   (same interaction as the contact headline). The reveal clips overflow, so
+   the wrappers release it once the last word has landed - otherwise the
+   seated characters would be cut off at the top. */
 function SplitHeadline({ text }) {
   const reduce = useReducedMotion();
+  const [revealed, setRevealed] = useState(false);
   const cls =
     'font-heading font-semibold text-[clamp(44px,8vw,96px)] leading-[1.05] tracking-[-0.022em] text-[var(--text-primary)] max-w-[13ch]';
   if (reduce) return <h1 className={cls}>{text}</h1>;
   const words = text.split(' ');
+  const lastWord = words.length - 1;
   return (
     <h1 className={cls} aria-label={text}>
       {words.map((w, i) => (
-        <span key={i} aria-hidden="true" className="inline-block overflow-hidden align-bottom pb-[0.08em] -mb-[0.08em]">
+        <span
+          key={i}
+          aria-hidden="true"
+          className={
+            'inline-block align-bottom pb-[0.08em] -mb-[0.08em] ' +
+            (revealed ? 'overflow-visible' : 'overflow-hidden')
+          }
+        >
           <motion.span
             className="inline-block"
             initial={{ y: '110%' }}
             animate={{ y: '0%' }}
             transition={{ duration: 0.6, delay: 0.12 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            onAnimationComplete={() => {
+              if (i === lastWord) setRevealed(true);
+            }}
           >
-            {w}
-            {i < words.length - 1 ? ' ' : ''}
+            {w.split('').map((ch, ci) => (
+              <motion.span
+                key={ci}
+                className="inline-block"
+                whileHover={{ y: -10, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } }}
+              >
+                {ch}
+              </motion.span>
+            ))}
+            {i < lastWord ? '\u00A0' : ''}
           </motion.span>
         </span>
       ))}
