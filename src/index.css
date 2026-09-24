@@ -24,6 +24,9 @@
   --text-secondary: var(--primitive-color-zinc-500);
   --text-tertiary: var(--primitive-color-zinc-500);
   --terminal-bg: var(--primitive-color-zinc-900);
+  --terminal-surface: #09090B;
+  --terminal-dim: #A1A1AA;
+  --terminal-bright: #E4E4E7;
   --terminal-text: var(--primitive-color-snow);
   --accent-signal: var(--primitive-color-zinc-900); /* mono: was emerald-700 */
   --btn-hover: var(--primitive-color-zinc-700);
@@ -46,6 +49,9 @@
   --text-secondary: #A1A1AA;
   --text-tertiary: #A1A1AA;
   --terminal-bg: #000000;
+  --terminal-surface: #09090B;
+  --terminal-dim: #A1A1AA;
+  --terminal-bright: #E4E4E7;
   --terminal-text: #FAFAFA;
   --accent-signal: #FAFAFA; /* mono: was #34D399 */
   --btn-hover: #D4D4D8;
@@ -1561,8 +1567,8 @@ body::after {
 }
 .contact-curl {
   border: none;
-  background: #09090B;
-  color: #FAFAFA;
+  background: var(--terminal-surface);
+  color: var(--terminal-text);
   padding: 18px 20px 20px;
   border-radius: 0;
 }
@@ -1580,7 +1586,7 @@ body::after {
 }
 
 /* ── contact v5: live preview console + response stagger ── */
-.contact-curl[data-live="true"] .cur-cmd { color: #E4E4E7; }
+.contact-curl[data-live="true"] .cur-cmd { color: var(--terminal-bright); }
 .contact-curl-resp .cur-line {
   opacity: 0;
   transform: translateY(3px);
@@ -1591,9 +1597,9 @@ body::after {
 @keyframes curLineIn {
   to { opacity: 1; transform: translateY(0); }
 }
-.cur-status { color: #FAFAFA; font-weight: 500; }
-.cur-ok { color: #E4E4E7; }
-.cur-cmd { color: #A1A1AA; }
+.cur-status { color: var(--terminal-text); font-weight: 500; }
+.cur-ok { color: var(--terminal-bright); }
+.cur-cmd { color: var(--terminal-dim); }
 @media (prefers-reduced-motion: reduce) {
   .contact-curl-resp .cur-line { opacity: 1; transform: none; animation: none; }
 }
@@ -1681,7 +1687,7 @@ body::after {
   display: inline-block;
   width: 7px;
   height: 13px;
-  background: #FAFAFA;
+  background: var(--terminal-text);
   margin-left: 2px;
   vertical-align: text-bottom;
   animation: curCaret 1.1s steps(2, start) infinite;

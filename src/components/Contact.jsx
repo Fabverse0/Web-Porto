@@ -34,17 +34,29 @@ function MagneticHeadline({ text }) {
 /* ── Channel row: scramble decode on hover (skips email row) ── */
 function ChannelRow({ label, value, href, external, onCopy, copied, copyable, scrambleEnabled }) {
   const valRef = useRef(null);
+  const scrambleTimer = useRef(null);
   const reduce = prefersReducedMotion();
+
+  // one scramble stream at a time; cleared when the row unmounts
+  useEffect(() => () => {
+    if (scrambleTimer.current) clearInterval(scrambleTimer.current);
+  }, []);
 
   const scramble = () => {
     if (reduce || !scrambleEnabled || !valRef.current) return;
     const el = valRef.current;
     const original = value;
+    if (scrambleTimer.current) clearInterval(scrambleTimer.current);
     let frame = 0;
     const total = 12;
-    const id = setInterval(() => {
+    scrambleTimer.current = setInterval(() => {
       frame += 1;
-      if (frame >= total) { el.textContent = original; clearInterval(id); return; }
+      if (frame >= total) {
+        el.textContent = original;
+        clearInterval(scrambleTimer.current);
+        scrambleTimer.current = null;
+        return;
+      }
       const reveal = Math.floor((frame / total) * original.length);
       el.textContent = original.split('').map((ch, i) => {
         if (i < reveal || ch === ' ' || ch === '.' || ch === '/' || ch === '@') return ch;
@@ -102,7 +114,7 @@ function InkFillSubmit({ children }) {
       style={{ x, y }}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      whileTap={{ scale: 0.98 }}
+      whileTap={reduce ? undefined : { scale: 0.98 }}
     >
       <span className="submit-fill" aria-hidden="true" />
       <span className="submit-content">
@@ -163,7 +175,7 @@ function CurlConsole({ dev, formData, formSubmitted }) {
       </div>
 
       {formSubmitted ? (
-        <pre ref={bodyRef} className="font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap contact-curl-resp" aria-live="polite">
+        <pre ref={bodyRef} className="font-mono text-[11px] leading-relaxed overflow-x-auto whitespace-pre-wrap contact-curl-resp" aria-live="off">
           {lines.map((l, i) => (
             <span key={i} data-line className={'cur-line ' + l.cls}>{l.t || '\u00A0'}</span>
           ))}
@@ -295,7 +307,7 @@ export default function Contact() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3, ease: EASE }}
-                  className="request-doc request-doc--sent min-h-[360px] flex flex-col items-start justify-center" role="status"
+                  className="request-doc request-doc--sent min-h-[360px] flex flex-col items-start justify-start" role="status"
                 >
                   <span className="contact-sent-mark" aria-hidden="true">
                     <Check size={22} strokeWidth={2} />
