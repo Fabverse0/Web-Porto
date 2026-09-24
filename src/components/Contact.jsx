@@ -253,7 +253,7 @@ export default function Contact() {
             <MagneticHeadline text="Let's talk." />
           </h2>
           <p className="contact-lede">
-            Full-time backend engineering, freelance architecture, or a hello — the fastest
+            Full-time backend engineering, freelance architecture, or a hello - the fastest
             route is email. Typical response under two hours.
           </p>
         </div>

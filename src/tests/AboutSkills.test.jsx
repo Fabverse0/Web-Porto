@@ -27,7 +27,7 @@ describe('AboutSkills Component (spec roster redesign)', () => {
     expect(cloudNodes.length).toBe(0);
 
     /* pill expert mengekspos nama + level ke screen reader */
-    const tsPill = screen.getByRole('button', { name: /TypeScript — Expert/i });
+    const tsPill = screen.getByRole('button', { name: /TypeScript - Expert/i });
     expect(tsPill).toHaveAttribute('aria-pressed', 'false');
   });
 

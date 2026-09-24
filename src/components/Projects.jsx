@@ -9,7 +9,7 @@ import coverCoffee from '../../assets/covers/project-coffee.webp';
 import coverMedia from '../../assets/covers/project-media.webp';
 
 /* ---------------------------------------------------------------
-   PLATE ENTRIES — VISUAL PLACEHOLDERS by explicit request.
+   PLATE ENTRIES - VISUAL PLACEHOLDERS by explicit request.
    Nothing is imported from portfolio data files. Swap the four
    photos in assets/covers/ and fill name/summary/spec fields
    when the real project entries are ready.
@@ -20,7 +20,7 @@ const PLATES = [
     index: 'PL.01',
     name: 'Untitled 01',
     photo: coverMuseum,
-    alt: 'Cover photo placeholder — ceramic handset model on a workbench, analog film style.',
+    alt: 'Cover photo placeholder - ceramic handset model on a workbench, analog film style.',
     layout: 'wide',
   },
   {
@@ -28,7 +28,7 @@ const PLATES = [
     index: 'PL.02',
     name: 'Untitled 02',
     photo: coverStationery,
-    alt: 'Cover photo placeholder — paper specimen book on a workbench, analog film style.',
+    alt: 'Cover photo placeholder - paper specimen book on a workbench, analog film style.',
     layout: 'tall',
   },
   {
@@ -36,7 +36,7 @@ const PLATES = [
     index: 'PL.03',
     name: 'Untitled 03',
     photo: coverMedia,
-    alt: 'Cover photo placeholder — handheld wooden media prototype with film strips, analog film style.',
+    alt: 'Cover photo placeholder - handheld wooden media prototype with film strips, analog film style.',
     layout: 'wide',
   },
   {
@@ -44,7 +44,7 @@ const PLATES = [
     index: 'PL.04',
     name: 'Untitled 04',
     photo: coverCoffee,
-    alt: 'Cover photo placeholder — glazed ceramic coffee cup and kraft bag on a workbench, analog film style.',
+    alt: 'Cover photo placeholder - glazed ceramic coffee cup and kraft bag on a workbench, analog film style.',
     layout: 'tall',
   },
 ];
@@ -86,7 +86,7 @@ export default function Projects({ selectedSkill }) {
             Selected Work.
           </h2>
           <p className="mt-5 font-mono text-[12.5px] leading-relaxed text-[var(--text-secondary)] max-w-[58ch]">
-            Placeholder plates — photos and names are stand-ins until the real entries are cataloged.
+            Placeholder plates - photos and names are stand-ins until the real entries are cataloged.
             Each plate+plate opens a spec sheet with a summary and repository link.
           </p>
         </header>
@@ -112,7 +112,7 @@ export default function Projects({ selectedSkill }) {
                     loading="lazy"
                     className="plate-img"
                   />
-                  {/* Corner ticks — contact-sheet register marks */}
+                  {/* Corner ticks - contact-sheet register marks */}
                   <span className="plate-tick tl" aria-hidden="true" />
                   <span className="plate-tick tr" aria-hidden="true" />
                   <span className="plate-tick bl" aria-hidden="true" />

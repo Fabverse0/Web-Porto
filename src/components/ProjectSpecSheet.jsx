@@ -77,7 +77,7 @@ export default function ProjectSpecSheet({ plate, specRows, onClose }) {
           {/* ── Toolbar ── */}
           <div className="specsheet-toolbar">
             <span className="font-mono">
-              Spec sheet — {plate.index}
+              Spec sheet - {plate.index}
             </span>
             <button
               ref={closeRef}
@@ -97,7 +97,7 @@ export default function ProjectSpecSheet({ plate, specRows, onClose }) {
           {/* ── Body ── */}
           <div className="specsheet-body">
             <p className="font-mono specsheet-eyebrow">
-              {plate.index} — project spec sheet
+              {plate.index} - project spec sheet
             </p>
             <h3
               id={`specsheet-title-${plate.id}`}
@@ -110,7 +110,7 @@ export default function ProjectSpecSheet({ plate, specRows, onClose }) {
             <div className="specsheet-block">
               <p className="specsheet-label font-mono">Summary</p>
               <p className="specsheet-text text-[var(--text-body)]">
-                [ Summary — two or three sentences on the problem, the
+                [ Summary - two or three sentences on the problem, the
                 approach, and the result. Replace this with the real
                 write-up. ]
               </p>
@@ -129,7 +129,7 @@ export default function ProjectSpecSheet({ plate, specRows, onClose }) {
               </dl>
             </div>
 
-            {/* Footer — repo link */}
+            {/* Footer - repo link */}
             <div className="specsheet-foot">
               <a
                 href="https://github.com"

@@ -155,7 +155,7 @@ export default function Terminal() {
       setTimeout(() => setMatrixActive(true), 50);
       newHistory.push({ type: 'output', text: `=== MATRIX DIGITAL RAIN INITIALIZED === [Streaming 60fps Protocol @ ${terminalTheme}]` });
     } else if (cmd === 'benchmark') {
-      const benchmarkOutput = `⚡ BENCHMARK ENGINE v1.4 — SIMULATING HIGH-CONCURRENCY HTTP/2 WORKLOAD:
+      const benchmarkOutput = `⚡ BENCHMARK ENGINE v1.4 - SIMULATING HIGH-CONCURRENCY HTTP/2 WORKLOAD:
 [1/4] Warming up 500 concurrent WebSocket connections... DONE (0.8s)
 [2/4] Testing PostgreSQL Read/Write Transaction Split... DONE (1.2s)
 [3/4] Measuring Redis Distributed Lock SETNX Latency...  DONE (0.4s)

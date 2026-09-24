@@ -3,7 +3,7 @@ import { motion, useInView } from 'framer-motion';
 
 const EASE = [0.22, 1, 0.36, 1];
 
-/* Experiment 1 — cursor grid: cells light up under the pointer */
+/* Experiment 1 - cursor grid: cells light up under the pointer */
 function CursorGrid() {
   const [hot, setHot] = useState(-1);
   const cells = Array.from({ length: 64 }, (_, i) => i);
@@ -31,7 +31,7 @@ function CursorGrid() {
   );
 }
 
-/* Experiment 2 — split reveal with replay */
+/* Experiment 2 - split reveal with replay */
 function SplitDemo() {
   const [key, setKey] = useState(0);
   const words = 'Backend systems, documented.'.split(' ');
@@ -63,7 +63,7 @@ function SplitDemo() {
   );
 }
 
-/* Experiment 3 — count-up on demand */
+/* Experiment 3 - count-up on demand */
 function CountUpDemo() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.4 });
@@ -120,7 +120,7 @@ export default function Lab() {
           Small live experiments.
         </h1>
         <p className="text-lg text-[var(--text-body)] leading-relaxed max-w-[52ch] mt-4">
-          Touch them. Every demo below runs real code — no screenshots.
+          Touch them. Every demo below runs real code - no screenshots.
         </p>
 
         <div className="mt-12 flex flex-col">

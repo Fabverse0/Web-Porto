@@ -16,7 +16,7 @@ const InfoIcon = ({ type }) => {
 const HeroSection = React.forwardRef(
   ({ className, logo, slogan, title, subtitle, callToAction, backgroundImage, contactInfo, ...props }, ref) => {
 
-    // Animation variants — orchestrates children sequentially
+    // Animation variants - orchestrates children sequentially
     const containerVariants = {
       hidden: { opacity: 0 },
       visible: {

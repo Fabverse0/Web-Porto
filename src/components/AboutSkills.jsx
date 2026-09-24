@@ -82,7 +82,7 @@ function SkillStatLine({ skills }) {
 }
 
 
-/* ── Domain row: editorial monolith — Fraunces giant index + doc rows ── */
+/* ── Domain row: editorial monolith - Fraunces giant index + doc rows ── */
 function DomainRow({ index, category, skills, selectedSkill, onSkillClick }) {
   const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'][index] || String(index + 1);
   const best = skills.reduce((a, s) => ((s.percentage || 0) > (a.percentage || 0) ? s : a), skills[0]);
@@ -99,7 +99,7 @@ function DomainRow({ index, category, skills, selectedSkill, onSkillClick }) {
         <span className="skill-domain-no" aria-hidden="true">{roman}</span>
         <h3 className="skill-domain-title">{category}</h3>
         <span className="skill-domain-meta" aria-hidden="true">
-          {String(skills.length).padStart(2, '0')} ENTRIES — PEAK {best ? best.percentage : 0}%
+          {String(skills.length).padStart(2, '0')} ENTRIES - PEAK {best ? best.percentage : 0}%
         </span>
       </header>
 
@@ -114,7 +114,7 @@ function DomainRow({ index, category, skills, selectedSkill, onSkillClick }) {
                 tabIndex={0}
                 onClick={() => onSkillClick(skill.name)}
                 aria-pressed={isSelected}
-                aria-label={`${skill.name} — ${skill.level}, ${skill.percentage} percent. Filter projects.`}
+                aria-label={`${skill.name} - ${skill.level}, ${skill.percentage} percent. Filter projects.`}
                 className={
                   'skill-doc' +
                   (isSelected ? ' is-selected' : '') +

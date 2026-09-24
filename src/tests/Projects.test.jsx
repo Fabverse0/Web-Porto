@@ -24,7 +24,7 @@ describe('Projects showcase (plate redesign)', () => {
 
     const dialog = screen.getByRole('dialog');
     expect(dialog).toBeInTheDocument();
-    /* "spec sheet" appears in toolbar and eyebrow — use getAllByText within dialog */
+    /* "spec sheet" appears in toolbar and eyebrow - use getAllByText within dialog */
     const specTexts = within(dialog).getAllByText(/spec sheet/i);
     expect(specTexts.length).toBeGreaterThanOrEqual(1);
     expect(within(dialog).getByText(/Untitled 01/i)).toBeInTheDocument();

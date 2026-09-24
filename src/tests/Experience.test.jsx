@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Experience from '../components/Experience';
 
-describe('Experience — tabbed spec-sheet, education first', () => {
+describe('Experience - tabbed spec-sheet, education first', () => {
   it('shows education by default, work hidden', () => {
     render(<Experience />);
     expect(screen.getByText(/Engineering Experience/i)).toBeInTheDocument();

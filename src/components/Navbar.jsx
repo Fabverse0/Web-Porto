@@ -145,7 +145,7 @@ export default function Navbar({ theme, onToggleTheme }) {
             className="navbar-brand flex flex-col justify-center group"
             whileHover={{ y: -1 }}
             transition={{ type: 'spring', ...SPRING, duration: dur }}
-            aria-label="Fab.Dev — Back to top"
+            aria-label="Fab.Dev - Back to top"
           >
             <span className="font-mono text-[15px] font-medium text-[var(--text-primary)] leading-none">
               <span aria-hidden="true">&lt;/&gt;&nbsp;</span>
@@ -186,7 +186,7 @@ export default function Navbar({ theme, onToggleTheme }) {
                   aria-current={isCurrent ? 'page' : undefined}
                 >
                   {link.name}
-                  {/* Sliding indicator pill — shared layout animation */}
+                  {/* Sliding indicator pill - shared layout animation */}
                   {showIndicator && (
                     <motion.div
                       layoutId="nav-indicator"
